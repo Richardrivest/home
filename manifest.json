@@ -1,0 +1,9 @@
+{
+  "id": "obsidian-apa7-citations",
+  "name": "APA 7 Citations",
+  "version": "1.0.0",
+  "minAppVersion": "1.4.0",
+  "description": "Gestiona e inserta citas bibliográficas en formato APA 7a edición.",
+  "author": "richardrivest",
+  "isDesktopOnly": false
+}

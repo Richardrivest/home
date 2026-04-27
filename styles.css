@@ -1,0 +1,43 @@
+/* ── Preview panel inside CitationModal ──────────────────────────────────────── */
+.apa7-preview {
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-s);
+  padding: 10px 14px;
+  margin: 8px 0 12px;
+  background: var(--background-secondary);
+}
+
+.apa7-preview-label {
+  font-size: var(--font-smallest);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 8px;
+  margin-bottom: 2px;
+}
+
+.apa7-preview-label:first-child {
+  margin-top: 0;
+}
+
+.apa7-preview-value {
+  font-size: var(--font-ui-small);
+  color: var(--text-normal);
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+/* ── Library modal suggestion rows ───────────────────────────────────────────── */
+.apa7-lib-primary {
+  font-size: var(--font-ui-small);
+  color: var(--text-normal);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.apa7-lib-secondary {
+  font-size: var(--font-smallest);
+  color: var(--text-muted);
+  margin-top: 2px;
+}
