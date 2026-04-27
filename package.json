@@ -1,0 +1,22 @@
+{
+  "name": "obsidian-apa7-citations",
+  "version": "1.0.0",
+  "description": "APA 7 citation manager for Obsidian",
+  "main": "main.js",
+  "scripts": {
+    "dev": "node esbuild.config.mjs",
+    "build": "node esbuild.config.mjs production"
+  },
+  "keywords": ["obsidian", "citations", "apa", "bibliography"],
+  "license": "MIT",
+  "devDependencies": {
+    "@codemirror/state": "6.5.0",
+    "@codemirror/view": "6.38.6",
+    "@types/node": "^22.0.0",
+    "builtin-modules": "^4.0.0",
+    "esbuild": "0.24.0",
+    "obsidian": "1.7.2",
+    "tslib": "2.6.0",
+    "typescript": "5.5.3"
+  }
+}
