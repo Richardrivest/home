@@ -5,6 +5,11 @@ export interface Author {
   firstName: string;
 }
 
+export interface Quote {
+  text: string;
+  page?: string;
+}
+
 export interface CitationBase {
   id: string;
   sourceType: SourceType;
@@ -15,6 +20,7 @@ export interface CitationBase {
   url?: string;
   dateAdded: string;
   notePath?: string;
+  quotes?: Quote[];
 }
 
 export interface JournalArticleCitation extends CitationBase {

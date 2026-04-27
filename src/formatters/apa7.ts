@@ -1,6 +1,7 @@
 import type {
   Citation,
   Author,
+  Quote,
   FormattedCitation,
   InTextOptions,
   JournalArticleCitation,
@@ -173,6 +174,12 @@ export function formatCitation(citation: Citation, options?: Partial<InTextOptio
   }
 
   return { inText, reference: plain, referenceMd: md };
+}
+
+export function formatTextualQuote(quote: Quote, citation: Citation): string {
+  const pagePart = quote.page?.trim() ? `, p. ${quote.page.trim()}` : '';
+  const authorPart = formatAuthorsInText(citation.authors, 'parenthetical');
+  return `"${quote.text}" (${authorPart}, ${citation.year}${pagePart})`;
 }
 
 export function sortCitationsAPA(citations: Citation[]): Citation[] {

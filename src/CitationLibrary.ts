@@ -1,5 +1,5 @@
 import { App, normalizePath, TFile, TFolder } from 'obsidian';
-import type { Citation, Author, SourceType } from './types';
+import type { Citation, Author, Quote, SourceType } from './types';
 
 export class CitationLibrary {
   private app: App;
@@ -98,6 +98,14 @@ export class CitationLibrary {
     if (citation.url) lines.push(`url: "${escapYaml(citation.url)}"`);
     lines.push(`date-added: "${citation.dateAdded}"`);
 
+    if (citation.quotes && citation.quotes.length > 0) {
+      lines.push('quotes:');
+      for (const q of citation.quotes) {
+        lines.push(`  - text: "${escapYaml(q.text)}"`);
+        if (q.page) lines.push(`    page: "${escapYaml(q.page)}"`);
+      }
+    }
+
     switch (citation.sourceType) {
       case 'journalArticle':
         lines.push(`journal: "${escapYaml(citation.journal)}"`);
@@ -132,6 +140,16 @@ export class CitationLibrary {
     lines.push('');
     lines.push(`# ${citation.title}`);
 
+    if (citation.quotes && citation.quotes.length > 0) {
+      lines.push('');
+      lines.push('## Citas textuales');
+      for (const q of citation.quotes) {
+        lines.push('');
+        lines.push(`> "${q.text}"`);
+        if (q.page) lines.push(`> — p. ${q.page}`);
+      }
+    }
+
     return lines.join('\n');
   }
 
@@ -156,6 +174,7 @@ export class CitationLibrary {
         url: fm['url'] ? String(fm['url']) : undefined,
         dateAdded: String(fm['date-added'] ?? new Date().toISOString()),
         notePath,
+        quotes: parseQuotes(fm['quotes']),
       };
 
       switch (sourceType) {
@@ -202,7 +221,25 @@ export class CitationLibrary {
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
 function escapYaml(value: string): string {
-  return value.replace(/"/g, '\\"');
+  return value
+    .replace(/\\/g, '\\\\')
+    .replace(/"/g, '\\"')
+    .replace(/\r?\n/g, ' ');
+}
+
+function parseQuotes(raw: unknown): Quote[] {
+  if (!Array.isArray(raw)) return [];
+  const result: Quote[] = [];
+  for (const item of raw) {
+    if (!item || typeof item !== 'object') continue;
+    const obj = item as Record<string, unknown>;
+    const text = String(obj['text'] ?? '').trim();
+    if (!text) continue;
+    const q: Quote = { text };
+    if (obj['page']) q.page = String(obj['page']);
+    result.push(q);
+  }
+  return result;
 }
 
 function sourceTypeToYaml(sourceType: SourceType): string {

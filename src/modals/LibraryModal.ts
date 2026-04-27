@@ -1,10 +1,11 @@
 import { App, FuzzySuggestModal, FuzzyMatch, Notice } from 'obsidian';
 import type { Citation } from '../types';
 import { formatCitation } from '../formatters/apa7';
+import { QuoteModal } from './QuoteModal';
 import type { CitationLibrary } from '../CitationLibrary';
 import type APA7Plugin from '../main';
 
-export type LibraryAction = 'insert' | 'copy' | 'delete';
+export type LibraryAction = 'insert' | 'copy' | 'delete' | 'quote-insert';
 
 type InsertCallback = (formatted: { inText: string; referenceMd: string }) => void;
 
@@ -34,6 +35,7 @@ export class LibraryModal extends FuzzySuggestModal<Citation> {
       insert: 'Buscar y insertar cita...',
       copy: 'Buscar y copiar referencia...',
       delete: 'Buscar y eliminar cita...',
+      'quote-insert': 'Buscar fuente para insertar cita textual...',
     };
 
     this.setPlaceholder(placeholders[action]);
@@ -71,13 +73,37 @@ export class LibraryModal extends FuzzySuggestModal<Citation> {
     };
 
     el.createDiv({ cls: 'apa7-lib-primary', text: `${authorYear} — ${citation.title}` });
-    el.createDiv({ cls: 'apa7-lib-secondary', text: sourceLabels[citation.sourceType] ?? citation.sourceType });
+
+    const quoteCount = citation.quotes?.length ?? 0;
+    const typeLabel = sourceLabels[citation.sourceType] ?? citation.sourceType;
+    const quotesLabel = quoteCount > 0 ? ` · ${quoteCount} cita${quoteCount > 1 ? 's textuales' : ' textual'}` : '';
+    el.createDiv({ cls: 'apa7-lib-secondary', text: `${typeLabel}${quotesLabel}` });
   }
 
   async onChooseItem(citation: Citation, _evt: MouseEvent | KeyboardEvent): Promise<void> {
     if (this.action === 'delete') {
       await this.library.delete(citation);
       new Notice(`Cita eliminada: ${citation.title}`);
+      return;
+    }
+
+    if (this.action === 'quote-insert') {
+      const quotes = citation.quotes ?? [];
+      if (quotes.length === 0) {
+        new Notice('Esta referencia no tiene citas textuales guardadas. Edítala para agregarlas.');
+        return;
+      }
+      if (quotes.length === 1) {
+        // Insert directly without sub-modal
+        const { formatTextualQuote } = await import('../formatters/apa7');
+        const text = formatTextualQuote(quotes[0], citation);
+        this.onInsert({ inText: text, referenceMd: text });
+        return;
+      }
+      // Multiple quotes: open picker
+      new QuoteModal(this.app, citation, text => {
+        this.onInsert({ inText: text, referenceMd: text });
+      }).open();
       return;
     }
 

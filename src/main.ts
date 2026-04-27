@@ -63,6 +63,21 @@ export default class APA7Plugin extends Plugin {
     });
 
     this.addCommand({
+      id: 'apa7-insert-textual-quote',
+      name: 'Insertar cita textual',
+      callback: async () => {
+        const citations = await this.library.load();
+        if (citations.length === 0) {
+          new Notice('La biblioteca está vacía. Usa "Insertar cita nueva" para agregar referencias.');
+          return;
+        }
+        new LibraryModal(this.app, this, this.library, citations, 'quote-insert', ({ inText }) => {
+          this.insertAtCursor(inText, inText);
+        }).open();
+      },
+    });
+
+    this.addCommand({
       id: 'apa7-delete-citation',
       name: 'Eliminar cita de biblioteca',
       callback: async () => {

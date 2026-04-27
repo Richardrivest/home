@@ -1,5 +1,5 @@
 import { App, Modal, Setting, Notice } from 'obsidian';
-import type { Citation, SourceType, Author } from '../types';
+import type { Citation, SourceType, Author, Quote } from '../types';
 import { formatCitation } from '../formatters/apa7';
 import type { CitationLibrary } from '../CitationLibrary';
 import type APA7Plugin from '../main';
@@ -15,6 +15,7 @@ export class CitationModal extends Modal {
   private formData: Record<string, string> = {};
   private authors: Author[] = [{ lastName: '', firstName: '' }];
   private editors: Author[] = [];
+  private quotes: Quote[] = [];
 
   constructor(app: App, plugin: APA7Plugin, library: CitationLibrary, onInsert: InsertCallback) {
     super(app);
@@ -106,6 +107,20 @@ export class CitationModal extends Modal {
         break;
     }
 
+    // Textual quotes
+    new Setting(contentEl).setName('Citas textuales').setHeading();
+    contentEl.createEl('p', {
+      text: 'Guarda fragmentos textuales de esta fuente para insertarlos después con su cita APA.',
+      cls: 'apa7-quotes-hint',
+    });
+    this.quotes.forEach((quote, idx) => this.renderQuoteRow(contentEl, quote, idx));
+    new Setting(contentEl).addButton(btn =>
+      btn.setButtonText('+ Agregar cita textual').onClick(() => {
+        this.quotes.push({ text: '', page: undefined });
+        this.render();
+      })
+    );
+
     // In-text style
     new Setting(contentEl).setName('Opciones de la cita').setHeading();
     new Setting(contentEl)
@@ -192,12 +207,52 @@ export class CitationModal extends Modal {
       );
   }
 
+  private renderQuoteRow(container: HTMLElement, quote: Quote, idx: number): void {
+    const wrapper = container.createDiv({ cls: 'apa7-quote-row' });
+
+    new Setting(wrapper)
+      .setName(`Cita textual ${idx + 1}`)
+      .addExtraButton(btn =>
+        btn
+          .setIcon('trash')
+          .setTooltip('Eliminar')
+          .onClick(() => {
+            this.quotes.splice(idx, 1);
+            this.render();
+          })
+      );
+
+    new Setting(wrapper)
+      .setName('Texto')
+      .addTextArea(ta => {
+        ta.setPlaceholder('Escribe aquí el fragmento textual...')
+          .setValue(quote.text)
+          .onChange(v => {
+            this.quotes[idx].text = v;
+          });
+        ta.inputEl.rows = 4;
+      });
+
+    new Setting(wrapper)
+      .setName('Página')
+      .addText(t =>
+        t
+          .setPlaceholder('ej. 45 o 45-47')
+          .setValue(quote.page ?? '')
+          .onChange(v => {
+            this.quotes[idx].page = v.trim() || undefined;
+          })
+      );
+  }
+
   private buildCitation(): Citation | null {
     const year = this.formData['year']?.trim();
     const title = this.formData['title']?.trim();
     const validAuthors = this.authors.filter(a => a.lastName.trim().length > 0);
 
     if (!year || !title || validAuthors.length === 0) return null;
+
+    const validQuotes = this.quotes.filter(q => q.text.trim().length > 0);
 
     const base = {
       id: crypto.randomUUID(),
@@ -207,6 +262,7 @@ export class CitationModal extends Modal {
       doi: this.formData['doi']?.trim() || undefined,
       url: this.formData['url']?.trim() || undefined,
       dateAdded: new Date().toISOString(),
+      quotes: validQuotes.length > 0 ? validQuotes : undefined,
     };
 
     switch (this.sourceType) {
