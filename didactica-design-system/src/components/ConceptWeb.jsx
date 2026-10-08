@@ -6,7 +6,7 @@ const LH = 18;
 
 function Node({ x, y, lines, strong, detail = [] }) {
   const all = [...lines, ...detail];
-  const w = Math.max(96, ...lines.map((l) => textWidth(l, 15)), ...detail.map((l) => textWidth(l, 14))) + 24;
+  const w = Math.max(96, ...lines.map((l) => textWidth(l, 16)), ...detail.map((l) => textWidth(l, 14))) + 24;
   const h = all.length * LH + 16;
   const top = y - h / 2;
   return (

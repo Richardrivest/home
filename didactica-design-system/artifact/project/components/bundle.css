@@ -1,6 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Caladea:ital,wght@0,400;0,700;1,400;1,700&family=Carlito:ital,wght@0,400;0,700;1,400;1,700&display=swap");
 /*
- * Didáctica Universitaria — component styles (v2).
+ * Didáctica Universitaria — component styles (v3).
  * Colours, spacing, radii and strokes come from the token custom properties
  * (dist/tokens.css) through the Tailwind preset; type comes from the token
  * type-style classes (.body, .h1, .box-title …) the components add.
@@ -115,6 +114,13 @@
 
 /* ---------- Chapter opener and headings ---------- */
 
+/* Running text stays at measure-text (~66 characters); boxes, tables and figures use the full measure. */
+
+.du-body, .du-list, .du-chapter__lead, .du-chapter__title, .du-h1, .du-h2, .du-h3,
+.du-glossary, .du-blockquote, .du-toc {
+  max-width: var(--measure-text);
+}
+
 .du-chapter {
   margin-bottom: var(--space-5);
 }
@@ -155,7 +161,7 @@
   margin: 0px;
   margin-top: var(--space-5);
   margin-bottom: var(--space-2);
-  color: var(--azure);
+  color: var(--ink);
 }
 
 .du-toc-title {
@@ -288,8 +294,21 @@
   --box-border: var(--references-border);
 }
 
+.du-box--example    {
+  --box-accent: var(--example-accent);
+  --box-surface: var(--example-surface);
+  --box-border: var(--example-border);
+}
+
+.du-box--selfcheck  {
+  --box-accent: var(--selfcheck-accent);
+  --box-surface: var(--selfcheck-surface);
+  --box-border: var(--selfcheck-border);
+}
+
 .du-box__header {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: var(--space-2);
   border-width: 0px;
@@ -301,6 +320,33 @@
   padding-bottom: var(--space-3);
   border-color: var(--box-border);
   color: var(--box-accent);
+}
+
+/* Families: the shape tells the box type apart even in grayscale or with colour-vision deficiency. */
+
+/* open — filled header band */
+
+.du-box--family-open {
+  border-color: var(--box-accent);
+}
+
+.du-box--family-open .du-box__header {
+  background: var(--box-accent);
+  color: var(--paper);
+  border-color: var(--box-accent);
+  border-radius: calc(var(--radius-box) - 1px) calc(var(--radius-box) - 1px) 0 0;
+}
+
+/* text — heavy top rule over a tinted body */
+
+.du-box--family-text {
+  border-top: var(--stroke-accent) solid var(--box-accent);
+}
+
+/* close — untinted frame */
+
+.du-box--family-close {
+  background: var(--paper);
 }
 
 .du-box__icon {
@@ -413,7 +459,13 @@
        column-gap: var(--space-3);
   row-gap: var(--space-1);
   padding-left: 0px;
-  grid-template-columns: 8.5em 1fr;
+  grid-template-columns: 2em 8.5em 1fr;
+}
+
+.du-box__oid {
+  font-weight: 700;
+  color: var(--box-accent);
+  font-family: var(--font-sans);
 }
 
 .du-box__list--objectives > li::before {
@@ -426,7 +478,11 @@
 
 @media (max-width: 480px) {
   .du-box__list--objectives > li {
-    grid-template-columns: 1fr;
+    grid-template-columns: 2em 1fr;
+  }
+
+  .du-box__list--objectives .du-box__otext {
+    grid-column: 2;
   }
 
   .du-box__list--objectives .du-tag {
@@ -457,6 +513,156 @@
 
 .du-box__refs .du-reference:last-child {
   margin-bottom: 0px;
+}
+
+.du-box__before {
+  margin-top: var(--space-3);
+  border-width: 0px;
+  border-top-width: var(--stroke-hair);
+  border-style: solid;
+  padding-top: var(--space-3);
+  border-color: var(--box-border);
+}
+
+.du-box__before .du-box__label {
+  margin: 0px;
+  margin-bottom: var(--space-2);
+}
+
+.du-box__list--questions > li::before {
+  content: '?';
+  font-weight: 700;
+  background: none;
+  transform: none;
+  width: auto;
+  height: auto;
+  top: 0;
+  color: var(--box-accent);
+  font-family: var(--font-sans);
+}
+
+.du-box__q {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.du-box__q > .du-tag {
+  align-self: flex-start;
+}
+
+.du-box__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+.du-tag--link {
+  text-decoration: none;
+}
+
+.du-tag--link:hover {
+  text-decoration: underline;
+}
+
+.du-box__discipline {
+  margin-left: auto;
+}
+
+.du-box__answer summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--box-accent);
+  font-family: var(--font-sans);
+  font-size: 14px;
+}
+
+.du-box__answer p {
+  margin: 0px;
+  margin-top: var(--space-1);
+  border-width: 0px;
+  border-left-width: var(--stroke-strong);
+  border-style: solid;
+  padding-left: var(--space-3);
+  border-color: var(--box-border);
+}
+
+.du-box__key {
+  display: none;
+}
+
+/* Alignment table */
+
+.du-alignment__ok {
+  color: var(--activities-accent);
+}
+
+.du-alignment__bad {
+  color: var(--mistake-accent);
+  font-weight: 700;
+}
+
+/* Box legend */
+
+.du-legend {
+  margin-top: var(--space-5);
+  margin-bottom: var(--space-5);
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+}
+
+.du-legend__label {
+  margin: 0px;
+  margin-bottom: var(--space-2);
+  text-transform: uppercase;
+  color: var(--azure);
+}
+
+.du-legend__list {
+  margin: 0px;
+  display: grid;
+  list-style-type: none;
+  gap: var(--space-2);
+  padding: 0px;
+}
+
+.du-legend__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  border-radius: var(--radius-box);
+  border-width: var(--stroke-hair);
+  border-style: solid;
+  padding-left: var(--space-2);
+  padding-right: var(--space-2);
+  padding-top: var(--space-1);
+  padding-bottom: var(--space-1);
+  color: var(--box-accent);
+  background: var(--box-surface);
+  border-color: var(--box-border);
+}
+
+.du-legend__item.du-box--family-open {
+  background: var(--box-accent);
+  color: var(--paper);
+  border-color: var(--box-accent);
+}
+
+.du-legend__item.du-box--family-text {
+  border-top: var(--stroke-accent) solid var(--box-accent);
+}
+
+.du-legend__item.du-box--family-close {
+  background: var(--paper);
+}
+
+.du-legend__swatch {
+  display: inline-flex;
+}
+
+.du-legend__name {
+  text-transform: uppercase;
 }
 
 /* ---------- Tables (APA 7: number + italic title above, horizontal rules, note below) ---------- */
@@ -508,6 +714,16 @@
 }
 
 .du-table thead th {
+  border-width: 0px;
+  border-bottom-width: var(--stroke-strong);
+  border-style: solid;
+  border-color: var(--rule-strong);
+  background-color: var(--band);
+  color: var(--navy);
+  font-family: var(--font-sans);
+}
+
+.du-table--filled thead th {
   border-bottom-width: 0px;
   background-color: var(--table-head);
   color: var(--on-table-head);
@@ -597,7 +813,7 @@
 .du-dg-relation {
   fill: var(--ink-muted);
   font-family: var(--font-sans);
-  font-size: 13px;
+  font-size: 14px;
   font-style: italic;
 }
 
@@ -769,6 +985,41 @@
     box-shadow: none;
     max-width: none;
     padding: 0;
+  }
+
+  .du-box, .du-legend__item {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    border-width: 1.5px;
+    border-color: var(--box-accent);
+  }
+
+  .du-box--family-text {
+    border-top-width: var(--stroke-accent);
+  }
+
+  .du-box__answer {
+    display: none;
+  }
+
+  .du-box__key {
+    display: block;
+    margin-top: var(--space-3);
+    border-width: 0px;
+    border-top-width: var(--stroke-hair);
+    border-style: solid;
+    padding-top: var(--space-2);
+    border-color: var(--box-border);
+    font-size: 14px;
+  }
+
+  .du-box__key ol {
+    margin: 0px;
+    padding-left: var(--space-5);
+  }
+
+  .du-tag--link {
+    color: var(--box-accent);
   }
 
   .du-body, .du-list__item, .du-glossary, .du-box__text {

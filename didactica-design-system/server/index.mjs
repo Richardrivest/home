@@ -5,7 +5,7 @@
 //   GET /api/type                   families + type styles
 //   GET /api/dimensions?family=…    spacing | radius | stroke
 //   GET /api/components[/:name]     component catalogue with props
-//   GET /api/boxes[/:kind]          the seven box types with title, icon and placement
+//   GET /api/boxes[/:kind]          the box types with family, title, icon and placement
 //   GET /api/icons/:kind.svg        a box icon as SVG
 //   GET /api/bloom                  Bloom's revised taxonomy with verbs
 //   GET /tokens.css                 CSS custom properties (dist/tokens.css)
@@ -87,7 +87,7 @@ const tokensDoc = () => {
   return doc;
 };
 
-const TYPES = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.mjs': 'text/javascript; charset=utf-8', '.json': 'application/json' };
+const TYPES = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.mjs': 'text/javascript; charset=utf-8', '.json': 'application/json', '.woff2': 'font/woff2', '.svg': 'image/svg+xml', '.txt': 'text/plain; charset=utf-8' };
 const send = (res, status, body, type = 'application/json; charset=utf-8') => {
   res.writeHead(status, { 'content-type': type, 'access-control-allow-origin': '*' });
   res.end(typeof body === 'string' || Buffer.isBuffer(body) ? body : JSON.stringify(body, null, 2));
@@ -110,8 +110,8 @@ createServer(async (req, res) => {
         case 'components': out = api.components(parts[2] && decodeURIComponent(parts[2])); break;
         case 'boxes':
           out = parts[2]
-            ? one('SELECT kind, title, component, icon, placement FROM box_type WHERE kind = ?', parts[2]) ?? null
-            : all('SELECT kind, title, component, icon, placement FROM box_type ORDER BY position');
+            ? one('SELECT kind, family, title, component, icon, placement FROM box_type WHERE kind = ?', parts[2]) ?? null
+            : all('SELECT kind, family, title, component, icon, placement FROM box_type ORDER BY position');
           break;
         case 'icons': {
           const row = parts[2] && one('SELECT icon_svg FROM box_type WHERE kind = ?', parts[2].replace(/\.svg$/, ''));
@@ -128,7 +128,7 @@ createServer(async (req, res) => {
       res.writeHead(302, { location: '/html/index.html' });
       return res.end();
     }
-    const rel = STATIC[url.pathname] ?? (/^\/(html|dist|tokens)\//.test(url.pathname) ? normalize(decodeURIComponent(url.pathname.slice(1))) : null);
+    const rel = STATIC[url.pathname] ?? (/^\/(html|dist|tokens|fonts|icons)\//.test(url.pathname) ? normalize(decodeURIComponent(url.pathname.slice(1))) : null);
     if (rel && !rel.startsWith('..')) {
       const file = join(ROOT, rel);
       if (existsSync(file)) return send(res, 200, await readFile(file), TYPES[extname(file)] ?? 'application/octet-stream');

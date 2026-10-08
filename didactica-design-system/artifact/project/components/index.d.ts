@@ -75,21 +75,29 @@ export declare function formatLocator(work: Pick<Work, 'page' | 'locator'>): str
 
 /* ---------- The seven didactic boxes ---------- */
 
-export type BoxKind = 'keypoints' | 'objectives' | 'important' | 'mistake' | 'thinking' | 'activities' | 'references';
+export type BoxKind = 'keypoints' | 'objectives' | 'important' | 'mistake' | 'example' | 'thinking' | 'selfcheck' | 'activities' | 'references';
+export type BoxFamily = 'open' | 'text' | 'close';
 
-/** The shared frame of the seven didactic boxes: tinted surface, icon + title header, body. */
+/** The shared frame of the didactic boxes; the family sets the shape (open: filled header, text: top rule, close: plain frame). */
 export interface BoxProps { kind: BoxKind; title?: string; children: ReactNode }
 export declare function Box(props: BoxProps): ReactElement;
 
 /** “Puntos Clave”: the unit summary, first box of every unit. */
-export interface KeyPointsProps { items: ReactNode[]; title?: string }
+export interface KeyPointsProps {
+  /** 3–5 one-line key points. */
+  items: ReactNode[];
+  /** 1–3 “Antes de leer” questions, revisited in ThinkFurther. */
+  before?: ReactNode[];
+  title?: string;
+}
 export declare function KeyPoints(props: KeyPointsProps): ReactElement;
 
 export type BloomId = 'recordar' | 'comprender' | 'aplicar' | 'analizar' | 'evaluar' | 'crear';
+export interface Objective { id?: string; level: BloomId; text: ReactNode }
 /** “Objetivos”: learning objectives, each tagged with its Bloom (revised) level. */
 export interface ObjectivesProps {
-  /** Each objective starts with a verb of its level (see BLOOM). */
-  items: { level: BloomId; text: ReactNode }[];
+  /** Each objective starts with a verb of its level (see BLOOM); ids default to O1, O2… */
+  items: Objective[];
   /** Defaults to “Al finalizar la unidad, usted será capaz de:”. */
   intro?: string;
   title?: string;
@@ -101,14 +109,42 @@ export interface ImportantProps { term?: string; children: ReactNode; title?: st
 export declare function Important(props: ImportantProps): ReactElement;
 
 /** “Error Frecuente”: a common misconception and what the evidence shows instead. */
-export interface CommonMistakeProps { misconception: ReactNode; correction: ReactNode; children?: ReactNode; title?: string }
+export interface CommonMistakeProps {
+  misconception: ReactNode;
+  /** What the evidence shows, with its citation. */
+  correction: ReactNode;
+  /** Why the belief does not hold, or why it is attractive (“Por qué no se sostiene”). */
+  explanation?: ReactNode;
+  children?: ReactNode;
+  title?: string;
+}
 export declare function CommonMistake(props: CommonMistakeProps): ReactElement;
+
+/** “En el Aula”: a worked classroom case — situation, didactic decision and its rationale. */
+export interface ClassroomProps {
+  /** 'sociales' | 'salud' | 'general' or any label. */
+  discipline?: string;
+  situation: ReactNode;
+  decision: ReactNode;
+  /** Why, with its citation. */
+  rationale?: ReactNode;
+  title?: string;
+}
+export declare function Classroom(props: ClassroomProps): ReactElement;
 
 /** “Para Seguir Pensando”: open, critical questions that close the unit. */
 export interface ThinkFurtherProps { questions: ReactNode[]; title?: string }
 export declare function ThinkFurther(props: ThinkFurtherProps): ReactElement;
 
-export type ActivityItem = string | { type?: 'pregunta' | 'tarea' | 'caso' | 'debate'; text: ReactNode };
+export interface Activity {
+  type?: 'pregunta' | 'tarea' | 'caso' | 'debate';
+  /** Bloom level the activity demands. */
+  level?: BloomId;
+  /** Objectives it practises, e.g. ['O2']. */
+  objectives?: string[];
+  text: ReactNode;
+}
+export type ActivityItem = string | Activity;
 /** “Actividades”: questions and tasks to work the unit's concepts. */
 export interface ActivitiesProps { items: ActivityItem[]; title?: string }
 export declare function Activities(props: ActivitiesProps): ReactElement;
@@ -116,6 +152,26 @@ export declare function Activities(props: ActivitiesProps): ReactElement;
 /** “Referencias”: the unit's APA 7 reference list, French (hanging) indent. */
 export interface ReferencesBoxProps { children: ReactNode; title?: string }
 export declare function ReferencesBox(props: ReferencesBoxProps): ReactElement;
+
+/** “Autoevaluación”: retrieval practice; answers open on screen and print as a key. */
+export interface SelfCheckProps {
+  /** review names an earlier unit, e.g. 'Unidad 1'. */
+  items: { question: ReactNode; answer: ReactNode; review?: string }[];
+  title?: string;
+}
+export declare function SelfCheck(props: SelfCheckProps): ReactElement;
+
+/** Which activities practise each objective; flags gaps and level mismatches. */
+export interface AlignmentTableProps { objectives: Objective[]; activities: Activity[]; title?: string }
+export declare function AlignmentTable(props: AlignmentTableProps): ReactElement;
+export declare function checkAlignment(objectives: Objective[], activities: Activity[]): {
+  rows: { id: string; level: (typeof BLOOM)[number] | null; text: ReactNode; activities: number[]; problems: string[] }[];
+  issues: string[];
+};
+export declare function objectiveId(objective: Objective, index: number): string;
+
+/** “Cómo usar este manual”: the legend of box types, grouped by family. */
+export declare function BoxLegend(): ReactElement;
 
 /** A Lucide line icon drawn in currentColor. Decorative unless given a label. */
 export interface IconProps { name: string; size?: number; label?: string; className?: string }
@@ -133,6 +189,8 @@ export interface DataTableProps {
   note?: ReactNode;
   /** First column as row headers: conceptual (comparison) tables. */
   rowHeader?: boolean;
+  /** Solid navy header bar (slides, posters); default is navy text over a rule. */
+  filled?: boolean;
 }
 export declare function DataTable(props: DataTableProps): ReactElement;
 

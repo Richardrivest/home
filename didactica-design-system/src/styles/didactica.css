@@ -1,5 +1,5 @@
 /*
- * Didáctica Universitaria — component styles (v2).
+ * Didáctica Universitaria — component styles (v3).
  * Colours, spacing, radii and strokes come from the token custom properties
  * (dist/tokens.css) through the Tailwind preset; type comes from the token
  * type-style classes (.body, .h1, .box-title …) the components add.
@@ -39,13 +39,17 @@
 .du-title-page__meta p { @apply m-0 mb-1; }
 
 /* ---------- Chapter opener and headings ---------- */
+/* Running text stays at measure-text (~66 characters); boxes, tables and figures use the full measure. */
+.du-body, .du-list, .du-chapter__lead, .du-chapter__title, .du-h1, .du-h2, .du-h3,
+.du-glossary, .du-blockquote, .du-toc { max-width: var(--measure-text); }
+
 .du-chapter { @apply mb-5; }
 .du-chapter__kicker { @apply text-azure uppercase m-0 mb-2; }
 .du-chapter__title { @apply text-navy m-0 mb-4; }
 .du-chapter__lead { @apply text-ink m-0; }
 .du-h1 { @apply text-navy m-0 mt-6 mb-4; }
 .du-h2 { @apply text-azure m-0 mt-6 mb-3; }
-.du-h3 { @apply text-azure m-0 mt-5 mb-2; }
+.du-h3 { @apply text-ink m-0 mt-5 mb-2; }
 .du-toc-title { @apply text-navy m-0 mb-3; }
 
 /* ---------- Reading text ---------- */
@@ -89,11 +93,28 @@
 .du-box--activities { --box-accent: var(--activities-accent); --box-surface: var(--activities-surface); --box-border: var(--activities-border); }
 .du-box--references { --box-accent: var(--references-accent); --box-surface: var(--references-surface); --box-border: var(--references-border); }
 
+.du-box--example    { --box-accent: var(--example-accent);    --box-surface: var(--example-surface);    --box-border: var(--example-border); }
+.du-box--selfcheck  { --box-accent: var(--selfcheck-accent);  --box-surface: var(--selfcheck-surface);  --box-border: var(--selfcheck-border); }
+
 .du-box__header {
-  @apply flex items-center gap-2 px-4 py-3 border-0 border-b-hair border-solid;
+  @apply flex flex-wrap items-center gap-2 px-4 py-3 border-0 border-b-hair border-solid;
   border-color: var(--box-border);
   color: var(--box-accent);
 }
+
+/* Families: the shape tells the box type apart even in grayscale or with colour-vision deficiency. */
+/* open — filled header band */
+.du-box--family-open { border-color: var(--box-accent); }
+.du-box--family-open .du-box__header {
+  background: var(--box-accent);
+  color: var(--paper);
+  border-color: var(--box-accent);
+  border-radius: calc(var(--radius-box) - 1px) calc(var(--radius-box) - 1px) 0 0;
+}
+/* text — heavy top rule over a tinted body */
+.du-box--family-text { border-top: var(--stroke-accent) solid var(--box-accent); }
+/* close — untinted frame */
+.du-box--family-close { background: var(--paper); }
 .du-box__icon { @apply shrink-0; }
 .du-box__title { @apply m-0 uppercase; }
 .du-box__body { @apply px-4 py-4; }
@@ -128,12 +149,14 @@
 }
 .du-box__list--objectives > li {
   @apply grid items-baseline gap-x-3 gap-y-1 pl-0;
-  grid-template-columns: 8.5em 1fr;
+  grid-template-columns: 2em 8.5em 1fr;
 }
+.du-box__oid { @apply font-bold; color: var(--box-accent); font-family: var(--font-sans); }
 .du-box__list--objectives > li::before { content: none; }
 .du-box__list--numbered .du-tag { @apply mr-2; }
 @media (max-width: 480px) {
-  .du-box__list--objectives > li { grid-template-columns: 1fr; }
+  .du-box__list--objectives > li { grid-template-columns: 2em 1fr; }
+  .du-box__list--objectives .du-box__otext { grid-column: 2; }
   .du-box__list--objectives .du-tag { justify-self: start; }
 }
 
@@ -146,6 +169,43 @@
 .du-box--objectives .du-tag { min-width: 8.5em; text-align: center; }
 
 .du-box__refs .du-reference:last-child { @apply mb-0; }
+.du-box__before { @apply mt-3 pt-3 border-0 border-t-hair border-solid; border-color: var(--box-border); }
+.du-box__before .du-box__label { @apply m-0 mb-2; }
+.du-box__list--questions > li::before { content: '?'; @apply font-bold; background: none; transform: none; width: auto; height: auto; top: 0; color: var(--box-accent); font-family: var(--font-sans); }
+.du-box__q { @apply flex flex-col gap-1; }
+.du-box__q > .du-tag { align-self: flex-start; }
+.du-box__tags { @apply flex flex-wrap gap-1; }
+.du-tag--link { text-decoration: none; }
+.du-tag--link:hover { text-decoration: underline; }
+.du-box__discipline { margin-left: auto; }
+.du-box__answer summary {
+  @apply cursor-pointer font-bold;
+  color: var(--box-accent);
+  font-family: var(--font-sans);
+  font-size: 14px;
+}
+.du-box__answer p { @apply m-0 mt-1 pl-3 border-0 border-l-strong border-solid; border-color: var(--box-border); }
+.du-box__key { display: none; }
+
+/* Alignment table */
+.du-alignment__ok { color: var(--activities-accent); }
+.du-alignment__bad { color: var(--mistake-accent); font-weight: 700; }
+
+/* Box legend */
+.du-legend { @apply grid gap-4 my-5; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
+.du-legend__label { @apply text-azure uppercase m-0 mb-2; }
+.du-legend__list { @apply list-none m-0 p-0 grid gap-2; }
+.du-legend__item {
+  @apply flex items-center gap-2 border-hair border-solid rounded-box px-2 py-1;
+  color: var(--box-accent);
+  background: var(--box-surface);
+  border-color: var(--box-border);
+}
+.du-legend__item.du-box--family-open { background: var(--box-accent); color: var(--paper); border-color: var(--box-accent); }
+.du-legend__item.du-box--family-text { border-top: var(--stroke-accent) solid var(--box-accent); }
+.du-legend__item.du-box--family-close { background: var(--paper); }
+.du-legend__swatch { @apply inline-flex; }
+.du-legend__name { @apply uppercase; }
 
 /* ---------- Tables (APA 7: number + italic title above, horizontal rules, note below) ---------- */
 .du-table-figure, .du-figure { @apply m-0 my-5; break-inside: avoid; }
@@ -158,7 +218,11 @@
 .du-table th, .du-table td {
   @apply text-left align-top border-0 border-b-hair border-solid border-rule px-2 py-1;
 }
-.du-table thead th { @apply bg-table-head text-on-table-head border-b-0; }
+.du-table thead th {
+  @apply bg-band text-navy border-0 border-b-strong border-solid border-rule-strong;
+  font-family: var(--font-sans);
+}
+.du-table--filled thead th { @apply bg-table-head text-on-table-head border-b-0; }
 .du-table td { @apply text-ink; }
 .du-table tbody tr:nth-child(even) td { @apply bg-band; }
 .du-table tbody tr:last-child > * { @apply border-b-0; }
@@ -176,7 +240,7 @@
 .du-dg-edge { stroke: var(--rule-strong); stroke-width: var(--stroke-strong); fill: none; }
 .du-dg-arrowhead { fill: var(--rule-strong); }
 .du-dg-leader { stroke: var(--rule-strong); stroke-width: var(--stroke-hair); stroke-dasharray: 2 3; }
-.du-dg-relation { fill: var(--ink-muted); font-family: var(--font-sans); font-size: 13px; font-style: italic; }
+.du-dg-relation { fill: var(--ink-muted); font-family: var(--font-sans); font-size: 14px; font-style: italic; }
 .du-dg-relation-bg { fill: var(--paper); }
 .du-dg-ramp--1 { fill: var(--ramp-1); }
 .du-dg-ramp--2 { fill: var(--ramp-2); }
@@ -237,6 +301,12 @@
 /* ---------- Print: the manual's own page ---------- */
 @media print {
   .du-page { box-shadow: none; max-width: none; padding: 0; }
+  .du-box, .du-legend__item { -webkit-print-color-adjust: exact; print-color-adjust: exact; border-width: 1.5px; border-color: var(--box-accent); }
+  .du-box--family-text { border-top-width: var(--stroke-accent); }
+  .du-box__answer { display: none; }
+  .du-box__key { display: block; @apply mt-3 pt-2 border-0 border-t-hair border-solid; border-color: var(--box-border); font-size: 14px; }
+  .du-box__key ol { @apply m-0 pl-5; }
+  .du-tag--link { color: var(--box-accent); }
   .du-body, .du-list__item, .du-glossary, .du-box__text { text-align: justify; }
   .du-chapter { break-before: page; }
   .du-h2, .du-h3 { break-after: avoid; }

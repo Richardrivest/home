@@ -1,4 +1,4 @@
-/* @ds-bundle: {"format":4,"namespace":"Didactica","components":[{"name":"Page"},{"name":"TitlePage"},{"name":"TableOfContents"},{"name":"ChapterOpener"},{"name":"Heading"},{"name":"Paragraph"},{"name":"BulletList"},{"name":"Cite"},{"name":"Quote"},{"name":"BlockQuote"},{"name":"KeyPoints"},{"name":"Objectives"},{"name":"Important"},{"name":"CommonMistake"},{"name":"ThinkFurther"},{"name":"Activities"},{"name":"ReferencesBox"},{"name":"Box"},{"name":"Icon"},{"name":"DataTable"},{"name":"Figure"},{"name":"ConceptWeb"},{"name":"CycleDiagram"},{"name":"Pyramid"},{"name":"ProcessFlow"},{"name":"GlossaryEntry"},{"name":"Reference"}]} */
+/* @ds-bundle: {"format":4,"namespace":"Didactica","components":[{"name":"Page"},{"name":"TitlePage"},{"name":"TableOfContents"},{"name":"ChapterOpener"},{"name":"BoxLegend"},{"name":"Heading"},{"name":"Paragraph"},{"name":"BulletList"},{"name":"Cite"},{"name":"Quote"},{"name":"BlockQuote"},{"name":"KeyPoints"},{"name":"Objectives"},{"name":"Important"},{"name":"CommonMistake"},{"name":"Classroom"},{"name":"ThinkFurther"},{"name":"SelfCheck"},{"name":"Activities"},{"name":"ReferencesBox"},{"name":"AlignmentTable"},{"name":"Box"},{"name":"Icon"},{"name":"DataTable"},{"name":"Figure"},{"name":"ConceptWeb"},{"name":"CycleDiagram"},{"name":"Pyramid"},{"name":"ProcessFlow"},{"name":"GlossaryEntry"},{"name":"Reference"}]} */
 window.Didactica = (() => {
   var __create = Object.create;
   var __defProp = Object.defineProperty;
@@ -42,12 +42,15 @@ window.Didactica = (() => {
   var index_exports = {};
   __export(index_exports, {
     Activities: () => Activities,
+    AlignmentTable: () => AlignmentTable,
     BLOOM: () => BLOOM,
     BlockQuote: () => BlockQuote,
     Box: () => Box,
+    BoxLegend: () => BoxLegend,
     BulletList: () => BulletList,
     ChapterOpener: () => ChapterOpener,
     Cite: () => Cite,
+    Classroom: () => Classroom,
     CommonMistake: () => CommonMistake,
     ConceptWeb: () => ConceptWeb,
     CycleDiagram: () => CycleDiagram,
@@ -66,13 +69,16 @@ window.Didactica = (() => {
     Quote: () => Quote,
     Reference: () => Reference,
     ReferencesBox: () => ReferencesBox,
+    SelfCheck: () => SelfCheck,
     TableOfContents: () => TableOfContents,
     ThinkFurther: () => ThinkFurther,
     TitlePage: () => TitlePage,
     bloomLevel: () => bloomLevel,
+    checkAlignment: () => checkAlignment,
     formatCitation: () => formatCitation,
     formatCitations: () => formatCitations,
-    formatLocator: () => formatLocator
+    formatLocator: () => formatLocator,
+    objectiveId: () => objectiveId
   });
 
   // src/components/Page.jsx
@@ -241,6 +247,46 @@ window.Didactica = (() => {
         }
       ]
     ],
+    "school": [
+      [
+        "path",
+        {
+          "d": "M14 22v-4a2 2 0 1 0-4 0v4"
+        }
+      ],
+      [
+        "path",
+        {
+          "d": "m18 10 3.447 1.724a1 1 0 0 1 .553.894V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-7.382a1 1 0 0 1 .553-.894L6 10"
+        }
+      ],
+      [
+        "path",
+        {
+          "d": "M18 5v17"
+        }
+      ],
+      [
+        "path",
+        {
+          "d": "m4 6 7.106-3.553a2 2 0 0 1 1.788 0L20 6"
+        }
+      ],
+      [
+        "path",
+        {
+          "d": "M6 5v17"
+        }
+      ],
+      [
+        "circle",
+        {
+          "cx": "12",
+          "cy": "9",
+          "r": "2"
+        }
+      ]
+    ],
     "message-circle-question": [
       [
         "path",
@@ -258,6 +304,38 @@ window.Didactica = (() => {
         "path",
         {
           "d": "M12 17h.01"
+        }
+      ]
+    ],
+    "list-checks": [
+      [
+        "path",
+        {
+          "d": "m3 17 2 2 4-4"
+        }
+      ],
+      [
+        "path",
+        {
+          "d": "m3 7 2 2 4-4"
+        }
+      ],
+      [
+        "path",
+        {
+          "d": "M13 6h8"
+        }
+      ],
+      [
+        "path",
+        {
+          "d": "M13 12h8"
+        }
+      ],
+      [
+        "path",
+        {
+          "d": "M13 18h8"
         }
       ]
     ],
@@ -360,57 +438,107 @@ window.Didactica = (() => {
   ];
   var bloomLevel = (id) => BLOOM.find((b) => b.id === String(id).toLowerCase()) || null;
 
+  // src/alignment.js
+  var objectiveId = (o, i) => o.id || `O${i + 1}`;
+  function checkAlignment(objectives, activities) {
+    const ids = objectives.map(objectiveId);
+    const rows = objectives.map((o, i) => ({ id: ids[i], level: bloomLevel(o.level), text: o.text, activities: [], problems: [] }));
+    const issues = [];
+    activities.forEach((a, n) => {
+      const num = n + 1;
+      for (const ref of a.objectives || []) {
+        const row = rows.find((r) => r.id === ref);
+        if (!row) {
+          issues.push(`Actividad ${num}: el objetivo ${ref} no existe.`);
+          continue;
+        }
+        row.activities.push(num);
+        const al = bloomLevel(a.level);
+        if (al && row.level && al.level < row.level.level) {
+          const msg = `Actividad ${num} (${al.name}) est\xE1 por debajo del nivel de ${ref} (${row.level.name}).`;
+          row.problems.push(msg);
+          issues.push(msg);
+        }
+      }
+    });
+    for (const r of rows) if (!r.activities.length) {
+      const msg = `${r.id} no tiene ninguna actividad.`;
+      r.problems.push(msg);
+      issues.push(msg);
+    }
+    return { rows, issues };
+  }
+
   // src/boxes.config.json
   var boxes_config_default = [
-    { kind: "keypoints", title: "Puntos Clave", icon: "key-round", component: "KeyPoints", placement: "Start of each unit, right after the unit title and lead." },
-    { kind: "objectives", title: "Objetivos", icon: "target", component: "Objectives", placement: "Right after \u201CPuntos Clave\u201D." },
-    { kind: "important", title: "Importante", icon: "star", component: "Important", placement: "Anywhere in the text, for a key concept or definition." },
-    { kind: "mistake", title: "Error Frecuente", icon: "triangle-alert", component: "CommonMistake", placement: "Anywhere in the text, next to the idea it corrects." },
-    { kind: "thinking", title: "Para Seguir Pensando", icon: "message-circle-question", component: "ThinkFurther", placement: "End of each unit, after the last section." },
-    { kind: "activities", title: "Actividades", icon: "pencil-line", component: "Activities", placement: "Right after \u201CPara Seguir Pensando\u201D." },
-    { kind: "references", title: "Referencias", icon: "book-open-text", component: "ReferencesBox", placement: "Closes each unit, after \u201CActividades\u201D." }
+    { kind: "keypoints", family: "open", title: "Puntos Clave", icon: "key-round", component: "KeyPoints", placement: "Opens each unit, right after the unit title and lead." },
+    { kind: "objectives", family: "open", title: "Objetivos", icon: "target", component: "Objectives", placement: "Right after \u201CPuntos Clave\u201D." },
+    { kind: "important", family: "text", title: "Importante", icon: "star", component: "Important", placement: "In the text, for a key concept or definition." },
+    { kind: "mistake", family: "text", title: "Error Frecuente", icon: "triangle-alert", component: "CommonMistake", placement: "In the text, next to the idea it corrects." },
+    { kind: "example", family: "text", title: "En el Aula", icon: "school", component: "Classroom", placement: "In the text, after the concept it applies." },
+    { kind: "thinking", family: "close", title: "Para Seguir Pensando", icon: "message-circle-question", component: "ThinkFurther", placement: "Closing sequence, first." },
+    { kind: "selfcheck", family: "close", title: "Autoevaluaci\xF3n", icon: "list-checks", component: "SelfCheck", placement: "Closing sequence, after \u201CPara Seguir Pensando\u201D." },
+    { kind: "activities", family: "close", title: "Actividades", icon: "pencil-line", component: "Activities", placement: "Closing sequence, after \u201CAutoevaluaci\xF3n\u201D, followed by the alignment table." },
+    { kind: "references", family: "close", title: "Referencias", icon: "book-open-text", component: "ReferencesBox", placement: "Closes each unit." }
   ];
 
   // src/components/Boxes.jsx
   var CONFIG = Object.fromEntries(boxes_config_default.map((b) => [b.kind, b]));
-  function Box({ kind, title, children }) {
+  function Box({ kind, title, children, extraHeader }) {
     const id = (0, import_react11.useId)();
     const cfg = CONFIG[kind] || CONFIG.important;
-    return /* @__PURE__ */ import_react11.default.createElement("aside", { className: `du-box du-box--${cfg.kind}`, "aria-labelledby": id }, /* @__PURE__ */ import_react11.default.createElement("div", { className: "du-box__header" }, /* @__PURE__ */ import_react11.default.createElement(Icon, { name: cfg.icon, className: "du-box__icon" }), /* @__PURE__ */ import_react11.default.createElement("p", { id, className: "du-box__title box-title" }, title || cfg.title)), /* @__PURE__ */ import_react11.default.createElement("div", { className: "du-box__body box-body" }, children));
+    return /* @__PURE__ */ import_react11.default.createElement("aside", { className: `du-box du-box--${cfg.kind} du-box--family-${cfg.family}`, "aria-labelledby": id }, /* @__PURE__ */ import_react11.default.createElement("div", { className: "du-box__header" }, /* @__PURE__ */ import_react11.default.createElement(Icon, { name: cfg.icon, className: "du-box__icon" }), /* @__PURE__ */ import_react11.default.createElement("p", { id, className: "du-box__title box-title" }, title || cfg.title), extraHeader), /* @__PURE__ */ import_react11.default.createElement("div", { className: "du-box__body box-body" }, children));
   }
-  function KeyPoints({ items, title }) {
-    return /* @__PURE__ */ import_react11.default.createElement(Box, { kind: "keypoints", title }, /* @__PURE__ */ import_react11.default.createElement("ul", { className: "du-box__list" }, items.map((it, i) => /* @__PURE__ */ import_react11.default.createElement("li", { key: i }, it))));
+  function KeyPoints({ items, before, title }) {
+    return /* @__PURE__ */ import_react11.default.createElement(Box, { kind: "keypoints", title }, /* @__PURE__ */ import_react11.default.createElement("ul", { className: "du-box__list" }, items.map((it, i) => /* @__PURE__ */ import_react11.default.createElement("li", { key: i }, it))), before && before.length ? /* @__PURE__ */ import_react11.default.createElement("div", { className: "du-box__before" }, /* @__PURE__ */ import_react11.default.createElement("p", { className: "du-box__label" }, "Antes de leer:"), /* @__PURE__ */ import_react11.default.createElement("ul", { className: "du-box__list du-box__list--questions" }, before.map((q, i) => /* @__PURE__ */ import_react11.default.createElement("li", { key: i }, q)))) : null);
   }
+  var LevelTag = ({ level }) => {
+    const lvl = bloomLevel(level);
+    return /* @__PURE__ */ import_react11.default.createElement("span", { className: "du-tag tag", title: lvl ? `Nivel ${lvl.level} de Bloom` : void 0 }, lvl ? `${lvl.level} \xB7 ${lvl.name}` : level);
+  };
   function Objectives({ items, intro = "Al finalizar la unidad, usted ser\xE1 capaz de:", title }) {
-    return /* @__PURE__ */ import_react11.default.createElement(Box, { kind: "objectives", title }, intro ? /* @__PURE__ */ import_react11.default.createElement("p", { className: "du-box__intro" }, intro) : null, /* @__PURE__ */ import_react11.default.createElement("ol", { className: "du-box__list du-box__list--objectives" }, items.map((it, i) => {
-      const lvl = bloomLevel(it.level);
-      return /* @__PURE__ */ import_react11.default.createElement("li", { key: i }, /* @__PURE__ */ import_react11.default.createElement("span", { className: "du-tag tag", title: lvl ? `Nivel ${lvl.level} de Bloom` : void 0 }, lvl ? `${lvl.level} \xB7 ${lvl.name}` : it.level), /* @__PURE__ */ import_react11.default.createElement("span", null, it.text));
-    })));
+    return /* @__PURE__ */ import_react11.default.createElement(Box, { kind: "objectives", title }, intro ? /* @__PURE__ */ import_react11.default.createElement("p", { className: "du-box__intro" }, intro) : null, /* @__PURE__ */ import_react11.default.createElement("ol", { className: "du-box__list du-box__list--objectives" }, items.map((it, i) => /* @__PURE__ */ import_react11.default.createElement("li", { key: i, id: `obj-${objectiveId(it, i)}` }, /* @__PURE__ */ import_react11.default.createElement("span", { className: "du-box__oid" }, objectiveId(it, i)), /* @__PURE__ */ import_react11.default.createElement(LevelTag, { level: it.level }), /* @__PURE__ */ import_react11.default.createElement("span", { className: "du-box__otext" }, it.text)))));
   }
   function Important({ term, children, title }) {
     return /* @__PURE__ */ import_react11.default.createElement(Box, { kind: "important", title }, term ? /* @__PURE__ */ import_react11.default.createElement("p", { className: "du-box__term" }, term) : null, /* @__PURE__ */ import_react11.default.createElement("div", { className: "du-box__text" }, children));
   }
-  function CommonMistake({ misconception, correction, children, title }) {
-    return /* @__PURE__ */ import_react11.default.createElement(Box, { kind: "mistake", title }, /* @__PURE__ */ import_react11.default.createElement("p", { className: "du-box__pair" }, /* @__PURE__ */ import_react11.default.createElement("span", { className: "du-box__label" }, "Creencia frecuente:"), " ", misconception), /* @__PURE__ */ import_react11.default.createElement("p", { className: "du-box__pair" }, /* @__PURE__ */ import_react11.default.createElement("span", { className: "du-box__label" }, "Lo que muestra la evidencia:"), " ", correction), children ? /* @__PURE__ */ import_react11.default.createElement("div", { className: "du-box__text" }, children) : null);
+  function CommonMistake({ misconception, correction, explanation, children, title }) {
+    return /* @__PURE__ */ import_react11.default.createElement(Box, { kind: "mistake", title }, /* @__PURE__ */ import_react11.default.createElement("p", { className: "du-box__pair" }, /* @__PURE__ */ import_react11.default.createElement("span", { className: "du-box__label" }, "Creencia frecuente:"), " ", misconception), /* @__PURE__ */ import_react11.default.createElement("p", { className: "du-box__pair" }, /* @__PURE__ */ import_react11.default.createElement("span", { className: "du-box__label" }, "Lo que muestra la evidencia:"), " ", correction), explanation ? /* @__PURE__ */ import_react11.default.createElement("p", { className: "du-box__pair" }, /* @__PURE__ */ import_react11.default.createElement("span", { className: "du-box__label" }, "Por qu\xE9 no se sostiene:"), " ", explanation) : null, children ? /* @__PURE__ */ import_react11.default.createElement("div", { className: "du-box__text" }, children) : null);
+  }
+  var DISCIPLINES = { sociales: "Ciencias Sociales", salud: "Ciencias de la Salud", general: "Did\xE1ctica general" };
+  function Classroom({ discipline, situation, decision, rationale, title }) {
+    const tag = discipline ? /* @__PURE__ */ import_react11.default.createElement("span", { className: "du-tag tag du-box__discipline" }, DISCIPLINES[discipline] || discipline) : null;
+    return /* @__PURE__ */ import_react11.default.createElement(Box, { kind: "example", title, extraHeader: tag }, /* @__PURE__ */ import_react11.default.createElement("p", { className: "du-box__pair" }, /* @__PURE__ */ import_react11.default.createElement("span", { className: "du-box__label" }, "Situaci\xF3n:"), " ", situation), /* @__PURE__ */ import_react11.default.createElement("p", { className: "du-box__pair" }, /* @__PURE__ */ import_react11.default.createElement("span", { className: "du-box__label" }, "Decisi\xF3n did\xE1ctica:"), " ", decision), rationale ? /* @__PURE__ */ import_react11.default.createElement("p", { className: "du-box__pair" }, /* @__PURE__ */ import_react11.default.createElement("span", { className: "du-box__label" }, "Fundamento:"), " ", rationale) : null);
   }
   function ThinkFurther({ questions, title }) {
     return /* @__PURE__ */ import_react11.default.createElement(Box, { kind: "thinking", title }, /* @__PURE__ */ import_react11.default.createElement("ol", { className: "du-box__list du-box__list--numbered" }, questions.map((q, i) => /* @__PURE__ */ import_react11.default.createElement("li", { key: i }, q))));
+  }
+  function SelfCheck({ items, title }) {
+    return /* @__PURE__ */ import_react11.default.createElement(Box, { kind: "selfcheck", title }, /* @__PURE__ */ import_react11.default.createElement("ol", { className: "du-box__list du-box__list--numbered" }, items.map((it, i) => /* @__PURE__ */ import_react11.default.createElement("li", { key: i }, /* @__PURE__ */ import_react11.default.createElement("div", { className: "du-box__q" }, it.review ? /* @__PURE__ */ import_react11.default.createElement("span", { className: "du-tag tag" }, "Repaso \xB7 ", it.review) : null, /* @__PURE__ */ import_react11.default.createElement("span", null, it.question), /* @__PURE__ */ import_react11.default.createElement("details", { className: "du-box__answer" }, /* @__PURE__ */ import_react11.default.createElement("summary", null, "Ver respuesta"), /* @__PURE__ */ import_react11.default.createElement("p", null, it.answer)))))), /* @__PURE__ */ import_react11.default.createElement("div", { className: "du-box__key", "aria-hidden": "true" }, /* @__PURE__ */ import_react11.default.createElement("p", { className: "du-box__label" }, "Clave de respuestas"), /* @__PURE__ */ import_react11.default.createElement("ol", null, items.map((it, i) => /* @__PURE__ */ import_react11.default.createElement("li", { key: i }, it.answer)))));
   }
   var ACTIVITY_TYPES = { pregunta: "Pregunta", tarea: "Tarea", caso: "Caso", debate: "Debate" };
   function Activities({ items, title }) {
     return /* @__PURE__ */ import_react11.default.createElement(Box, { kind: "activities", title }, /* @__PURE__ */ import_react11.default.createElement("ol", { className: "du-box__list du-box__list--numbered" }, items.map((it, i) => {
       const obj = typeof it === "string" ? { text: it } : it;
-      return /* @__PURE__ */ import_react11.default.createElement("li", { key: i }, obj.type ? /* @__PURE__ */ import_react11.default.createElement("span", { className: "du-tag tag" }, ACTIVITY_TYPES[obj.type] || obj.type) : null, /* @__PURE__ */ import_react11.default.createElement("span", null, obj.text));
+      return /* @__PURE__ */ import_react11.default.createElement("li", { key: i }, /* @__PURE__ */ import_react11.default.createElement("div", { className: "du-box__q" }, /* @__PURE__ */ import_react11.default.createElement("span", { className: "du-box__tags" }, obj.type ? /* @__PURE__ */ import_react11.default.createElement("span", { className: "du-tag tag" }, ACTIVITY_TYPES[obj.type] || obj.type) : null, obj.level ? /* @__PURE__ */ import_react11.default.createElement(LevelTag, { level: obj.level }) : null, (obj.objectives || []).map((o) => /* @__PURE__ */ import_react11.default.createElement("a", { key: o, className: "du-tag du-tag--link tag", href: `#obj-${o}` }, o))), /* @__PURE__ */ import_react11.default.createElement("span", null, obj.text)));
     })));
   }
   function ReferencesBox({ children, title }) {
     return /* @__PURE__ */ import_react11.default.createElement(Box, { kind: "references", title }, /* @__PURE__ */ import_react11.default.createElement("div", { className: "du-box__refs" }, children));
   }
+  function AlignmentTable({ objectives, activities, title = "Alineamiento de la unidad" }) {
+    const { rows } = checkAlignment(objectives, activities);
+    return /* @__PURE__ */ import_react11.default.createElement("figure", { className: "du-table-figure du-alignment" }, /* @__PURE__ */ import_react11.default.createElement("p", { className: "du-table-figure__title table-title" }, title), /* @__PURE__ */ import_react11.default.createElement("div", { className: "du-table-scroll" }, /* @__PURE__ */ import_react11.default.createElement("table", { className: "du-table du-table--concept" }, /* @__PURE__ */ import_react11.default.createElement("thead", null, /* @__PURE__ */ import_react11.default.createElement("tr", null, /* @__PURE__ */ import_react11.default.createElement("th", { scope: "col", className: "table-head" }, "Objetivo"), /* @__PURE__ */ import_react11.default.createElement("th", { scope: "col", className: "table-head" }, "Nivel"), /* @__PURE__ */ import_react11.default.createElement("th", { scope: "col", className: "table-head" }, "Actividades"), /* @__PURE__ */ import_react11.default.createElement("th", { scope: "col", className: "table-head" }, "Estado"))), /* @__PURE__ */ import_react11.default.createElement("tbody", null, rows.map((r) => /* @__PURE__ */ import_react11.default.createElement("tr", { key: r.id }, /* @__PURE__ */ import_react11.default.createElement("th", { scope: "row", className: "table-cell" }, r.id), /* @__PURE__ */ import_react11.default.createElement("td", { className: "table-cell" }, r.level ? r.level.name : "\u2014"), /* @__PURE__ */ import_react11.default.createElement("td", { className: "table-cell" }, r.activities.length ? r.activities.join(", ") : "\u2014"), /* @__PURE__ */ import_react11.default.createElement("td", { className: `table-cell ${r.problems.length ? "du-alignment__bad" : "du-alignment__ok"}` }, r.problems.length ? r.problems.join(" ") : "Alineado")))))));
+  }
+  function BoxLegend() {
+    const families = [["open", "Al abrir la unidad"], ["text", "Dentro del texto"], ["close", "Al cerrar la unidad"]];
+    return /* @__PURE__ */ import_react11.default.createElement("div", { className: "du-legend" }, families.map(([f, label]) => /* @__PURE__ */ import_react11.default.createElement("section", { key: f, className: "du-legend__family" }, /* @__PURE__ */ import_react11.default.createElement("p", { className: "du-legend__label chapter-kicker" }, label), /* @__PURE__ */ import_react11.default.createElement("ul", { className: "du-legend__list" }, boxes_config_default.filter((b) => b.family === f).map((b) => /* @__PURE__ */ import_react11.default.createElement("li", { key: b.kind, className: `du-legend__item du-box--${b.kind} du-box--family-${b.family}` }, /* @__PURE__ */ import_react11.default.createElement("span", { className: "du-legend__swatch" }, /* @__PURE__ */ import_react11.default.createElement(Icon, { name: b.icon, size: 18 })), /* @__PURE__ */ import_react11.default.createElement("span", { className: "du-legend__name box-title" }, b.title)))))));
+  }
 
   // src/components/DataTable.jsx
   var import_react12 = __toESM(require_react(), 1);
-  function DataTable({ columns, rows, widths, number, title, note, rowHeader = false }) {
-    return /* @__PURE__ */ import_react12.default.createElement("figure", { className: "du-table-figure" }, number != null ? /* @__PURE__ */ import_react12.default.createElement("p", { className: "du-table-figure__number table-number" }, "Tabla ", number) : null, title ? /* @__PURE__ */ import_react12.default.createElement("p", { className: "du-table-figure__title table-title" }, title) : null, /* @__PURE__ */ import_react12.default.createElement("div", { className: "du-table-scroll" }, /* @__PURE__ */ import_react12.default.createElement("table", { className: `du-table${rowHeader ? " du-table--concept" : ""}` }, widths ? /* @__PURE__ */ import_react12.default.createElement("colgroup", null, widths.map((w, i) => /* @__PURE__ */ import_react12.default.createElement("col", { key: i, style: { width: w } }))) : null, /* @__PURE__ */ import_react12.default.createElement("thead", null, /* @__PURE__ */ import_react12.default.createElement("tr", null, columns.map((c, i) => /* @__PURE__ */ import_react12.default.createElement("th", { key: i, scope: "col", className: "table-head" }, c)))), /* @__PURE__ */ import_react12.default.createElement("tbody", null, rows.map((row, r) => /* @__PURE__ */ import_react12.default.createElement("tr", { key: r }, row.map(
+  function DataTable({ columns, rows, widths, number, title, note, rowHeader = false, filled = false }) {
+    return /* @__PURE__ */ import_react12.default.createElement("figure", { className: "du-table-figure" }, number != null ? /* @__PURE__ */ import_react12.default.createElement("p", { className: "du-table-figure__number table-number" }, "Tabla ", number) : null, title ? /* @__PURE__ */ import_react12.default.createElement("p", { className: "du-table-figure__title table-title" }, title) : null, /* @__PURE__ */ import_react12.default.createElement("div", { className: "du-table-scroll" }, /* @__PURE__ */ import_react12.default.createElement("table", { className: `du-table${rowHeader ? " du-table--concept" : ""}${filled ? " du-table--filled" : ""}` }, widths ? /* @__PURE__ */ import_react12.default.createElement("colgroup", null, widths.map((w, i) => /* @__PURE__ */ import_react12.default.createElement("col", { key: i, style: { width: w } }))) : null, /* @__PURE__ */ import_react12.default.createElement("thead", null, /* @__PURE__ */ import_react12.default.createElement("tr", null, columns.map((c, i) => /* @__PURE__ */ import_react12.default.createElement("th", { key: i, scope: "col", className: "table-head" }, c)))), /* @__PURE__ */ import_react12.default.createElement("tbody", null, rows.map((row, r) => /* @__PURE__ */ import_react12.default.createElement("tr", { key: r }, row.map(
       (cell, c) => rowHeader && c === 0 ? /* @__PURE__ */ import_react12.default.createElement("th", { key: c, scope: "row", className: "table-cell" }, cell) : /* @__PURE__ */ import_react12.default.createElement("td", { key: c, className: "table-cell" }, cell)
     )))))), note ? /* @__PURE__ */ import_react12.default.createElement("p", { className: "du-note note" }, /* @__PURE__ */ import_react12.default.createElement("i", null, "Nota."), " ", note) : null);
   }
@@ -447,7 +575,7 @@ window.Didactica = (() => {
   var LH = 18;
   function Node({ x, y, lines, strong, detail = [] }) {
     const all = [...lines, ...detail];
-    const w = Math.max(96, ...lines.map((l) => textWidth(l, 15)), ...detail.map((l) => textWidth(l, 14))) + 24;
+    const w = Math.max(96, ...lines.map((l) => textWidth(l, 16)), ...detail.map((l) => textWidth(l, 14))) + 24;
     const h = all.length * LH + 16;
     const top = y - h / 2;
     return /* @__PURE__ */ import_react14.default.createElement("g", null, /* @__PURE__ */ import_react14.default.createElement("rect", { className: strong ? "du-dg-node du-dg-node--strong" : "du-dg-node", x: x - w / 2, y: top, width: w, height: h }), lines.map((l, i) => /* @__PURE__ */ import_react14.default.createElement("text", { key: i, className: `du-dg-text diagram-title${strong ? " du-dg-text--on-strong" : ""}`, x, y: top + 8 + LH * (i + 0.75), textAnchor: "middle" }, l)), detail.map((l, i) => /* @__PURE__ */ import_react14.default.createElement("text", { key: `d${i}`, className: "du-dg-text diagram-label", x, y: top + 8 + LH * (lines.length + i + 0.75), textAnchor: "middle" }, l)));
@@ -484,7 +612,7 @@ window.Didactica = (() => {
     return /* @__PURE__ */ import_react15.default.createElement("svg", { className: "du-diagram", viewBox: `0 0 ${W2} ${H}`, role: "img", "aria-label": label || `Ciclo: ${steps.map((s) => s.title).join(", ")}` }, /* @__PURE__ */ import_react15.default.createElement("defs", null, /* @__PURE__ */ import_react15.default.createElement("marker", { id: `a${id}`, viewBox: "0 0 10 10", refX: "8", refY: "5", markerWidth: "7", markerHeight: "7", orient: "auto-start-reverse" }, /* @__PURE__ */ import_react15.default.createElement("path", { className: "du-dg-arrowhead", d: "M 0 0 L 10 5 L 0 10 z" }))), steps.map((_, i) => /* @__PURE__ */ import_react15.default.createElement("path", { key: i, className: "du-dg-edge du-dg-edge--arc", d: arc(i), markerEnd: `url(#a${id})` })), center ? wrap(center, 16).map((l, i, arr) => /* @__PURE__ */ import_react15.default.createElement("text", { key: i, className: "du-dg-text du-dg-text--muted diagram-title", x: cx, y: cy + (i - (arr.length - 1) / 2) * LH2 + 5, textAnchor: "middle" }, l)) : null, steps.map((s, i) => {
       const x = cx + R * Math.cos(ang(i)), y = cy + R * Math.sin(ang(i));
       const t = wrap(s.title, 16), d = s.text ? wrap(s.text, 20) : [];
-      const w = Math.max(...t.map((l) => textWidth(l, 15)), ...d.map((l) => textWidth(l, 14)), 80) + 24;
+      const w = Math.max(...t.map((l) => textWidth(l, 16)), ...d.map((l) => textWidth(l, 14)), 80) + 24;
       const h = (t.length + d.length) * LH2 + 16, top = y - h / 2;
       return /* @__PURE__ */ import_react15.default.createElement("g", { key: i }, /* @__PURE__ */ import_react15.default.createElement("rect", { className: "du-dg-node", x: x - w / 2, y: top, width: w, height: h }), t.map((l, j) => /* @__PURE__ */ import_react15.default.createElement("text", { key: j, className: "du-dg-text diagram-title", x, y: top + 8 + LH2 * (j + 0.75), textAnchor: "middle" }, l)), d.map((l, j) => /* @__PURE__ */ import_react15.default.createElement("text", { key: `d${j}`, className: "du-dg-text diagram-label", x, y: top + 8 + LH2 * (t.length + j + 0.75), textAnchor: "middle" }, l)));
     }));

@@ -1,56 +1,764 @@
 [
-  { "name": "Page", "group": "Layout", "summary": "A manual page: paper sheet, margins, running header and “Página N” footer.",
-    "props": [["header", "string", false, "Running-header text."], ["page", "number", false, "Footer page number."], ["children", "ReactNode", true, "Page content."]] },
-  { "name": "TitlePage", "group": "Layout", "summary": "The manual's cover: kicker, title, italic subtitle, lede, ribbon and metadata lines, all centred.",
-    "props": [["kicker", "string", false, "Series line, upper case."], ["title", "string", true, "Book title."], ["subtitle", "string", false, "Italic subtitle."], ["lede", "string", false, "Scope line."], ["ribbon", "string", false, "Text between the two navy rules."], ["meta", "string[]", false, "Metadata lines."]] },
-  { "name": "TableOfContents", "group": "Layout", "summary": "“Índice”: levels 1–3 with dotted leaders to the page number.",
-    "props": [["title", "string", false, "Defaults to “Índice”."], ["entries", "{ title; page; level? }[]", true, "TOC lines in reading order."]] },
-  { "name": "ChapterOpener", "group": "Layout", "summary": "Unit opener: “Unidad N” kicker, unit title (h1) and a lead paragraph.",
-    "props": [["number", "number", false, "Unit number."], ["title", "string", true, "Unit title, without “Unidad N.”."], ["lead", "ReactNode", false, "Opening paragraph."], ["id", "string", false, "Anchor id."]] },
-  { "name": "Heading", "group": "Text", "summary": "Headings: 1 for unnumbered unit-level sections (Glosario, Referencias), 2 sections, 3 sub-sections.",
-    "props": [["level", "1 | 2 | 3", false, "Defaults to 2."], ["id", "string", false, "Anchor id."], ["children", "ReactNode", true, "Heading text, numbered “2.1. …”."]] },
-  { "name": "Paragraph", "group": "Text", "summary": "Body paragraph: 16px Cambria, 1.6 leading; left-aligned on screen, justified in print.",
-    "props": [["children", "ReactNode", true, "Text with <Cite> citations."]] },
-  { "name": "BulletList", "group": "Text", "summary": "Bullet list (● ○ ■ by level). An item is a string or { text, items } for a nested level.",
-    "props": [["items", "(string | { text; items? })[]", true, "List items."]] },
-  { "name": "Cite", "group": "Citations", "summary": "APA 7 in-text citation with page: (Biggs & Tang, 2011, p. 45) or Biggs y Tang (2011, p. 45).",
-    "props": [["authors", "string[]", true, "Surnames in source order; 3+ become “et al.”."], ["year", "number | string", true, "Year, or “s. f.”."], ["page", "number | string", true, "Page or range (“45–47” → pp.)."], ["locator", "string", false, "Overrides page: “párr. 4”, “cap. 3”."], ["narrative", "boolean", false, "Narrative form with “y”."], ["works", "Work[]", false, "Several works in one parenthesis, alphabetical."]] },
-  { "name": "Quote", "group": "Citations", "summary": "Short quotation (under 40 words) in English double quotes “…”, followed by its APA citation.",
-    "props": [["children", "ReactNode", true, "Quoted words, verbatim."], ["cite", "{ authors; year; page }", true, "Source with page."]] },
-  { "name": "BlockQuote", "group": "Citations", "summary": "APA 7 block quotation (40 words or more): indented, no quotation marks, citation after the final period.",
-    "props": [["children", "ReactNode", true, "Quoted passage ending with its period."], ["cite", "{ authors; year; page }", true, "Source with page."]] },
-  { "name": "KeyPoints", "group": "Boxes", "summary": "“Puntos Clave”: the unit summary, first box of every unit.",
-    "props": [["items", "ReactNode[]", true, "3–6 key points, one sentence each."], ["title", "string", false, "Overrides “Puntos Clave”."]] },
-  { "name": "Objectives", "group": "Boxes", "summary": "“Objetivos”: learning objectives, each tagged with its Bloom (revised) level.",
-    "props": [["items", "{ level: BloomId; text }[]", true, "Objectives starting with a verb of their level."], ["intro", "string", false, "Lead-in line."], ["title", "string", false, "Overrides “Objetivos”."]] },
-  { "name": "Important", "group": "Boxes", "summary": "“Importante”: a key concept or definition the reader should retain.",
-    "props": [["term", "string", false, "The concept defined."], ["children", "ReactNode", true, "Definition with its citation."], ["title", "string", false, "Overrides “Importante”."]] },
-  { "name": "CommonMistake", "group": "Boxes", "summary": "“Error Frecuente”: a common misconception and what the evidence shows instead.",
-    "props": [["misconception", "ReactNode", true, "The belief, stated plainly."], ["correction", "ReactNode", true, "What the evidence shows, cited."], ["children", "ReactNode", false, "Optional teaching note."], ["title", "string", false, "Overrides “Error Frecuente”."]] },
-  { "name": "ThinkFurther", "group": "Boxes", "summary": "“Para Seguir Pensando”: open, critical questions that close the unit.",
-    "props": [["questions", "ReactNode[]", true, "2–5 open questions."], ["title", "string", false, "Overrides “Para Seguir Pensando”."]] },
-  { "name": "Activities", "group": "Boxes", "summary": "“Actividades”: questions and tasks to work the unit's concepts. Item: string or { type, text }.",
-    "props": [["items", "(string | { type?: 'pregunta'|'tarea'|'caso'|'debate'; text })[]", true, "Numbered activities."], ["title", "string", false, "Overrides “Actividades”."]] },
-  { "name": "ReferencesBox", "group": "Boxes", "summary": "“Referencias”: the unit's APA 7 reference list, French (hanging) indent. Children: <Reference> items.",
-    "props": [["children", "ReactNode", true, "<Reference> items, alphabetical."], ["title", "string", false, "Overrides “Referencias”."]] },
-  { "name": "Box", "group": "Boxes", "summary": "The shared frame of the seven didactic boxes: tinted surface, icon + title header, body.",
-    "props": [["kind", "'keypoints'|'objectives'|'important'|'mistake'|'thinking'|'activities'|'references'", true, "Box type."], ["title", "string", false, "Overrides the type's title."], ["children", "ReactNode", true, "Body."]] },
-  { "name": "Icon", "group": "Boxes", "summary": "A Lucide line icon drawn in currentColor. Decorative unless given a label.",
-    "props": [["name", "string", true, "One of the seven box icons."], ["size", "number", false, "Pixels, default 20."], ["label", "string", false, "Accessible name; omit when decorative."]] },
-  { "name": "DataTable", "group": "Tables and figures", "summary": "APA 7 table: “Tabla N” and italic title above, horizontal rules, navy header, optional row headers, “Nota.” below.",
-    "props": [["columns", "string[]", true, "Header labels."], ["rows", "ReactNode[][]", true, "Body rows."], ["widths", "string[]", false, "Column widths."], ["number", "number", false, "Table number."], ["title", "string", false, "Italic title."], ["note", "ReactNode", false, "Note text after “Nota.”."], ["rowHeader", "boolean", false, "First column as row headers (conceptual tables)."]] },
-  { "name": "Figure", "group": "Tables and figures", "summary": "APA 7 figure: “Figura N” and the italic title above a diagram or image; “Nota.” below.",
-    "props": [["number", "number", false, "Figure number."], ["title", "string", false, "Italic title."], ["note", "ReactNode", false, "Note text."], ["children", "ReactNode", true, "A diagram or image."]] },
-  { "name": "ConceptWeb", "group": "Diagrams", "summary": "Concept web: a central concept linked to up to 8 related concepts, with relation labels and short details.",
-    "props": [["center", "string", true, "Central concept."], ["nodes", "{ label; relation?; detail? }[]", true, "Related concepts, clockwise from the top."], ["label", "string", false, "Accessible description."]] },
-  { "name": "CycleDiagram", "group": "Diagrams", "summary": "Cycle: 3–8 steps around a circle joined by arrows, with an optional centre label.",
-    "props": [["steps", "{ title; text? }[]", true, "Steps clockwise from the top."], ["center", "string", false, "Centre label."], ["label", "string", false, "Accessible description."]] },
-  { "name": "Pyramid", "group": "Diagrams", "summary": "Pyramid of levels, top (most advanced) first, e.g. Miller's pyramid; descriptions to the right.",
-    "props": [["levels", "{ title; text? }[]", true, "Levels from apex to base (2–6)."], ["label", "string", false, "Accessible description."]] },
-  { "name": "ProcessFlow", "group": "Diagrams", "summary": "Process flow: numbered steps joined by arrows; horizontal on wide screens, vertical on narrow ones.",
-    "props": [["steps", "{ title; text? }[]", true, "2–5 steps in order."], ["label", "string", false, "Accessible name of the list."]] },
-  { "name": "GlossaryEntry", "group": "Reference", "summary": "Glossary entry: the term in bold navy, a colon, then the definition.",
-    "props": [["term", "string", true, "Term, without the colon."], ["children", "ReactNode", true, "Definition."]] },
-  { "name": "Reference", "group": "Reference", "summary": "One APA 7 reference with a French (hanging) indent; pass the title in <i>.",
-    "props": [["children", "ReactNode", true, "The reference, italics marked with <i>."]] }
+  {
+    "name": "Page",
+    "group": "Layout",
+    "summary": "A manual page: paper sheet, margins, running header and “Página N” footer.",
+    "props": [
+      [
+        "header",
+        "string",
+        false,
+        "Running-header text."
+      ],
+      [
+        "page",
+        "number",
+        false,
+        "Footer page number."
+      ],
+      [
+        "children",
+        "ReactNode",
+        true,
+        "Page content."
+      ]
+    ]
+  },
+  {
+    "name": "TitlePage",
+    "group": "Layout",
+    "summary": "The manual's cover: kicker, title, italic subtitle, lede, ribbon and metadata lines, all centred.",
+    "props": [
+      [
+        "kicker",
+        "string",
+        false,
+        "Series line, upper case."
+      ],
+      [
+        "title",
+        "string",
+        true,
+        "Book title."
+      ],
+      [
+        "subtitle",
+        "string",
+        false,
+        "Italic subtitle."
+      ],
+      [
+        "lede",
+        "string",
+        false,
+        "Scope line."
+      ],
+      [
+        "ribbon",
+        "string",
+        false,
+        "Text between the two navy rules."
+      ],
+      [
+        "meta",
+        "string[]",
+        false,
+        "Metadata lines."
+      ]
+    ]
+  },
+  {
+    "name": "TableOfContents",
+    "group": "Layout",
+    "summary": "“Índice”: levels 1–3 with dotted leaders to the page number.",
+    "props": [
+      [
+        "title",
+        "string",
+        false,
+        "Defaults to “Índice”."
+      ],
+      [
+        "entries",
+        "{ title; page; level? }[]",
+        true,
+        "TOC lines in reading order."
+      ]
+    ]
+  },
+  {
+    "name": "ChapterOpener",
+    "group": "Layout",
+    "summary": "Unit opener: “Unidad N” kicker, unit title (h1) and a lead paragraph.",
+    "props": [
+      [
+        "number",
+        "number",
+        false,
+        "Unit number."
+      ],
+      [
+        "title",
+        "string",
+        true,
+        "Unit title, without “Unidad N.”."
+      ],
+      [
+        "lead",
+        "ReactNode",
+        false,
+        "Opening paragraph."
+      ],
+      [
+        "id",
+        "string",
+        false,
+        "Anchor id."
+      ]
+    ]
+  },
+  {
+    "name": "BoxLegend",
+    "group": "Layout",
+    "summary": "“Cómo usar este manual”: the legend of box types, grouped by family.",
+    "props": []
+  },
+  {
+    "name": "Heading",
+    "group": "Text",
+    "summary": "Headings: 1 for unnumbered unit-level sections (Glosario, Referencias), 2 sections, 3 sub-sections.",
+    "props": [
+      [
+        "level",
+        "1 | 2 | 3",
+        false,
+        "Defaults to 2."
+      ],
+      [
+        "id",
+        "string",
+        false,
+        "Anchor id."
+      ],
+      [
+        "children",
+        "ReactNode",
+        true,
+        "Heading text, numbered “2.1. …”."
+      ]
+    ]
+  },
+  {
+    "name": "Paragraph",
+    "group": "Text",
+    "summary": "Body paragraph: 16px Cambria, 1.6 leading; left-aligned on screen, justified in print.",
+    "props": [
+      [
+        "children",
+        "ReactNode",
+        true,
+        "Text with <Cite> citations."
+      ]
+    ]
+  },
+  {
+    "name": "BulletList",
+    "group": "Text",
+    "summary": "Bullet list (● ○ ■ by level). An item is a string or { text, items } for a nested level.",
+    "props": [
+      [
+        "items",
+        "(string | { text; items? })[]",
+        true,
+        "List items."
+      ]
+    ]
+  },
+  {
+    "name": "Cite",
+    "group": "Citations",
+    "summary": "APA 7 in-text citation with page: (Biggs & Tang, 2011, p. 45) or Biggs y Tang (2011, p. 45).",
+    "props": [
+      [
+        "authors",
+        "string[]",
+        true,
+        "Surnames in source order; 3+ become “et al.”."
+      ],
+      [
+        "year",
+        "number | string",
+        true,
+        "Year, or “s. f.”."
+      ],
+      [
+        "page",
+        "number | string",
+        true,
+        "Page or range (“45–47” → pp.)."
+      ],
+      [
+        "locator",
+        "string",
+        false,
+        "Overrides page: “párr. 4”, “cap. 3”."
+      ],
+      [
+        "narrative",
+        "boolean",
+        false,
+        "Narrative form with “y”."
+      ],
+      [
+        "works",
+        "Work[]",
+        false,
+        "Several works in one parenthesis, alphabetical."
+      ]
+    ]
+  },
+  {
+    "name": "Quote",
+    "group": "Citations",
+    "summary": "Short quotation (under 40 words) in English double quotes “…”, followed by its APA citation.",
+    "props": [
+      [
+        "children",
+        "ReactNode",
+        true,
+        "Quoted words, verbatim."
+      ],
+      [
+        "cite",
+        "{ authors; year; page }",
+        true,
+        "Source with page."
+      ]
+    ]
+  },
+  {
+    "name": "BlockQuote",
+    "group": "Citations",
+    "summary": "APA 7 block quotation (40 words or more): indented, no quotation marks, citation after the final period.",
+    "props": [
+      [
+        "children",
+        "ReactNode",
+        true,
+        "Quoted passage ending with its period."
+      ],
+      [
+        "cite",
+        "{ authors; year; page }",
+        true,
+        "Source with page."
+      ]
+    ]
+  },
+  {
+    "name": "KeyPoints",
+    "group": "Boxes",
+    "summary": "“Puntos Clave”: the unit summary, first box of every unit (3–5 one-line items), with optional “Antes de leer” questions.",
+    "props": [
+      [
+        "items",
+        "ReactNode[]",
+        true,
+        "3–6 key points, one sentence each."
+      ],
+      [
+        "before",
+        "ReactNode[]",
+        false,
+        "1–3 “Antes de leer” questions, revisited in “Para Seguir Pensando”."
+      ],
+      [
+        "title",
+        "string",
+        false,
+        "Overrides “Puntos Clave”."
+      ]
+    ]
+  },
+  {
+    "name": "Objectives",
+    "group": "Boxes",
+    "summary": "“Objetivos”: numbered learning objectives (O1, O2…), each tagged with its Bloom (revised) level.",
+    "props": [
+      [
+        "items",
+        "{ id?: string; level: BloomId; text }[]",
+        true,
+        "Objectives starting with a verb of their level; ids default to O1, O2…"
+      ],
+      [
+        "intro",
+        "string",
+        false,
+        "Lead-in line."
+      ],
+      [
+        "title",
+        "string",
+        false,
+        "Overrides “Objetivos”."
+      ]
+    ]
+  },
+  {
+    "name": "Important",
+    "group": "Boxes",
+    "summary": "“Importante”: a key concept or definition the reader should retain.",
+    "props": [
+      [
+        "term",
+        "string",
+        false,
+        "The concept defined."
+      ],
+      [
+        "children",
+        "ReactNode",
+        true,
+        "Definition with its citation."
+      ],
+      [
+        "title",
+        "string",
+        false,
+        "Overrides “Importante”."
+      ]
+    ]
+  },
+  {
+    "name": "CommonMistake",
+    "group": "Boxes",
+    "summary": "“Error Frecuente”: a refutation in three moves — misconception, cited correction, and why the belief does not hold.",
+    "props": [
+      [
+        "misconception",
+        "ReactNode",
+        true,
+        "The belief, stated plainly."
+      ],
+      [
+        "correction",
+        "ReactNode",
+        true,
+        "What the evidence shows, cited."
+      ],
+      [
+        "explanation",
+        "ReactNode",
+        false,
+        "Why the belief is wrong or why it is attractive (“Por qué no se sostiene”)."
+      ],
+      [
+        "children",
+        "ReactNode",
+        false,
+        "Optional teaching note."
+      ],
+      [
+        "title",
+        "string",
+        false,
+        "Overrides “Error Frecuente”."
+      ]
+    ]
+  },
+  {
+    "name": "Classroom",
+    "group": "Boxes",
+    "summary": "“En el Aula”: a worked classroom case — situation, didactic decision and its rationale.",
+    "props": [
+      [
+        "discipline",
+        "'sociales'|'salud'|'general'|string",
+        false,
+        "Discipline tag in the header."
+      ],
+      [
+        "situation",
+        "ReactNode",
+        true,
+        "The classroom situation, concrete."
+      ],
+      [
+        "decision",
+        "ReactNode",
+        true,
+        "What the teacher does."
+      ],
+      [
+        "rationale",
+        "ReactNode",
+        false,
+        "Why, with its citation."
+      ],
+      [
+        "title",
+        "string",
+        false,
+        "Overrides “En el Aula”."
+      ]
+    ]
+  },
+  {
+    "name": "ThinkFurther",
+    "group": "Boxes",
+    "summary": "“Para Seguir Pensando”: open questions with no single answer; not assessed.",
+    "props": [
+      [
+        "questions",
+        "ReactNode[]",
+        true,
+        "2–5 open questions."
+      ],
+      [
+        "title",
+        "string",
+        false,
+        "Overrides “Para Seguir Pensando”."
+      ]
+    ]
+  },
+  {
+    "name": "SelfCheck",
+    "group": "Boxes",
+    "summary": "“Autoevaluación”: retrieval practice with feedback; answers open on screen and print as a key.",
+    "props": [
+      [
+        "items",
+        "{ question; answer; review?: string }[]",
+        true,
+        "3–5 short recall questions; review names an earlier unit."
+      ],
+      [
+        "title",
+        "string",
+        false,
+        "Overrides “Autoevaluación”."
+      ]
+    ]
+  },
+  {
+    "name": "Activities",
+    "group": "Boxes",
+    "summary": "“Actividades”: assessable questions and tasks, tagged with type, Bloom level and the objectives they practise.",
+    "props": [
+      [
+        "items",
+        "(string | { type?; level?: BloomId; objectives?: string[]; text })[]",
+        true,
+        "Numbered activities; objectives link to O1, O2…"
+      ],
+      [
+        "title",
+        "string",
+        false,
+        "Overrides “Actividades”."
+      ]
+    ]
+  },
+  {
+    "name": "ReferencesBox",
+    "group": "Boxes",
+    "summary": "“Referencias”: the unit's APA 7 reference list, French (hanging) indent. Children: <Reference> items.",
+    "props": [
+      [
+        "children",
+        "ReactNode",
+        true,
+        "<Reference> items, alphabetical."
+      ],
+      [
+        "title",
+        "string",
+        false,
+        "Overrides “Referencias”."
+      ]
+    ]
+  },
+  {
+    "name": "AlignmentTable",
+    "group": "Boxes",
+    "summary": "Alignment table: which activities practise each objective, flagging gaps and level mismatches.",
+    "props": [
+      [
+        "objectives",
+        "Objective[]",
+        true,
+        "The same array passed to Objectives."
+      ],
+      [
+        "activities",
+        "Activity[]",
+        true,
+        "The same array passed to Activities."
+      ],
+      [
+        "title",
+        "string",
+        false,
+        "Defaults to “Alineamiento de la unidad”."
+      ]
+    ]
+  },
+  {
+    "name": "Box",
+    "group": "Boxes",
+    "summary": "The shared frame of the didactic boxes; its family sets the shape (open: filled header, text: top rule, close: plain frame).",
+    "props": [
+      [
+        "kind",
+        "'keypoints'|'objectives'|'important'|'mistake'|'example'|'thinking'|'selfcheck'|'activities'|'references'",
+        true,
+        "Box type."
+      ],
+      [
+        "title",
+        "string",
+        false,
+        "Overrides the type's title."
+      ],
+      [
+        "children",
+        "ReactNode",
+        true,
+        "Body."
+      ]
+    ]
+  },
+  {
+    "name": "Icon",
+    "group": "Boxes",
+    "summary": "A Lucide line icon drawn in currentColor. Decorative unless given a label.",
+    "props": [
+      [
+        "name",
+        "string",
+        true,
+        "One of the seven box icons."
+      ],
+      [
+        "size",
+        "number",
+        false,
+        "Pixels, default 20."
+      ],
+      [
+        "label",
+        "string",
+        false,
+        "Accessible name; omit when decorative."
+      ]
+    ]
+  },
+  {
+    "name": "DataTable",
+    "group": "Tables and figures",
+    "summary": "APA 7 table: “Tabla N” and italic title above, horizontal rules, light header (or `filled`), optional row headers, “Nota.” below.",
+    "props": [
+      [
+        "columns",
+        "string[]",
+        true,
+        "Header labels."
+      ],
+      [
+        "rows",
+        "ReactNode[][]",
+        true,
+        "Body rows."
+      ],
+      [
+        "widths",
+        "string[]",
+        false,
+        "Column widths."
+      ],
+      [
+        "number",
+        "number",
+        false,
+        "Table number."
+      ],
+      [
+        "title",
+        "string",
+        false,
+        "Italic title."
+      ],
+      [
+        "note",
+        "ReactNode",
+        false,
+        "Note text after “Nota.”."
+      ],
+      [
+        "rowHeader",
+        "boolean",
+        false,
+        "First column as row headers (conceptual tables)."
+      ],
+      [
+        "filled",
+        "boolean",
+        false,
+        "Solid navy header bar (slides, posters)."
+      ]
+    ]
+  },
+  {
+    "name": "Figure",
+    "group": "Tables and figures",
+    "summary": "APA 7 figure: “Figura N” and the italic title above a diagram or image; “Nota.” below.",
+    "props": [
+      [
+        "number",
+        "number",
+        false,
+        "Figure number."
+      ],
+      [
+        "title",
+        "string",
+        false,
+        "Italic title."
+      ],
+      [
+        "note",
+        "ReactNode",
+        false,
+        "Note text."
+      ],
+      [
+        "children",
+        "ReactNode",
+        true,
+        "A diagram or image."
+      ]
+    ]
+  },
+  {
+    "name": "ConceptWeb",
+    "group": "Diagrams",
+    "summary": "Concept web: a central concept linked to up to 8 related concepts, with relation labels and short details.",
+    "props": [
+      [
+        "center",
+        "string",
+        true,
+        "Central concept."
+      ],
+      [
+        "nodes",
+        "{ label; relation?; detail? }[]",
+        true,
+        "Related concepts, clockwise from the top."
+      ],
+      [
+        "label",
+        "string",
+        false,
+        "Accessible description."
+      ]
+    ]
+  },
+  {
+    "name": "CycleDiagram",
+    "group": "Diagrams",
+    "summary": "Cycle: 3–8 steps around a circle joined by arrows, with an optional centre label.",
+    "props": [
+      [
+        "steps",
+        "{ title; text? }[]",
+        true,
+        "Steps clockwise from the top."
+      ],
+      [
+        "center",
+        "string",
+        false,
+        "Centre label."
+      ],
+      [
+        "label",
+        "string",
+        false,
+        "Accessible description."
+      ]
+    ]
+  },
+  {
+    "name": "Pyramid",
+    "group": "Diagrams",
+    "summary": "Pyramid of levels, top (most advanced) first, e.g. Miller's pyramid; descriptions to the right.",
+    "props": [
+      [
+        "levels",
+        "{ title; text? }[]",
+        true,
+        "Levels from apex to base (2–6)."
+      ],
+      [
+        "label",
+        "string",
+        false,
+        "Accessible description."
+      ]
+    ]
+  },
+  {
+    "name": "ProcessFlow",
+    "group": "Diagrams",
+    "summary": "Process flow: numbered steps joined by arrows; horizontal on wide screens, vertical on narrow ones.",
+    "props": [
+      [
+        "steps",
+        "{ title; text? }[]",
+        true,
+        "2–5 steps in order."
+      ],
+      [
+        "label",
+        "string",
+        false,
+        "Accessible name of the list."
+      ]
+    ]
+  },
+  {
+    "name": "GlossaryEntry",
+    "group": "Reference",
+    "summary": "Glossary entry: the term in bold navy, a colon, then the definition.",
+    "props": [
+      [
+        "term",
+        "string",
+        true,
+        "Term, without the colon."
+      ],
+      [
+        "children",
+        "ReactNode",
+        true,
+        "Definition."
+      ]
+    ]
+  },
+  {
+    "name": "Reference",
+    "group": "Reference",
+    "summary": "One APA 7 reference with a French (hanging) indent; pass the title in <i>.",
+    "props": [
+      [
+        "children",
+        "ReactNode",
+        true,
+        "The reference, italics marked with <i>."
+      ]
+    ]
+  }
 ]

@@ -43,6 +43,11 @@ for (const g of t.type.groups) {
     lines.push(`.${s.name} { ${d.join('; ')}; }`);
   }
 }
+// @font-face per bundled font (paths relative to dist/tokens.css).
+for (const f of t.type.fonts || []) {
+  const file = f.file.includes('/') ? f.file : `fonts/${f.file}`;
+  lines.push(`@font-face { font-family: "${f.family}"; src: url("../${file}") format("woff2"); font-weight: ${f.weight || 400}; font-style: ${f.style || 'normal'}; font-display: swap; }`);
+}
 mkdirSync(new URL('dist/', root), { recursive: true });
 writeFileSync(new URL('dist/tokens.css', root), lines.join('\n') + '\n');
 console.log('dist/tokens.css written');

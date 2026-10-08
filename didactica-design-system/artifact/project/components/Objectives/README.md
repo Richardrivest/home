@@ -1,13 +1,13 @@
 # Objectives
 
-“Objetivos”: learning objectives, each tagged with its Bloom (revised) level.
+“Objetivos”: numbered learning objectives (O1, O2…), each tagged with its Bloom (revised) level.
 
 **Consumer provides:** `items`, each `{ level, text }`, where `level` is one of recordar, comprender, aplicar, analizar, evaluar or crear (Bloom revised, Anderson & Krathwohl, 2001).
 
-It comes right after `KeyPoints`. Start each objective with a verb of its level, order them from low to high, and include at least one at level 4 or above. The default intro reads “Al finalizar la unidad, usted será capaz de:”.
+It comes right after `KeyPoints`, in the opening family. Objectives are numbered O1, O2… (or give an `id`), so activities can point to them. Start each objective with a verb of its level, order them from low to high, and include at least one at level 4 or above. Pass the same array to `AlignmentTable`. The default intro reads “Al finalizar la unidad, usted será capaz de:”.
 
 | Prop | Type | Required | Notes |
 |---|---|---|---|
-| `items` | `{ level: BloomId; text }[]` | yes | Objectives starting with a verb of their level. |
+| `items` | `{ id?: string; level: BloomId; text }[]` | yes | Objectives starting with a verb of their level; ids default to O1, O2… |
 | `intro` | `string` | no | Lead-in line. |
 | `title` | `string` | no | Overrides “Objetivos”. |

@@ -67,9 +67,10 @@ CREATE TABLE IF NOT EXISTS component_prop (
   PRIMARY KEY (component, name)
 );
 
--- The seven didactic boxes, with their Lucide icon (single-ink SVG).
+-- The didactic boxes, with their family (shape) and Lucide icon (single-ink SVG).
 CREATE TABLE IF NOT EXISTS box_type (
   kind      TEXT PRIMARY KEY,
+  family    TEXT NOT NULL CHECK (family IN ('open', 'text', 'close')),
   title     TEXT NOT NULL,
   component TEXT NOT NULL REFERENCES component(name),
   icon      TEXT NOT NULL,

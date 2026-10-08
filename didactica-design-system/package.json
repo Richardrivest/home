@@ -8,7 +8,7 @@
   "style": "dist/didactica.css",
   "scripts": {
     "build:tokens": "node scripts/build-tokens.mjs && node scripts/build-icons.mjs",
-    "build:css": "tailwindcss -c tailwind.config.cjs -i src/styles/didactica.css -o dist/didactica.css && node scripts/prepend-fonts.mjs",
+    "build:css": "tailwindcss -c tailwind.config.cjs -i src/styles/didactica.css -o dist/didactica.css",
     "build:js": "node scripts/build-js.mjs",
     "build:db": "node --no-warnings scripts/build-db.mjs",
     "build:demo": "node scripts/build-demo.mjs",

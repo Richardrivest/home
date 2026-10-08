@@ -30,7 +30,9 @@
         "objectives-target.svg",
         "important-star.svg",
         "mistake-triangle-alert.svg",
+        "example-school.svg",
         "thinking-message-circle-question.svg",
+        "selfcheck-list-checks.svg",
         "activities-pencil-line.svg",
         "references-book-open-text.svg"
       ],
@@ -76,6 +78,18 @@
           "blob": "0181e0272f1ce5a3ea46eb2775b47386",
           "size": 475,
           "type": "image/svg+xml"
+        },
+        "example-school.svg": {
+          "name": "example-school.svg",
+          "blob": "1db9a0f27f571662b1d3dc1ba2a272df",
+          "size": 510,
+          "type": "image/svg+xml"
+        },
+        "selfcheck-list-checks.svg": {
+          "name": "selfcheck-list-checks.svg",
+          "blob": "2d33f1e0c7c437cc811b3efe540a512b",
+          "size": 336,
+          "type": "image/svg+xml"
         }
       }
     }
@@ -86,8 +100,8 @@
   },
   "lastChange": {
     "by": "Ricardo",
-    "at": "2026-10-08T07:21:13Z",
+    "at": "2026-10-08T09:52:49Z",
     "via": "Claude Code",
-    "note": "v2: seven didactic boxes with icons, APA 7 citations, Bloom objectives, diagrams, typography and contrast audit."
+    "note": "v3: audit phases 1–2 — box families, 66-character measure, 7-step type scale, bundled fonts, alignment, self-check, classroom cases."
   }
 }

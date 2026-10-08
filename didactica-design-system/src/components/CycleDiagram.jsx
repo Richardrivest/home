@@ -30,7 +30,7 @@ export function CycleDiagram({ steps, center, label }) {
       {steps.map((s, i) => {
         const x = cx + R * Math.cos(ang(i)), y = cy + R * Math.sin(ang(i));
         const t = wrap(s.title, 16), d = s.text ? wrap(s.text, 20) : [];
-        const w = Math.max(...t.map((l) => textWidth(l, 15)), ...d.map((l) => textWidth(l, 14)), 80) + 24;
+        const w = Math.max(...t.map((l) => textWidth(l, 16)), ...d.map((l) => textWidth(l, 14)), 80) + 24;
         const h = (t.length + d.length) * LH + 16, top = y - h / 2;
         return (
           <g key={i}>

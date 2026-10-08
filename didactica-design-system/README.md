@@ -1,10 +1,33 @@
-# Didáctica Universitaria — design system (v2)
+# Didáctica Universitaria — design system (v3)
 
 A design system for university teacher-education materials. It started as an extraction of the *Manual de Didáctica Universitaria* (.docx) and was then revised by a typography, colour and contrast audit. It ships tokens, React components, Tailwind, plain HTML/CSS, a SQLite database and a Node.js API.
 
 The design-system page has the brand book, the tokens, live previews and the icons: https://claude.ai/artifact/WUriWVLzv8G4y2u9oMyFhX
 
-## What's in v2
+## What's in v3
+
+These are phases 1 and 2 of the 8 October 2026 audit (https://claude.ai/artifact/FAkByz1msBDLkPL4QsdFn3).
+
+- **Line length.** Running text is capped at `measure-text` (496px). The measured result is 67 characters per line, down from 82. Boxes, tables and figures keep the full 680px.
+- **Box families.** The boxes come in three families with different shapes, so they stay distinct in grayscale print and for colour-blind readers:
+  - opening boxes have a filled header band;
+  - in-text boxes have a heavy top rule;
+  - closing boxes have an untinted frame.
+
+  Print frames use the accent colour.
+- **Type scale.** Seven steps (12, 14, 16, 19, 23, 28, 40px), and H3 is now in `ink`.
+- **Tables.** A lighter APA header (navy text on `band` over a 2px rule). The solid bar is now the opt-in `filled` variant.
+- **Fonts.** Caladea and Carlito are bundled as woff2 files (SIL Open Font License) with `@font-face` in `tokens.css`.
+- **Density rules** for boxes are in the style guide.
+- **Constructive alignment.** Objectives are numbered O1, O2… Activities carry their Bloom level and the objectives they practise. `AlignmentTable` and `checkAlignment()` flag gaps and level mismatches.
+- **New boxes:**
+  - `Classroom` (“En el Aula”): worked classroom cases with a discipline tag.
+  - `SelfCheck` (“Autoevaluación”): recall questions whose answers open on screen and print as a key, with a review item from an earlier unit.
+- **Error Frecuente** gains a third part, “Por qué no se sostiene”, completing the refutation-text structure.
+- **`BoxLegend`** renders a “Cómo usar este manual” legend.
+- **Antes de leer.** `KeyPoints` accepts optional questions to ask before reading.
+
+## What came in v2
 
 - **Seven didactic boxes, each with an icon and its own colour pair.** Every unit follows the same order:
   - **Puntos Clave** (key icon) opens the unit.
@@ -37,7 +60,9 @@ The design-system page has the brand book, the tokens, live previews and the ico
 tokens/tokens.json          single source of truth
 tailwind/preset.cjs         Tailwind preset (colours/spacing/radii/strokes → CSS variables; text-type-* sizes)
 src/components/             React components (27)
-src/boxes.config.json       the seven box types: title, icon, component, placement
+src/boxes.config.json       the nine box types: family, title, icon, component, placement
+src/alignment.js            constructive-alignment check (objectives × activities)
+fonts/                      Caladea and Carlito woff2 (SIL OFL 1.1) + licences
 src/cite.js, src/bloom.js   APA 7 formatter, Bloom taxonomy
 src/styles/didactica.css    component CSS written with Tailwind @apply → dist/didactica.css
 src/examples/chapter.jsx    a full example unit (Unidad 2)
@@ -66,7 +91,7 @@ npm run serve      # http://localhost:4173
 | `GET /api/type` | Families and type styles |
 | `GET /api/dimensions?family=spacing` | Spacing, radius, stroke or shadow |
 | `GET /api/components[/Name]` | Components with their props |
-| `GET /api/boxes[/kind]` | The seven box types |
+| `GET /api/boxes[/kind]` | The box types with their family |
 | `GET /api/icons/:kind.svg` | A box icon |
 | `GET /api/bloom` | Bloom levels with their verbs |
 

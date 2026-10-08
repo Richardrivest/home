@@ -1,10 +1,10 @@
 # ThinkFurther
 
-“Para Seguir Pensando”: open, critical questions that close the unit.
+“Para Seguir Pensando”: open questions with no single answer; not assessed.
 
 **Consumer provides:** 2–5 open `questions`.
 
-It closes the unit, before `Activities`. The questions have no single answer: they connect the unit to practice, to tensions and to open debates.
+It opens the closing sequence (closing family: plain frame), before `SelfCheck` and `Activities`. The questions have no single answer and are not assessed: they connect the unit to practice, to tensions and to open debates. Come back to the “Antes de leer” questions here.
 
 | Prop | Type | Required | Notes |
 |---|---|---|---|

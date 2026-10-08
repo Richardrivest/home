@@ -57,7 +57,7 @@ comps.forEach((c, i) => {
 
 boxes.forEach((b, i) =>
   insert('box_type', {
-    kind: b.kind, title: b.title, component: b.component, icon: b.icon, placement: b.placement,
+    kind: b.kind, family: b.family, title: b.title, component: b.component, icon: b.icon, placement: b.placement,
     icon_svg: read(`icons/${b.kind}-${b.icon}.svg`), position: i,
   })
 );
