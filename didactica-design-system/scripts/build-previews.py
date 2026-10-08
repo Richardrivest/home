@@ -5,7 +5,7 @@
 import os, json
 ROOT=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT=ROOT+'/artifact/project/components'
-meta={m['name']:m for m in json.load(open(ROOT+'/src/components.meta.json'))}
+meta={m['name']:m for m in json.load(open(ROOT+'/src/components.meta.json',encoding='utf-8'))}
 
 V='const A={authors:["Ambrose","Bridges","DiPietro","Lovett","Norman"],year:2010,page:"xx"}, B={authors:["Biggs","Tang"],year:2011,page:"xx"}, VY={authors:["Vygotsky"],year:1978,page:86}, AU={authors:["Ausubel"],year:1968,page:"vi"};'
 
@@ -252,8 +252,8 @@ for n in names:
     m=meta[n]; height,guide,render=D[n]
     d=os.path.join(OUT,n); os.makedirs(d,exist_ok=True)
     props='\n'.join(f"| `{p[0]}` | `{p[1]}` | {'yes' if p[2] else 'no'} | {p[3]} |" for p in m['props'])
-    open(d+'/README.md','w').write(f"# {n}\n\n{m['summary']}\n\n{guide}\n\n| Prop | Type | Required | Notes |\n|---|---|---|---|\n{props}\n")
-    open(d+'/preview.html','w').write(f"""<!-- @dsCard group="{m['group']}" height={height} -->
+    open(d+'/README.md','w',encoding='utf-8',newline='\n').write(f"# {n}\n\n{m['summary']}\n\n{guide}\n\n| Prop | Type | Required | Notes |\n|---|---|---|---|\n{props}\n")
+    open(d+'/preview.html','w',encoding='utf-8',newline='\n').write(f"""<!-- @dsCard group="{m['group']}" height={height} -->
 <div id="root" style="padding:16px;background:var(--paper)"></div>
 <script>
   const h = React.createElement;
