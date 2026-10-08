@@ -1,0 +1,9 @@
+<!-- @dsCard group="Text" height=150 -->
+<div id="root" style="padding:16px;background:var(--paper)"></div>
+<script>
+  const h = React.createElement;
+  const { Page, TitlePage, TableOfContents, Heading, Paragraph, ConceptBox, DataTable, BulletList, GlossaryEntry, Reference } = window.Didactica;
+  ReactDOM.createRoot(document.getElementById('root')).render(
+    h(Paragraph, null, 'La didáctica es la disciplina teórica que se ocupa de la enseñanza y que se compromete con ella mejorándola (Camilloni et al., 2007). Durante mucho tiempo se supuso que en la universidad la didáctica era innecesaria: bastaba con dominar la disciplina para poder transmitirla.')
+  );
+</script>

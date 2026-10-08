@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Didáctica Universitaria — HTML/CSS</title>
+  <link rel="stylesheet" href="../dist/tokens.css">
+  <link rel="stylesheet" href="../dist/didactica.css">
+  <style>
+    body { margin: 0; background: var(--band); padding: var(--space-16pt) var(--space-9pt); }
+    .theme-toggle { position: fixed; top: 12px; right: 12px; }
+    @media (max-width: 720px) { .du-page { padding: var(--space-16pt); } }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle running" type="button" onclick="var r=document.documentElement;r.dataset.theme=r.dataset.theme==='dark'?'light':'dark'">Tema claro / oscuro</button>
+
+  <!-- Plain HTML/CSS: the same class names the React components render. -->
+  <section class="du-page">
+    <header class="du-title-page">
+      <p class="du-title-page__kicker cover-kicker">Manual de formación docente</p>
+      <h1 class="du-title-page__title cover-title">Didáctica de la Educación Superior</h1>
+      <p class="du-title-page__subtitle cover-subtitle">Fundamentos, estrategias y evaluación para la docencia universitaria</p>
+      <p class="du-title-page__lede cover-lede">Con desarrollos de didáctica general y de las didácticas específicas de las ciencias sociales y de las ciencias de la salud</p>
+      <p class="du-ribbon ribbon">Material de estudio para la formación del profesorado universitario</p>
+      <p class="du-title-page__meta cover-meta">Nivel: graduados universitarios en formación pedagógica</p>
+      <p class="du-title-page__meta cover-meta">Citación: APA 7.ª edición</p>
+      <p class="du-title-page__meta cover-meta">Año 2026</p>
+    </header>
+  </section>
+
+  <section class="du-page" style="margin-top: var(--space-16pt)">
+    <p class="du-running-header running">Didáctica de la Educación Superior</p>
+
+    <h1 class="du-h1 h1">Unidad 1. La didáctica universitaria como campo: objeto y debates actuales</h1>
+    <h2 class="du-h2 h2">1.1. ¿Qué es la didáctica y por qué una didáctica de la educación superior?</h2>
+    <p class="du-body body">La didáctica es la disciplina teórica que se ocupa de la enseñanza y que se compromete con ella mejorándola (Camilloni et al., 2007).</p>
+
+    <aside class="du-concept" aria-label="Concepto clave: Didáctica">
+      <p class="du-concept__label concept-label"><span class="du-concept__prefix">Concepto clave</span> — Didáctica</p>
+      <p class="du-concept__body concept-body">Teoría de la enseñanza que describe, comprende y orienta las prácticas de enseñar. No es psicología aplicada ni un conjunto de técnicas neutrales: articula fines, contenidos, métodos, contextos y sujetos (Camilloni et al., 2007; Feldman, 2010).</p>
+    </aside>
+
+    <h2 class="du-h2 h2">1.3. Del paradigma de la enseñanza al paradigma del aprendizaje</h2>
+    <figure class="du-table-figure">
+      <table class="du-table">
+        <colgroup><col style="width:25.6%"><col style="width:37.2%"><col style="width:37.2%"></colgroup>
+        <thead><tr><th class="table-head" scope="col">Dimensión</th><th class="table-head" scope="col">Paradigma de la enseñanza</th><th class="table-head" scope="col">Paradigma del aprendizaje</th></tr></thead>
+        <tbody>
+          <tr><td class="table-cell">Misión</td><td class="table-cell">Impartir instrucción, «cubrir» el programa</td><td class="table-cell">Producir aprendizaje comprensivo</td></tr>
+          <tr><td class="table-cell">Rol del profesor</td><td class="table-cell">Transmisor de contenidos</td><td class="table-cell">Diseñador de experiencias y entornos</td></tr>
+          <tr><td class="table-cell">Punto de partida</td><td class="table-cell">La lógica de la disciplina</td><td class="table-cell">Los desempeños que se busca formar</td></tr>
+          <tr><td class="table-cell">Evaluación</td><td class="table-cell">Comprobar la retención al final</td><td class="table-cell">Retroalimentar y certificar el logro</td></tr>
+          <tr><td class="table-cell">Criterio de éxito</td><td class="table-cell">Lo que el profesor enseñó</td><td class="table-cell">Lo que el estudiante llegó a hacer</td></tr>
+        </tbody>
+      </table>
+      <figcaption class="du-caption caption">Tabla 1. Dos paradigmas de la docencia universitaria. Elaboración propia a partir de Barr y Tagg (1995) y Biggs y Tang (2011).</figcaption>
+    </figure>
+
+    <h3 class="du-h3 h3">Actividades de la unidad</h3>
+    <ul class="du-list">
+      <li class="du-list__item list-item">¿Qué supuestos sobre la enseñanza operaban en su carrera de grado? ¿Predominaba el paradigma de la enseñanza o el del aprendizaje?</li>
+      <li class="du-list__item list-item">Elabore, en un párrafo, su propia definición provisional de «buena enseñanza» en la universidad y fundaméntela con al menos dos autores de la unidad.</li>
+    </ul>
+
+    <h1 class="du-h1 h1">Glosario de términos clave</h1>
+    <p class="du-glossary glossary"><dfn class="du-glossary__term">Andamiaje:</dfn> Apoyo temporal que ofrece el docente o un par más capaz para que el estudiante resuelva una tarea que aún no domina de manera autónoma, retirándolo progresivamente (derivado de Vygotsky, 1978).</p>
+
+    <h1 class="du-h1 h1">Referencias</h1>
+    <p class="du-references-note note">Las referencias siguen la 7.ª edición de las normas APA. Las publicaciones periódicas incluyen el DOI cuando estaba disponible.</p>
+    <p class="du-reference reference">Biggs, J. y Tang, C. (2011). <i>Teaching for quality learning at university</i> (4.ª ed.). Open University Press.</p>
+    <p class="du-reference reference">Camilloni, A. R. W. de, Cols, E., Basabe, L. y Feeney, S. (2007). <i>El saber didáctico</i>. Paidós.</p>
+
+    <p class="du-page-footer running">Página 7</p>
+  </section>
+</body>
+</html>

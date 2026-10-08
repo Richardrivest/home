@@ -1,0 +1,22 @@
+[
+  { "name": "Page", "group": "Layout", "summary": "A manual page: paper ground, 1in margins, running header and «Página N» footer.",
+    "props": [["header", "string", false, "Running-header text, right-aligned over a hairline."], ["page", "number", false, "Page number for the centred footer."], ["children", "ReactNode", true, "Page content."]] },
+  { "name": "TitlePage", "group": "Layout", "summary": "The manual's cover: kicker, title, italic subtitle, lede, ribbon and metadata lines, all centred.",
+    "props": [["kicker", "string", false, "Upper-case series line in azure."], ["title", "string", true, "Book title in navy."], ["subtitle", "string", false, "Italic subtitle."], ["lede", "string", false, "One-line scope description."], ["ribbon", "string", false, "Text between the two navy rules."], ["meta", "string[]", false, "Centred metadata lines (level, citation style, year)."]] },
+  { "name": "TableOfContents", "group": "Navigation", "summary": "«Índice»: Word TOC levels 1–3 with dotted leaders to the page number.",
+    "props": [["title", "string", false, "Defaults to «Índice»."], ["entries", "{ title: string; page: number|string; level?: 1|2|3 }[]", true, "TOC lines in reading order."]] },
+  { "name": "Heading", "group": "Text", "summary": "Unit (1), section (2) and sub-section (3) headings in Calibri bold, navy then azure.",
+    "props": [["level", "1 | 2 | 3", false, "Defaults to 1."], ["id", "string", false, "Anchor id for the TOC."], ["children", "ReactNode", true, "Heading text, numbered as in the manual («1.1. …»)."]] },
+  { "name": "Paragraph", "group": "Text", "summary": "Body paragraph: 11.5pt Cambria, justified, 9pt after.",
+    "props": [["children", "ReactNode", true, "Paragraph text with APA in-text citations."]] },
+  { "name": "ConceptBox", "group": "Callouts", "summary": "«Concepto clave»: a framed pale-blue box holding one definition to retain.",
+    "props": [["term", "string", true, "The concept being defined."], ["label", "string", false, "Prefix, defaults to «Concepto clave»."], ["children", "ReactNode", true, "The definition, one paragraph."]] },
+  { "name": "DataTable", "group": "Data", "summary": "Comparison table: navy header row, hairline grid, zebra body rows and an italic «Tabla N.» caption.",
+    "props": [["columns", "string[]", true, "Header labels."], ["rows", "ReactNode[][]", true, "Body rows; even rows get the band fill."], ["widths", "string[]", false, "Column widths, e.g. ['22%','39%','39%']."], ["number", "number", false, "Table number for «Tabla N.»."], ["caption", "string", false, "Caption, ending with its source («Elaboración propia…»)."]] },
+  { "name": "BulletList", "group": "Text", "summary": "Justified bullet list (● ○ ■ by level). An item is a string or { text, items } for a nested level.",
+    "props": [["items", "(string | { text: string; items?: Item[] })[]", true, "List items; objects nest one level deeper."]] },
+  { "name": "GlossaryEntry", "group": "Reference", "summary": "Glossary entry: the term in bold navy, a colon, then the definition.",
+    "props": [["term", "string", true, "Term, without the colon."], ["children", "ReactNode", true, "Definition."]] },
+  { "name": "Reference", "group": "Reference", "summary": "One APA 7 reference with a 0.5in hanging indent; pass the title in <i>.",
+    "props": [["children", "ReactNode", true, "The reference, italics marked with <i>."]] }
+]

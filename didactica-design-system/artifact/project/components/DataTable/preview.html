@@ -1,0 +1,16 @@
+<!-- @dsCard group="Data" height=260 -->
+<div id="root" style="padding:16px;background:var(--paper)"></div>
+<script>
+  const h = React.createElement;
+  const { Page, TitlePage, TableOfContents, Heading, Paragraph, ConceptBox, DataTable, BulletList, GlossaryEntry, Reference } = window.Didactica;
+  ReactDOM.createRoot(document.getElementById('root')).render(
+    h(DataTable, { number: 1, widths: ['25.6%', '37.2%', '37.2%'],
+  caption: 'Dos paradigmas de la docencia universitaria. Elaboración propia a partir de Barr y Tagg (1995) y Biggs y Tang (2011).',
+  columns: ['Dimensión', 'Paradigma de la enseñanza', 'Paradigma del aprendizaje'],
+  rows: [
+    ['Misión', 'Impartir instrucción, «cubrir» el programa', 'Producir aprendizaje comprensivo'],
+    ['Rol del profesor', 'Transmisor de contenidos', 'Diseñador de experiencias y entornos'],
+    ['Punto de partida', 'La lógica de la disciplina', 'Los desempeños que se busca formar'],
+    ['Evaluación', 'Comprobar la retención al final', 'Retroalimentar y certificar el logro'] ] })
+  );
+</script>

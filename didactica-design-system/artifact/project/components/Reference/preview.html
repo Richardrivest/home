@@ -1,0 +1,12 @@
+<!-- @dsCard group="Reference" height=130 -->
+<div id="root" style="padding:16px;background:var(--paper)"></div>
+<script>
+  const h = React.createElement;
+  const { Page, TitlePage, TableOfContents, Heading, Paragraph, ConceptBox, DataTable, BulletList, GlossaryEntry, Reference } = window.Didactica;
+  ReactDOM.createRoot(document.getElementById('root')).render(
+    h('div', null,
+  h(Reference, null, 'Bain, K. (2004). ', h('i', null, 'What the best college teachers do'), '. Harvard University Press.'),
+  h(Reference, null, 'Biggs, J. y Tang, C. (2011). ', h('i', null, 'Teaching for quality learning at university'), ' (4.ª ed.). Open University Press.'),
+  h(Reference, null, 'Camilloni, A. R. W. de, Cols, E., Basabe, L. y Feeney, S. (2007). ', h('i', null, 'El saber didáctico'), '. Paidós.'))
+  );
+</script>

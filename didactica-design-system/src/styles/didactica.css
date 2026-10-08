@@ -1,0 +1,106 @@
+/*
+ * Didáctica Universitaria — component styles.
+ * Colours, spacing and strokes come from the token custom properties
+ * (dist/tokens.css) through the Tailwind preset; type comes from the
+ * token type-style classes (.body, .h1, .concept-label …) that the
+ * components add next to these.
+ */
+/* Rules sit outside @layer so Tailwind never purges them: consumers' markup
+ is unknown at build time. Apps that want utilities build their own CSS
+ with tailwind/preset.cjs. */
+/* Page frame: US Letter, 1in margins, running header and footer */
+.du-page {
+  @apply bg-paper text-ink mx-auto box-border;
+  max-width: calc(var(--measure) + 2 * var(--page-margin));
+  padding: calc(var(--page-margin) / 2) var(--page-margin);
+}
+.du-running-header {
+  @apply text-running text-right border-0 border-b-hair border-solid border-rule pb-3pt mb-16pt m-0;
+}
+.du-page-footer {
+  @apply text-running text-center mt-16pt mb-0;
+}
+
+/* Title page */
+.du-title-page { @apply text-center; }
+.du-title-page__kicker { @apply text-azure uppercase m-0 mt-16pt; }
+.du-title-page__title { @apply text-navy m-0 mt-12pt mb-5pt; }
+.du-title-page__subtitle { @apply text-subtitle italic m-0 mb-3pt; }
+.du-title-page__lede { @apply text-lede m-0 mt-3pt mb-16pt; }
+.du-ribbon {
+  @apply text-navy m-0 py-3pt border-0 border-solid border-y-ribbon border-navy;
+}
+.du-title-page__meta { @apply text-caption m-0 mt-3pt; }
+.du-title-page__meta:first-of-type { @apply mt-16pt; }
+
+/* Headings */
+.du-h1 { @apply text-navy m-0 mt-16pt mb-8pt; }
+.du-h2 { @apply text-azure m-0 mt-12pt mb-6pt; }
+.du-h3 { @apply text-azure m-0 mt-9pt mb-5pt; }
+.du-toc-title { @apply text-navy m-0 mb-8pt; }
+
+/* Reading text */
+.du-body { @apply text-ink text-justify m-0 mb-9pt; hyphens: auto; }
+.du-body a, .du-link { @apply text-link underline; }
+
+/* Bullet list: ● ○ ■ by level, 0.5in steps, 0.25in hanging */
+.du-list { @apply list-none m-0 p-0; }
+.du-list .du-list { @apply mt-5pt; }
+.du-list__item {
+  @apply relative text-ink text-justify mb-5pt;
+  padding-left: var(--indent-hang);
+}
+.du-list__item::before {
+  content: '●';
+  @apply absolute;
+  left: var(--indent-bullet);
+  font-size: 0.7em;
+  line-height: 2;
+}
+.du-list .du-list .du-list__item::before { content: '○'; }
+.du-list .du-list .du-list .du-list__item::before { content: '■'; }
+
+/* Concepto clave */
+.du-concept {
+  @apply bg-concept-surface text-ink border-box border-solid border-concept-border rounded-none my-9pt;
+  padding: var(--space-6pt) var(--space-8pt);
+}
+.du-concept__label { @apply text-navy m-0 mb-3pt; }
+.du-concept__prefix { @apply uppercase; }
+.du-concept__body { @apply text-justify m-0; }
+
+/* Data table + caption */
+.du-table-figure { @apply m-0 mt-9pt; }
+.du-table {
+  @apply w-full border-collapse border-hair border-solid border-rule;
+}
+.du-table th,
+.du-table td {
+  @apply border-hair border-solid border-rule text-left align-top;
+  padding: var(--space-3pt) var(--space-5pt);
+}
+.du-table th { @apply bg-table-head text-on-table-head; }
+.du-table td { @apply text-ink; }
+.du-table tbody tr:nth-child(even) td { @apply bg-band; }
+.du-caption { @apply text-caption italic mt-3pt mb-8pt; }
+
+/* Glossary */
+.du-glossary { @apply text-ink text-justify m-0 mb-6pt; }
+.du-glossary__term { @apply text-navy font-bold not-italic; }
+
+/* References (APA 7, hanging indent) */
+.du-reference {
+  @apply text-ink m-0 mb-6pt;
+  padding-left: var(--indent-hang);
+  text-indent: calc(-1 * var(--indent-hang));
+}
+.du-references-note { @apply text-ink text-justify m-0 mb-9pt; }
+
+/* Table of contents (Word TOC, levels 1–3, dotted leader) */
+.du-toc { @apply list-none m-0 p-0; }
+.du-toc__entry { @apply flex items-baseline gap-5pt text-ink mb-3pt; }
+.du-toc__entry--2 { padding-left: var(--indent-bullet); }
+.du-toc__entry--3 { padding-left: var(--indent-hang); }
+.du-toc__title { @apply shrink-0; max-width: 85%; }
+.du-toc__leader { @apply flex-1 border-0 border-b-hair border-dotted border-caption; transform: translateY(-0.25em); }
+.du-toc__page { @apply shrink-0; font-variant-numeric: tabular-nums; }
