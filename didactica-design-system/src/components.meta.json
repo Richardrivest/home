@@ -841,6 +841,306 @@
     ]
   },
   {
+    "name": "TreeDiagram",
+    "group": "Diagrams",
+    "summary": "Hierarchy or classification: a root and up to three levels below. Top-down with up to 4 leaves, left to right with more. Below 600px of width it shows the same structure as a list.",
+    "props": [
+      [
+        "root",
+        "{ label; detail?; children? }",
+        true,
+        "The root node; children nest the same shape."
+      ],
+      [
+        "direction",
+        "'auto' | 'down' | 'right'",
+        false,
+        "Layout; 'auto' goes right when leaves would not fit across."
+      ],
+      [
+        "label",
+        "string",
+        false,
+        "Accessible description."
+      ]
+    ]
+  },
+  {
+    "name": "ConceptMap",
+    "group": "Diagrams",
+    "summary": "Concept map (Novak): concepts in levels joined by labelled arrows, so each link reads as a proposition. Below 600px of width it shows the same structure as a list.",
+    "props": [
+      [
+        "nodes",
+        "{ id; label; detail?; level }[]",
+        true,
+        "Concepts; level 0 is the most general, at the top."
+      ],
+      [
+        "links",
+        "{ from; to; label }[]",
+        true,
+        "Arrows with the linking words."
+      ],
+      [
+        "label",
+        "string",
+        false,
+        "Accessible description."
+      ]
+    ]
+  },
+  {
+    "name": "MindMap",
+    "group": "Diagrams",
+    "summary": "Mind map: a central topic with branches to both sides and short ideas hanging from each. Below 600px of width it shows the same structure as a list.",
+    "props": [
+      [
+        "center",
+        "string",
+        true,
+        "Central topic."
+      ],
+      [
+        "branches",
+        "{ label; items? }[]",
+        true,
+        "Branches (up to 6), each with up to 3 short ideas."
+      ],
+      [
+        "label",
+        "string",
+        false,
+        "Accessible description."
+      ]
+    ]
+  },
+  {
+    "name": "VennDiagram",
+    "group": "Diagrams",
+    "summary": "Venn diagram: what two or three concepts share and what is exclusive to each. Below 600px of width it shows the same structure as a list.",
+    "props": [
+      [
+        "sets",
+        "string[]",
+        true,
+        "Two or three set names."
+      ],
+      [
+        "regions",
+        "{ a?; b?; c?; ab?; ac?; bc?; abc?: string[] }",
+        true,
+        "Short items for each region."
+      ],
+      [
+        "label",
+        "string",
+        false,
+        "Accessible description."
+      ]
+    ]
+  },
+  {
+    "name": "QuadrantMatrix",
+    "group": "Diagrams",
+    "summary": "2 × 2 matrix: two axes (low → high) and four quadrants; the high–high quadrant is emphasised. Below 600px of width it shows the same structure as a list.",
+    "props": [
+      [
+        "xAxis",
+        "{ label; low; high }",
+        true,
+        "Horizontal axis."
+      ],
+      [
+        "yAxis",
+        "{ label; low; high }",
+        true,
+        "Vertical axis."
+      ],
+      [
+        "quadrants",
+        "{ title; text? }[4]",
+        true,
+        "Top-left, top-right, bottom-left, bottom-right."
+      ],
+      [
+        "label",
+        "string",
+        false,
+        "Accessible description."
+      ]
+    ]
+  },
+  {
+    "name": "Timeline",
+    "group": "Diagrams",
+    "summary": "Timeline: dated events along an axis, labels alternating above and below (up to 8). Below 600px of width it shows the same structure as a list.",
+    "props": [
+      [
+        "events",
+        "{ date; title; text? }[]",
+        true,
+        "Events in chronological order."
+      ],
+      [
+        "label",
+        "string",
+        false,
+        "Accessible description."
+      ]
+    ]
+  },
+  {
+    "name": "Fishbone",
+    "group": "Diagrams",
+    "summary": "Cause-and-effect (Ishikawa) diagram: categories of causes along a spine that leads to an effect. Below 600px of width it shows the same structure as a list.",
+    "props": [
+      [
+        "effect",
+        "string",
+        true,
+        "The problem or effect."
+      ],
+      [
+        "causes",
+        "{ category; items }[]",
+        true,
+        "Up to 6 categories with up to 3 causes each."
+      ],
+      [
+        "label",
+        "string",
+        false,
+        "Accessible description."
+      ]
+    ]
+  },
+  {
+    "name": "Spectrum",
+    "group": "Diagrams",
+    "summary": "Continuum between two poles, with items placed by position (0 = left pole, 1 = right pole). Below 600px of width it shows the same structure as a list.",
+    "props": [
+      [
+        "left",
+        "string",
+        true,
+        "Left pole."
+      ],
+      [
+        "right",
+        "string",
+        true,
+        "Right pole."
+      ],
+      [
+        "points",
+        "{ label; position; text? }[]",
+        true,
+        "Items on the continuum."
+      ],
+      [
+        "label",
+        "string",
+        false,
+        "Accessible description."
+      ]
+    ]
+  },
+  {
+    "name": "Funnel",
+    "group": "Diagrams",
+    "summary": "Funnel: stages that narrow from the general to the specific (curriculum levels, selection processes). Below 600px of width it shows the same structure as a list.",
+    "props": [
+      [
+        "stages",
+        "{ title; text? }[]",
+        true,
+        "Stages, widest first (3–6)."
+      ],
+      [
+        "label",
+        "string",
+        false,
+        "Accessible description."
+      ]
+    ]
+  },
+  {
+    "name": "Staircase",
+    "group": "Diagrams",
+    "summary": "Staircase: progressive levels that build on one another, lowest at the left (Bloom, rubric levels). Below 600px of width it shows the same structure as a list.",
+    "props": [
+      [
+        "steps",
+        "{ title; text? }[]",
+        true,
+        "Steps, lowest first (3–6)."
+      ],
+      [
+        "label",
+        "string",
+        false,
+        "Accessible description."
+      ]
+    ]
+  },
+  {
+    "name": "NestedCircles",
+    "group": "Diagrams",
+    "summary": "Nested circles: contexts or categories that contain one another, with a legend. Below 600px of width it shows the same structure as a list.",
+    "props": [
+      [
+        "layers",
+        "{ title; text? }[]",
+        true,
+        "Layers, innermost first (2–5)."
+      ],
+      [
+        "label",
+        "string",
+        false,
+        "Accessible description."
+      ]
+    ]
+  },
+  {
+    "name": "Iceberg",
+    "group": "Diagrams",
+    "summary": "Iceberg: what is visible above the waterline and what lies beneath it (explicit and hidden curriculum). Below 600px of width it shows the same structure as a list.",
+    "props": [
+      [
+        "visible",
+        "string[]",
+        true,
+        "Items above the waterline."
+      ],
+      [
+        "hidden",
+        "string[]",
+        true,
+        "Items below the waterline."
+      ],
+      [
+        "visibleTitle",
+        "string",
+        false,
+        "Default “Lo visible”."
+      ],
+      [
+        "hiddenTitle",
+        "string",
+        false,
+        "Default “Lo que no se ve”."
+      ],
+      [
+        "label",
+        "string",
+        false,
+        "Accessible description."
+      ]
+    ]
+  },
+  {
     "name": "GlossaryEntry",
     "group": "Reference",
     "summary": "Glossary entry: the term in bold navy, a colon, then the definition.",

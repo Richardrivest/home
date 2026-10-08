@@ -1,8 +1,19 @@
-# Didáctica Universitaria — design system (v3)
+# Didáctica Universitaria — design system (v3.3)
 
 A design system for university teacher-education materials. It started as an extraction of the *Manual de Didáctica Universitaria* (.docx) and was then revised by a typography, colour and contrast audit. It ships tokens, React components, Tailwind, plain HTML/CSS, a SQLite database and a Node.js API.
 
 The design-system page has the brand book, the tokens, live previews and the icons: https://claude.ai/artifact/WUriWVLzv8G4y2u9oMyFhX
+
+## v3.3: tables and twelve more diagrams
+
+- **Tables.** The header row has its own colour, `table-head-surface` (navy text at 7.8:1 in light, 7.5:1 in dark). Body rows alternate one colour per row (`paper`, `band`). Row headers keep their row's colour and stand out by bold navy sans text, so the header row, the first column and the stripes no longer mix. The Word template uses the same fills.
+- **Twelve new diagram types**, all SVG with the list fallback under 600px:
+  - hierarchies: `TreeDiagram` (turns left to right when leaves don't fit), `Staircase`, `Funnel`, `NestedCircles`;
+  - connections: `ConceptMap` (labelled propositions), `MindMap`, `VennDiagram` (2 or 3 sets), `Fishbone` (Ishikawa);
+  - organisation: `QuadrantMatrix`, `Timeline`, `Spectrum`, `Iceberg`.
+
+  The style guide has a “which diagram for which information” table, and the example gallery shows each one with content from the manual.
+- **Tests:** 26 in total, including one that renders all twelve and checks their list fallbacks.
 
 ## v3.2: the remaining audit items
 
@@ -62,7 +73,7 @@ These are phases 1 and 2 of the 8 October 2026 audit (https://claude.ai/artifact
   - **Para Seguir Pensando** (question bubble), **Actividades** (pencil) and **Referencias** (open book) close the unit.
 - **APA 7 citations with pages.** `Cite` produces "(Biggs & Tang, 2011, p. xx)" in parentheses and "Biggs y Tang (2011, p. xx)" in running text. It also handles "et al.", page ranges ("pp."), several works in one parenthesis, `Quote` (under 40 words, in “…”) and `BlockQuote` (40 words or more).
 - **APA 7 tables and figures.** "Tabla N" / "Figura N" goes in bold with an italic title above, and "*Nota.*" below. Tables use horizontal rules only.
-- **Diagrams:** `ConceptWeb` (concept webs), `CycleDiagram`, `Pyramid` and `ProcessFlow`, plus conceptual tables via `DataTable rowHeader`.
+- **Diagrams:** `ConceptWeb` (concept webs), `CycleDiagram`, `Pyramid` and `ProcessFlow`, plus conceptual tables via `DataTable rowHeader` (twelve more came in v3.3).
 - **Objectives on Bloom's revised taxonomy** (Anderson & Krathwohl, 2001). Each objective is tagged "4 · ANALIZAR" and so on.
 - **English quotation marks “…”** throughout.
 - **The audit:**
@@ -85,7 +96,7 @@ These are phases 1 and 2 of the 8 October 2026 audit (https://claude.ai/artifact
 ```
 tokens/tokens.json          single source of truth
 tailwind/preset.cjs         Tailwind preset (colours/spacing/radii/strokes → CSS variables; text-type-* sizes)
-src/components/             React components (27)
+src/components/             React components; diagrams/ holds the twelve v3.3 SVG diagrams
 src/boxes.config.json       the nine box types: family, title, icon, component, placement
 src/alignment.js            constructive-alignment check (objectives × activities)
 fonts/                      Caladea and Carlito woff2 (SIL OFL 1.1) + licences

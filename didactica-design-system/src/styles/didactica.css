@@ -220,14 +220,15 @@
   @apply text-left align-top border-0 border-b-hair border-solid border-rule px-2 py-1;
 }
 .du-table thead th {
-  @apply bg-band text-navy border-0 border-b-strong border-solid border-rule-strong;
+  @apply bg-table-head-surface text-navy border-0 border-b-strong border-solid border-rule-strong;
   font-family: var(--font-sans);
 }
 .du-table--filled thead th { @apply bg-table-head text-on-table-head border-b-0; }
 .du-table td { @apply text-ink; }
-.du-table tbody tr:nth-child(even) td { @apply bg-band; }
+/* One colour per row: even rows (row-header cell included) take `band`, odd rows stay `paper`. */
+.du-table tbody tr:nth-child(even) > * { @apply bg-band; }
 .du-table tbody tr:last-child > * { @apply border-b-0; }
-.du-table--concept tbody th { @apply bg-band text-navy font-bold; font-family: var(--font-sans); }
+.du-table--concept tbody th { @apply text-navy font-bold; font-family: var(--font-sans); }
 .du-note { @apply text-ink-muted m-0 mt-2; }
 
 /* ---------- Diagrams ---------- */
@@ -272,6 +273,31 @@ ol.du-diagram-list--pyramid { @apply list-none p-0 border-0 bg-transparent; }
 .du-dg-ramp--4 { fill: var(--ramp-4); }
 .du-dg-on-ramp--1, .du-dg-on-ramp--2 { fill: var(--on-table-head); }
 .du-dg-on-ramp--3, .du-dg-on-ramp--4 { fill: var(--ink); }
+
+/* v3.3 diagrams. Fills stay light so 14px ink labels keep 4.5:1 on every region. */
+.du-dg-venn { stroke-width: var(--stroke-strong); fill-opacity: 0.16; }
+.du-dg-venn--1 { fill: var(--keypoints-accent); stroke: var(--keypoints-accent); }
+.du-dg-venn--2 { fill: var(--objectives-accent); stroke: var(--objectives-accent); }
+.du-dg-venn--3 { fill: var(--activities-accent); stroke: var(--activities-accent); }
+.du-dg-quad { stroke-width: var(--stroke-hair); rx: var(--radius-node); }
+.du-dg-quad--plain { fill: var(--diagram-node); stroke: var(--diagram-node-border); }
+.du-dg-quad--strong { fill: var(--table-head-surface); stroke: var(--diagram-node-strong); stroke-width: var(--stroke-strong); }
+.du-dg-axis { stroke: var(--ink-muted); stroke-width: var(--stroke-strong); }
+.du-dg-dot { fill: var(--diagram-node-strong); stroke: var(--paper); stroke-width: 3; }
+.du-dg-date { fill: var(--navy); }
+.du-dg-stop--a { stop-color: var(--ramp-4); }
+.du-dg-stop--b { stop-color: var(--ramp-1); }
+.du-dg-spectrum { stroke: var(--diagram-node-border); stroke-width: var(--stroke-hair); }
+.du-dg-ring { stroke: var(--paper); stroke-width: 3; }
+.du-dg-water { fill: var(--water); }
+.du-dg-ice { fill: var(--ice); stroke: var(--diagram-node-border); stroke-width: var(--stroke-strong); }
+.du-dg-sea { stroke: var(--azure); stroke-width: var(--stroke-strong); stroke-dasharray: 8 5; }
+ul.du-diagram-list__tree ul { @apply mt-1; border-left: var(--stroke-hair) solid var(--rule-strong); }
+ol.du-diagram-list__timeline { @apply list-none pl-0; }
+ol.du-diagram-list__timeline li { @apply pl-3 pb-2; border-left: var(--stroke-strong) solid var(--diagram-node-strong); }
+ol.du-diagram-list__timeline li span { @apply block text-ink-muted; }
+ul.du-diagram-list__nested { @apply list-none pl-0; }
+ul.du-diagram-list__nested li { @apply pl-3; border-left: var(--stroke-strong) solid var(--rule-strong); }
 
 .du-flow { @apply list-none m-0 p-0 grid gap-4; grid-template-columns: 1fr; }
 .du-flow__step {
