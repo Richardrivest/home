@@ -6,7 +6,6 @@
 // Exit code 1 when any error is found; warnings never fail.
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath, pathToFileURL } from 'node:url';
 import { build } from 'esbuild';
 import { lintHtml } from '../lint/html.mjs';
 import { lintDocx } from '../lint/docx.mjs';
@@ -21,7 +20,7 @@ if (!files.length) {
 
 async function renderJsx(file) {
   const abs = path.resolve(file);
-  const tmp = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'dist', `.lint-${process.pid}.mjs`);
+  const tmp = path.join(path.dirname(new URL(import.meta.url).pathname), '..', 'dist', `.lint-${process.pid}.mjs`);
   await build({
     stdin: {
       contents: `import React from 'react'; import { renderToStaticMarkup } from 'react-dom/server'; import * as M from ${JSON.stringify(abs)};
@@ -30,7 +29,7 @@ async function renderJsx(file) {
     },
     bundle: true, platform: 'node', format: 'esm', jsx: 'transform', loader: { '.jsx': 'jsx' }, packages: 'external', outfile: tmp, logLevel: 'error',
   });
-  try { return (await import(`${pathToFileURL(tmp).href}?t=${Date.now()}`)).pages; } finally { fs.rmSync(tmp, { force: true }); }
+  try { return (await import(`${tmp}?t=${Date.now()}`)).pages; } finally { fs.rmSync(tmp, { force: true }); }
 }
 
 const all = [];
