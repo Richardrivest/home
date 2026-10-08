@@ -148,9 +148,29 @@ The scale has seven steps, about 1.2 apart: 12, 14, 16, 19, 23, 28 and 40px. Bod
 
 **Shape.** Tables and rules are square (`radius-none`), as in the print source. Boxes take `radius-box` and diagram nodes take `radius-node`. Tags are pills. The page sheet carries `shadow-page` on screen only.
 
-**Tables.** The header is navy text on `band` over a 2px `rule-strong` line. Use the `filled` variant (a solid navy bar) only for slides or posters.
+**Tables.** The whole header row is navy text on `table-head-surface` over a 2px `rule-strong` line. Body rows alternate one colour per row: odd rows on `paper`, even rows on `band`. Row headers (`rowHeader`, conceptual tables) take their row's colour and are set apart by bold navy sans text, never by a third fill, so the header row, the first column and the stripes never mix. `table-head-surface` sits 1.4:1 from `band`, so the header still reads as a header next to a striped row. The Word template uses the same three fills. Use the `filled` variant (a solid navy bar) only for slides or posters.
 
-**Diagrams.** Use them to show structure, not to decorate. Below 600px of available width, `ConceptWeb`, `CycleDiagram` and `Pyramid` switch to the same structure as a list, so labels never shrink under 12px. The list is also what screen readers get. Print always shows the drawing. `ConceptWeb` shows a concept and its relations. `CycleDiagram` shows recurring processes. `ProcessFlow` shows ordered steps. `Pyramid` shows hierarchical levels. `DataTable` with `rowHeader` builds conceptual tables. Every diagram goes inside a `Figure` with its number, title and source note. Labels are short noun phrases, and the meaning never depends on colour alone.
+**Diagrams.** Use them to show structure, not to decorate. Pick the type by what the information is:
+
+| The information is… | Use |
+|---|---|
+| A classification or hierarchy | `TreeDiagram` (top-down up to 4 leaves, left to right beyond) |
+| Concepts joined by named relations | `ConceptMap` (several levels) or `ConceptWeb` (one centre) |
+| Ideas around one topic, unranked | `MindMap` |
+| What two or three things share | `VennDiagram` |
+| Two dimensions crossed | `QuadrantMatrix` |
+| Dated events | `Timeline` |
+| Causes of a problem, by category | `Fishbone` |
+| Options that differ by degree | `Spectrum` |
+| Stages that narrow, general to specific | `Funnel` |
+| Levels that build on each other | `Staircase` (a climb) or `Pyramid` (a base and an apex) |
+| Contexts that contain one another | `NestedCircles` |
+| The visible and what sustains it | `Iceberg` |
+| A loop | `CycleDiagram` |
+| Ordered steps | `ProcessFlow` |
+| Comparisons by criteria | `DataTable` with `rowHeader` |
+
+Every SVG diagram draws in the same vocabulary: `diagram-node` boxes with `diagram-node-border`, one `diagram-node-strong` focus, `rule-strong` connectors, `ramp-1`…`ramp-4` for ordered levels, and light translucent accents (Venn) or `water`/`ice` (Iceberg) where regions overlap text, so ink labels keep 4.5:1. Below 600px of available width every one of them switches to the same structure as a list, so labels never shrink under 12px; the list is also what screen readers get. Print always shows the drawing. Every diagram goes inside a `Figure` with its number, title and source note. Labels are short noun phrases, and the meaning never depends on colour alone.
 
 **Print.** Body text is justified, and each unit starts on a new page. Boxes and figures never split. Box frames print 1.5px in the accent, with the header band kept. Self-check answers print as a key, and shadows drop.
 
@@ -174,6 +194,13 @@ Box icons come from Lucide (v0.460.0, ISC licence), copied from the official pac
 | Misconceptions | Belief and correction | Belief, cited correction and explanation | The refutation-text structure. |
 | Practice | Open tasks only | `SelfCheck` with answers and a review item | Retrieval practice with feedback. |
 | Application | None | `Classroom` (“En el Aula”) worked cases | Worked examples for novices. |
+
+### v3.3 (tables and diagrams)
+
+| Area | Before | Now |
+|---|---|---|
+| Table header | Header row on `band`; row headers also on `band`, so they merged with the even stripes | Header row on its own `table-head-surface` (navy 7.8:1 light, 7.5:1 dark); one colour per body row; row headers bold navy on their row's colour; Word template matches |
+| Diagram types | 5 (`ConceptWeb`, `CycleDiagram`, `Pyramid`, `ProcessFlow`, conceptual table) | 17: adds `TreeDiagram`, `ConceptMap`, `MindMap`, `VennDiagram`, `QuadrantMatrix`, `Timeline`, `Fishbone`, `Spectrum`, `Funnel`, `Staircase`, `NestedCircles`, `Iceberg`, all with the list fallback |
 
 ### v3.2 (remaining audit items)
 

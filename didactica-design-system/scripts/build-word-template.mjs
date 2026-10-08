@@ -146,7 +146,7 @@ function apaTable(number, title, columns, rows, widths, note, { rowHeader = fals
   const head = new TableRow({
     tableHeader: true,
     children: columns.map((c, i) => new TableCell({
-      width: { size: wd[i], type: WidthType.DXA }, shading: { fill: C.band, type: ShadingType.CLEAR, color: 'auto' },
+      width: { size: wd[i], type: WidthType.DXA }, shading: { fill: C['table-head-surface'], type: ShadingType.CLEAR, color: 'auto' },
       margins: { top: 80, bottom: 80, left: 120, right: 120 },
       borders: { top: strong, bottom: strong, left: NONE, right: NONE },
       children: [p(c, 'CeldaEncabezado')],
@@ -156,7 +156,8 @@ function apaTable(number, title, columns, rows, widths, note, { rowHeader = fals
     cantSplit: true,
     children: r.map((cell, ci) => new TableCell({
       width: { size: wd[ci], type: WidthType.DXA },
-      shading: (ri % 2 === 1 || (rowHeader && ci === 0)) ? { fill: C.band, type: ShadingType.CLEAR, color: 'auto' } : undefined,
+      // One colour per row: even rows in `band` across every cell; the row header is marked by bold navy text, not a fill.
+      shading: ri % 2 === 1 ? { fill: C.band, type: ShadingType.CLEAR, color: 'auto' } : undefined,
       margins: { top: 60, bottom: 60, left: 120, right: 120 },
       borders: { top: NONE, left: NONE, right: NONE, bottom: ri === rows.length - 1 ? strong : hair },
       children: [rowHeader && ci === 0 ? p(cell, 'CeldaEncabezado') : p(cell, 'CeldaTabla')],

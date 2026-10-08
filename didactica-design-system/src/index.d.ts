@@ -240,6 +240,56 @@ export declare function Pyramid(props: PyramidProps): ReactElement;
 export interface ProcessFlowProps { steps: Step[]; label?: string }
 export declare function ProcessFlow(props: ProcessFlowProps): ReactElement;
 
+/** Hierarchy or classification; top-down with up to 4 leaves, left to right with more. */
+export interface TreeNode { label: string; detail?: string; children?: TreeNode[] }
+export interface TreeDiagramProps { root: TreeNode; direction?: 'auto' | 'down' | 'right'; label?: string }
+export declare function TreeDiagram(props: TreeDiagramProps): ReactElement;
+
+/** Concept map: concepts in levels joined by labelled arrows (propositions). */
+export interface ConceptMapProps { nodes: { id: string; label: string; detail?: string; level: number }[]; links: { from: string; to: string; label: string }[]; label?: string }
+export declare function ConceptMap(props: ConceptMapProps): ReactElement;
+
+/** Mind map: a central topic with branches to both sides. */
+export interface MindMapProps { center: string; branches: { label: string; items?: string[] }[]; label?: string }
+export declare function MindMap(props: MindMapProps): ReactElement;
+
+/** Venn diagram of two or three sets. */
+export interface VennDiagramProps { sets: [string, string] | [string, string, string]; regions: Partial<Record<'a' | 'b' | 'c' | 'ab' | 'ac' | 'bc' | 'abc', string[]>>; label?: string }
+export declare function VennDiagram(props: VennDiagramProps): ReactElement;
+
+/** 2 × 2 matrix; quadrants are top-left, top-right, bottom-left, bottom-right. */
+export interface Axis { label: string; low: string; high: string }
+export interface QuadrantMatrixProps { xAxis: Axis; yAxis: Axis; quadrants: [Step, Step, Step, Step]; label?: string }
+export declare function QuadrantMatrix(props: QuadrantMatrixProps): ReactElement;
+
+/** Timeline of dated events (up to 8). */
+export interface TimelineProps { events: { date: string; title: string; text?: string }[]; label?: string }
+export declare function Timeline(props: TimelineProps): ReactElement;
+
+/** Cause-and-effect (Ishikawa) diagram. */
+export interface FishboneProps { effect: string; causes: { category: string; items: string[] }[]; label?: string }
+export declare function Fishbone(props: FishboneProps): ReactElement;
+
+/** Continuum between two poles; position runs from 0 (left) to 1 (right). */
+export interface SpectrumProps { left: string; right: string; points: { label: string; position: number; text?: string }[]; label?: string }
+export declare function Spectrum(props: SpectrumProps): ReactElement;
+
+/** Funnel of stages, widest first. */
+export interface FunnelProps { stages: Step[]; label?: string }
+export declare function Funnel(props: FunnelProps): ReactElement;
+
+/** Staircase of progressive levels, lowest first. */
+export interface StaircaseProps { steps: Step[]; label?: string }
+export declare function Staircase(props: StaircaseProps): ReactElement;
+
+/** Nested circles, innermost first. */
+export interface NestedCirclesProps { layers: Step[]; label?: string }
+export declare function NestedCircles(props: NestedCirclesProps): ReactElement;
+
+/** Iceberg: visible above the waterline, hidden below. */
+export interface IcebergProps { visible: string[]; hidden: string[]; visibleTitle?: string; hiddenTitle?: string; label?: string }
+export declare function Iceberg(props: IcebergProps): ReactElement;
+
 /* ---------- Reference matter ---------- */
 
 /** Glossary entry: the term in bold navy, a colon, then the definition. */

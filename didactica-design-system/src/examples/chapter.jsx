@@ -5,7 +5,8 @@ import React from 'react';
 import {
   ChapterOpener, Heading, Paragraph, Cite, Quote, KeyPoints, Objectives, Important, CommonMistake,
   Classroom, ThinkFurther, SelfCheck, Activities, ReferencesBox, Reference, DataTable, Figure,
-  ConceptWeb, CycleDiagram, Pyramid, ProcessFlow, AlignmentTable, BoxLegend, Numbering, FigRef, Term, Glossary, Bibliography,
+  ConceptWeb, CycleDiagram, Pyramid, ProcessFlow, AlignmentTable,
+  TreeDiagram, ConceptMap, MindMap, VennDiagram, QuadrantMatrix, Timeline, Fishbone, Spectrum, Funnel, Staircase, NestedCircles, Iceberg, BoxLegend, Numbering, FigRef, Term, Glossary, Bibliography,
 } from '../index.js';
 
 // Every work the examples cite, declared once. <Cite id> takes authors and year from here;
@@ -224,7 +225,7 @@ export function GlossaryExample() {
 export function DiagramsExample() {
   return (
     <Bibliography works={WORKS}>
-    <Numbering figures={['alineamiento', 'miller']} firstFigure={3}>
+    <Numbering figures={['alineamiento', 'miller', ...MORE_FIGURES]} firstFigure={3}>
       <Heading level={1}>Galería de diagramas</Heading>
       <Paragraph>
         Dos esquemas más completan el repertorio: el flujo del alineamiento constructivo (<FigRef to="alineamiento" />) y
@@ -245,7 +246,169 @@ export function DiagramsExample() {
           { title: 'Sabe', text: 'Conocimiento factual' },
         ]} />
       </Figure>
+      <MoreDiagrams />
     </Numbering>
     </Bibliography>
+  );
+}
+
+const MORE_FIGURES = ['arbol', 'mapa', 'mental', 'venn', 'matriz', 'ishikawa', 'cronologia', 'continuo', 'embudo', 'escalera', 'niveles', 'iceberg'];
+const OWN = 'Elaboración propia.';
+
+// Twelve more diagram types, each with content from the manual.
+function MoreDiagrams() {
+  return (
+    <>
+      <Heading level={2}>Jerarquías y clasificaciones</Heading>
+      <Paragraph>
+        El árbol ordena una clasificación de lo general a lo particular (<FigRef to="arbol" />); el mapa conceptual
+        nombra en cada flecha la relación entre dos conceptos (<FigRef to="mapa" />), y el mapa mental reúne en torno
+        a un tema central las decisiones que dependen de él (<FigRef to="mental" />).
+      </Paragraph>
+      <Figure id="arbol" title="Tipos de evaluación del aprendizaje" note={OWN}>
+        <TreeDiagram root={{ label: 'Evaluación del aprendizaje', children: [
+          { label: 'Según su función', children: [
+            { label: 'Diagnóstica', detail: 'antes de enseñar' },
+            { label: 'Formativa', detail: 'durante el proceso' },
+            { label: 'Sumativa', detail: 'al cierre' },
+          ] },
+          { label: 'Según el agente', children: [
+            { label: 'Autoevaluación' },
+            { label: 'Coevaluación' },
+            { label: 'Heteroevaluación' },
+          ] },
+        ] }} />
+      </Figure>
+      <Figure id="mapa" title="Mapa conceptual del aprendizaje significativo" note={<>Elaboración propia a partir de <Cite narrative {...AUSUBEL} />.</>}>
+        <ConceptMap
+          nodes={[
+            { id: 'as', label: 'Aprendizaje significativo', level: 0 },
+            { id: 'cp', label: 'Conocimientos previos', level: 1 },
+            { id: 'mn', label: 'Material nuevo', detail: 'potencialmente significativo', level: 1 },
+            { id: 'di', label: 'Disposición', detail: 'del estudiante', level: 1 },
+            { id: 'ec', label: 'Estructura cognitiva', detail: 'más rica y organizada', level: 2 },
+          ]}
+          links={[
+            { from: 'as', to: 'cp', label: 'parte de' },
+            { from: 'as', to: 'mn', label: 'requiere' },
+            { from: 'as', to: 'di', label: 'exige' },
+            { from: 'mn', to: 'ec', label: 'se ancla en' },
+          ]}
+        />
+      </Figure>
+      <Figure id="mental" title="Decisiones al planificar una clase" note={OWN}>
+        <MindMap center="Planificar una clase" branches={[
+          { label: 'Objetivos', items: ['Verbo de Bloom', 'Uno por desempeño'] },
+          { label: 'Contenidos', items: ['Conceptos clave', 'Ideas previas'] },
+          { label: 'Actividades', items: ['Apertura', 'Desarrollo', 'Cierre'] },
+          { label: 'Recursos', items: ['Casos', 'Materiales'] },
+          { label: 'Evaluación', items: ['Criterios', 'Retroalimentación'] },
+        ]} />
+      </Figure>
+
+      <Heading level={2}>Comparaciones y relaciones</Heading>
+      <Paragraph>
+        El diagrama de Venn muestra qué comparten y en qué difieren tres perspectivas (<FigRef to="venn" />). La matriz
+        cruza dos dimensiones para ubicar cuatro situaciones (<FigRef to="matriz" />), y el diagrama de Ishikawa ordena
+        por categorías las causas posibles de un problema (<FigRef to="ishikawa" />).
+      </Paragraph>
+      <Figure id="venn" title="Tres perspectivas sobre el aprendizaje" note={OWN}>
+        <VennDiagram sets={['Constructivista', 'Sociocultural', 'Cognitiva']} regions={{
+          a: ['Ideas previas'],
+          b: ['Mediación', 'ZDP'],
+          c: ['Memoria de trabajo'],
+          ab: ['Rol activo'],
+          ac: ['Esquemas'],
+          bc: ['Andamiaje'],
+          abc: ['Aprender es construir'],
+        }} />
+      </Figure>
+      <Figure id="matriz" title="Exigencia de la tarea y apoyo del docente" note={<>Elaboración propia a partir de <Cite narrative {...VYGOTSKY} />.</>}>
+        <QuadrantMatrix
+          xAxis={{ label: 'Apoyo del docente', low: 'bajo', high: 'alto' }}
+          yAxis={{ label: 'Exigencia', low: 'baja', high: 'alta' }}
+          quadrants={[
+            { title: 'Frustración', text: 'la tarea supera lo que puede hacer solo' },
+            { title: 'Zona de desarrollo próximo', text: 'logra con ayuda lo que aún no logra solo' },
+            { title: 'Rutina', text: 'repite lo que ya domina' },
+            { title: 'Dependencia', text: 'la ayuda sobra y lo vuelve pasivo' },
+          ]}
+        />
+      </Figure>
+      <Figure id="ishikawa" title="Causas posibles de un bajo rendimiento en el primer parcial" note={OWN}>
+        <Fishbone effect="Bajo rendimiento en el primer parcial" causes={[
+          { category: 'Estudiante', items: ['Ideas previas erróneas', 'Estudio memorístico'] },
+          { category: 'Enseñanza', items: ['Exceso de contenido', 'Poca práctica guiada'] },
+          { category: 'Evaluación', items: ['Desalineada con objetivos', 'Sin instancias formativas'] },
+          { category: 'Contexto', items: ['Cursadas superpuestas', 'Trabajo de los estudiantes'] },
+        ]} />
+      </Figure>
+
+      <Heading level={2}>Secuencias, continuos y niveles</Heading>
+      <Paragraph>
+        La línea de tiempo sitúa hitos en orden (<FigRef to="cronologia" />); el continuo ubica estrategias entre dos
+        polos (<FigRef to="continuo" />); el embudo muestra cómo se concreta el currículo hasta llegar al aula
+        (<FigRef to="embudo" />), y la escalera, niveles que se apoyan unos en otros (<FigRef to="escalera" />).
+      </Paragraph>
+      <Figure id="cronologia" title="Algunos hitos de las teorías del aprendizaje" note={OWN}>
+        <Timeline events={[
+          { date: '1913', title: 'Conductismo', text: 'manifiesto de Watson' },
+          { date: '1956', title: 'Taxonomía de Bloom', text: 'objetivos por niveles' },
+          { date: '1968', title: 'Ausubel', text: 'aprendizaje significativo' },
+          { date: '1978', title: 'Vygotsky en inglés', text: 'Mind in Society' },
+          { date: '1988', title: 'Carga cognitiva', text: 'Sweller' },
+          { date: '1996', title: 'Alineamiento', text: 'Biggs' },
+          { date: '2001', title: 'Bloom revisada', text: 'dos dimensiones' },
+        ]} />
+      </Figure>
+      <Figure id="continuo" title="Estrategias entre la enseñanza centrada en el docente y en el estudiante" note={OWN}>
+        <Spectrum left="Centrada en el docente" right="Centrada en el estudiante" points={[
+          { label: 'Clase magistral', position: 0.08 },
+          { label: 'Exposición dialogada', position: 0.32, text: 'preguntas durante la clase' },
+          { label: 'Seminario', position: 0.58 },
+          { label: 'Aprendizaje basado en problemas', position: 0.8 },
+          { label: 'Proyecto autónomo', position: 0.95 },
+        ]} />
+      </Figure>
+      <Figure id="embudo" title="Del perfil de egreso a la actividad de clase" note={<>Elaboración propia a partir de <Cite narrative {...BIGGS} />.</>}>
+        <Funnel stages={[
+          { title: 'Perfil de egreso', text: 'lo que define a la titulación' },
+          { title: 'Competencias de la carrera' },
+          { title: 'Resultados de la asignatura' },
+          { title: 'Objetivos de la unidad' },
+          { title: 'Actividad de clase' },
+        ]} />
+      </Figure>
+      <Figure id="escalera" title="Niveles de la taxonomía de Bloom revisada" note={OWN}>
+        <Staircase steps={[
+          { title: 'Recordar', text: 'reconocer, evocar' },
+          { title: 'Comprender', text: 'explicar, resumir' },
+          { title: 'Aplicar', text: 'ejecutar, usar' },
+          { title: 'Analizar', text: 'comparar, organizar' },
+          { title: 'Evaluar', text: 'juzgar, criticar' },
+          { title: 'Crear', text: 'diseñar, producir' },
+        ]} />
+      </Figure>
+
+      <Heading level={2}>Contextos y capas</Heading>
+      <Paragraph>
+        Los círculos anidados muestran contextos que se contienen unos a otros (<FigRef to="niveles" />). El iceberg
+        separa lo que se ve de lo que lo sostiene sin verse (<FigRef to="iceberg" />).
+      </Paragraph>
+      <Figure id="niveles" title="Niveles de decisión que enmarcan una clase" note={OWN}>
+        <NestedCircles layers={[
+          { title: 'Aula', text: 'consignas, interacción, clima' },
+          { title: 'Asignatura', text: 'programa, cronograma, evaluación' },
+          { title: 'Carrera', text: 'plan de estudios y perfil' },
+          { title: 'Institución', text: 'reglamentos y recursos' },
+          { title: 'Sistema', text: 'normativa y acreditación' },
+        ]} />
+      </Figure>
+      <Figure id="iceberg" title="Currículo explícito y currículo oculto" note={OWN}>
+        <Iceberg visibleTitle="Currículo explícito" hiddenTitle="Currículo oculto"
+          visible={['Plan de estudios y programas', 'Horarios y correlatividades', 'Evaluaciones formales']}
+          hidden={['Expectativas que nadie enuncia', 'Normas de participación en clase', 'Lo que la evaluación premia de hecho', 'Creencias del docente sobre quién puede aprender']} />
+      </Figure>
+    </>
   );
 }

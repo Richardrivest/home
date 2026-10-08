@@ -1,4 +1,4 @@
-/* @ds-bundle: {"format":4,"namespace":"Didactica","components":[{"name":"Page"},{"name":"TitlePage"},{"name":"TableOfContents"},{"name":"ChapterOpener"},{"name":"BoxLegend"},{"name":"Heading"},{"name":"Paragraph"},{"name":"BulletList"},{"name":"Bibliography"},{"name":"Cite"},{"name":"Quote"},{"name":"BlockQuote"},{"name":"KeyPoints"},{"name":"Objectives"},{"name":"Important"},{"name":"CommonMistake"},{"name":"Classroom"},{"name":"ThinkFurther"},{"name":"SelfCheck"},{"name":"Activities"},{"name":"ReferencesBox"},{"name":"AlignmentTable"},{"name":"Box"},{"name":"Icon"},{"name":"DataTable"},{"name":"Figure"},{"name":"Numbering"},{"name":"FigRef"},{"name":"ConceptWeb"},{"name":"CycleDiagram"},{"name":"Pyramid"},{"name":"ProcessFlow"},{"name":"GlossaryEntry"},{"name":"Reference"},{"name":"Term"},{"name":"Glossary"}]} */
+/* @ds-bundle: {"format":4,"namespace":"Didactica","components":[{"name":"Page"},{"name":"TitlePage"},{"name":"TableOfContents"},{"name":"ChapterOpener"},{"name":"BoxLegend"},{"name":"Heading"},{"name":"Paragraph"},{"name":"BulletList"},{"name":"Bibliography"},{"name":"Cite"},{"name":"Quote"},{"name":"BlockQuote"},{"name":"KeyPoints"},{"name":"Objectives"},{"name":"Important"},{"name":"CommonMistake"},{"name":"Classroom"},{"name":"ThinkFurther"},{"name":"SelfCheck"},{"name":"Activities"},{"name":"ReferencesBox"},{"name":"AlignmentTable"},{"name":"Box"},{"name":"Icon"},{"name":"DataTable"},{"name":"Figure"},{"name":"Numbering"},{"name":"FigRef"},{"name":"ConceptWeb"},{"name":"CycleDiagram"},{"name":"Pyramid"},{"name":"ProcessFlow"},{"name":"TreeDiagram"},{"name":"ConceptMap"},{"name":"MindMap"},{"name":"VennDiagram"},{"name":"QuadrantMatrix"},{"name":"Timeline"},{"name":"Fishbone"},{"name":"Spectrum"},{"name":"Funnel"},{"name":"Staircase"},{"name":"NestedCircles"},{"name":"Iceberg"},{"name":"GlossaryEntry"},{"name":"Reference"},{"name":"Term"},{"name":"Glossary"}]} */
 window.Didactica = (() => {
   var __create = Object.create;
   var __defProp = Object.defineProperty;
@@ -53,31 +53,43 @@ window.Didactica = (() => {
     Cite: () => Cite,
     Classroom: () => Classroom,
     CommonMistake: () => CommonMistake,
+    ConceptMap: () => ConceptMap,
     ConceptWeb: () => ConceptWeb,
     CycleDiagram: () => CycleDiagram,
     DataTable: () => DataTable,
     FigRef: () => FigRef,
     Figure: () => Figure,
+    Fishbone: () => Fishbone,
+    Funnel: () => Funnel,
     Glossary: () => Glossary,
     GlossaryEntry: () => GlossaryEntry,
     Heading: () => Heading,
+    Iceberg: () => Iceberg,
     Icon: () => Icon,
     Important: () => Important,
     KeyPoints: () => KeyPoints,
+    MindMap: () => MindMap,
+    NestedCircles: () => NestedCircles,
     Numbering: () => Numbering,
     Objectives: () => Objectives,
     Page: () => Page,
     Paragraph: () => Paragraph,
     ProcessFlow: () => ProcessFlow,
     Pyramid: () => Pyramid,
+    QuadrantMatrix: () => QuadrantMatrix,
     Quote: () => Quote,
     Reference: () => Reference,
     ReferencesBox: () => ReferencesBox,
     SelfCheck: () => SelfCheck,
+    Spectrum: () => Spectrum,
+    Staircase: () => Staircase,
     TableOfContents: () => TableOfContents,
     Term: () => Term,
     ThinkFurther: () => ThinkFurther,
+    Timeline: () => Timeline,
     TitlePage: () => TitlePage,
+    TreeDiagram: () => TreeDiagram,
+    VennDiagram: () => VennDiagram,
     authorList: () => authorList2,
     bloomLevel: () => bloomLevel,
     checkAlignment: () => checkAlignment,
@@ -752,13 +764,13 @@ window.Didactica = (() => {
     const long = nodes.filter((nd) => wrap(nd.label, 18).length > 3).map((nd) => nd.label);
     const n = nodes.length;
     const rows = nodes.map((nd) => wrap(nd.label, 18).length + (nd.detail ? wrap(nd.detail, 22).length : 0));
-    const H2 = Math.max(360, 260 + Math.max(...rows, 1) * LH * 2);
-    const cx = W / 2, cy = H2 / 2, rx = 250, ry = H2 / 2 - 30 - Math.max(...rows, 1) * LH / 2;
+    const H6 = Math.max(360, 260 + Math.max(...rows, 1) * LH * 2);
+    const cx = W / 2, cy = H6 / 2, rx = 250, ry = H6 / 2 - 30 - Math.max(...rows, 1) * LH / 2;
     const pos = nodes.map((_, i) => {
       const a = -Math.PI / 2 + 2 * Math.PI * i / n;
       return [cx + rx * Math.cos(a), cy + ry * Math.sin(a)];
     });
-    return /* @__PURE__ */ import_react17.default.createElement("div", { className: "du-diagram-wrap" }, /* @__PURE__ */ import_react17.default.createElement("svg", { className: "du-diagram", viewBox: `0 0 ${W} ${H2}`, role: "img", "aria-label": label || `Red conceptual: ${center}`, "data-warn": long.length ? `label-long: ${long.join(" | ")}` : void 0 }, pos.map(([x, y], i) => /* @__PURE__ */ import_react17.default.createElement("line", { key: i, className: "du-dg-edge", x1: cx, y1: cy, x2: x, y2: y })), /* @__PURE__ */ import_react17.default.createElement(Node, { x: cx, y: cy, lines: wrap(center, 16), strong: true }), nodes.map((nd, i) => /* @__PURE__ */ import_react17.default.createElement(Node, { key: i, x: pos[i][0], y: pos[i][1], lines: wrap(nd.label, 18), detail: nd.detail ? wrap(nd.detail, 22) : [] })), nodes.map((nd, i) => nd.relation ? /* @__PURE__ */ import_react17.default.createElement("g", { key: `r${i}` }, /* @__PURE__ */ import_react17.default.createElement("rect", { className: "du-dg-relation-bg", x: (cx + pos[i][0]) / 2 - textWidth(nd.relation, 14) / 2 - 4, y: (cy + pos[i][1]) / 2 - 10, width: textWidth(nd.relation, 14) + 8, height: 18 }), /* @__PURE__ */ import_react17.default.createElement("text", { className: "du-dg-relation", x: (cx + pos[i][0]) / 2, y: (cy + pos[i][1]) / 2 + 3, textAnchor: "middle" }, nd.relation)) : null)), /* @__PURE__ */ import_react17.default.createElement("div", { className: "du-diagram-list" }, /* @__PURE__ */ import_react17.default.createElement("p", { className: "du-diagram-list__center diagram-title" }, center), /* @__PURE__ */ import_react17.default.createElement("ul", null, nodes.map((nd, i) => /* @__PURE__ */ import_react17.default.createElement("li", { key: i, className: "diagram-label" }, nd.relation ? /* @__PURE__ */ import_react17.default.createElement("span", { className: "du-diagram-list__rel" }, nd.relation, " ") : null, /* @__PURE__ */ import_react17.default.createElement("strong", null, nd.label), nd.detail ? /* @__PURE__ */ import_react17.default.createElement("span", { className: "du-diagram-list__detail" }, " \xB7 ", nd.detail) : null)))));
+    return /* @__PURE__ */ import_react17.default.createElement("div", { className: "du-diagram-wrap" }, /* @__PURE__ */ import_react17.default.createElement("svg", { className: "du-diagram", viewBox: `0 0 ${W} ${H6}`, role: "img", "aria-label": label || `Red conceptual: ${center}`, "data-warn": long.length ? `label-long: ${long.join(" | ")}` : void 0 }, pos.map(([x, y], i) => /* @__PURE__ */ import_react17.default.createElement("line", { key: i, className: "du-dg-edge", x1: cx, y1: cy, x2: x, y2: y })), /* @__PURE__ */ import_react17.default.createElement(Node, { x: cx, y: cy, lines: wrap(center, 16), strong: true }), nodes.map((nd, i) => /* @__PURE__ */ import_react17.default.createElement(Node, { key: i, x: pos[i][0], y: pos[i][1], lines: wrap(nd.label, 18), detail: nd.detail ? wrap(nd.detail, 22) : [] })), nodes.map((nd, i) => nd.relation ? /* @__PURE__ */ import_react17.default.createElement("g", { key: `r${i}` }, /* @__PURE__ */ import_react17.default.createElement("rect", { className: "du-dg-relation-bg", x: (cx + pos[i][0]) / 2 - textWidth(nd.relation, 14) / 2 - 4, y: (cy + pos[i][1]) / 2 - 10, width: textWidth(nd.relation, 14) + 8, height: 18 }), /* @__PURE__ */ import_react17.default.createElement("text", { className: "du-dg-relation", x: (cx + pos[i][0]) / 2, y: (cy + pos[i][1]) / 2 + 3, textAnchor: "middle" }, nd.relation)) : null)), /* @__PURE__ */ import_react17.default.createElement("div", { className: "du-diagram-list" }, /* @__PURE__ */ import_react17.default.createElement("p", { className: "du-diagram-list__center diagram-title" }, center), /* @__PURE__ */ import_react17.default.createElement("ul", null, nodes.map((nd, i) => /* @__PURE__ */ import_react17.default.createElement("li", { key: i, className: "diagram-label" }, nd.relation ? /* @__PURE__ */ import_react17.default.createElement("span", { className: "du-diagram-list__rel" }, nd.relation, " ") : null, /* @__PURE__ */ import_react17.default.createElement("strong", null, nd.label), nd.detail ? /* @__PURE__ */ import_react17.default.createElement("span", { className: "du-diagram-list__detail" }, " \xB7 ", nd.detail) : null)))));
   }
 
   // src/components/CycleDiagram.jsx
@@ -795,11 +807,11 @@ window.Didactica = (() => {
   var PW = 330;
   function Pyramid({ levels, label }) {
     const n = levels.length;
-    const H2 = n * LEVEL_H + 8;
+    const H6 = n * LEVEL_H + 8;
     const cx = PW / 2 + 4;
     const halfAt = (y) => PW / 2 * (y / (n * LEVEL_H));
     const longApex = levels[0] && wrap(levels[0].title, 10).length > 1;
-    return /* @__PURE__ */ import_react19.default.createElement("div", { className: "du-diagram-wrap" }, /* @__PURE__ */ import_react19.default.createElement("svg", { className: "du-diagram", viewBox: `0 0 ${W3} ${H2}`, role: "img", "aria-label": label || `Pir\xE1mide: ${levels.map((l) => l.title).join(", ")}`, "data-warn": longApex ? `label-long: ${levels[0].title}` : void 0 }, levels.map((lv, i) => {
+    return /* @__PURE__ */ import_react19.default.createElement("div", { className: "du-diagram-wrap" }, /* @__PURE__ */ import_react19.default.createElement("svg", { className: "du-diagram", viewBox: `0 0 ${W3} ${H6}`, role: "img", "aria-label": label || `Pir\xE1mide: ${levels.map((l) => l.title).join(", ")}`, "data-warn": longApex ? `label-long: ${levels[0].title}` : void 0 }, levels.map((lv, i) => {
       const y1 = i * LEVEL_H, y2 = (i + 1) * LEVEL_H - 4;
       const pts = [[cx - halfAt(y1), y1 + 4], [cx + halfAt(y1), y1 + 4], [cx + halfAt(y2 + 4), y2 + 4], [cx - halfAt(y2 + 4), y2 + 4]];
       const ramp = Math.min(i + 1 + Math.max(0, 4 - n), 4);
@@ -833,6 +845,523 @@ window.Didactica = (() => {
   }
   function Term({ to, children }) {
     return /* @__PURE__ */ import_react22.default.createElement("a", { className: "du-term", href: `#gl-${to}` }, children);
+  }
+
+  // src/components/diagrams/TreeDiagram.jsx
+  var import_react24 = __toESM(require_react(), 1);
+
+  // src/components/diagrams/parts.jsx
+  var import_react23 = __toESM(require_react(), 1);
+  var LH4 = 18;
+  function DiagramFrame({ width, height, label, warn, list, children }) {
+    return /* @__PURE__ */ import_react23.default.createElement("div", { className: "du-diagram-wrap" }, /* @__PURE__ */ import_react23.default.createElement("svg", { className: "du-diagram", viewBox: `0 0 ${width} ${height}`, role: "img", "aria-label": label, "data-warn": warn || void 0 }, children), /* @__PURE__ */ import_react23.default.createElement("div", { className: "du-diagram-list" }, list));
+  }
+  function useArrow() {
+    const id = `ar${(0, import_react23.useId)().replace(/:/g, "")}`;
+    const defs = /* @__PURE__ */ import_react23.default.createElement("defs", null, /* @__PURE__ */ import_react23.default.createElement("marker", { id, viewBox: "0 0 10 10", refX: "9", refY: "5", markerWidth: "7", markerHeight: "7", orient: "auto-start-reverse" }, /* @__PURE__ */ import_react23.default.createElement("path", { className: "du-dg-arrowhead", d: "M 0 0 L 10 5 L 0 10 z" })));
+    return [defs, `url(#${id})`];
+  }
+  function boxSize(title, text, chars = 16, minW = 90) {
+    const t = wrap(title, chars);
+    const d = text ? wrap(text, chars + 4) : [];
+    const w = Math.max(minW, ...t.map((l) => textWidth(l, 16)), ...d.map((l) => textWidth(l, 14))) + 24;
+    return { t, d, w, h: (t.length + d.length) * LH4 + 16 };
+  }
+  function NodeBox({ x, y, title, text, strong = false, chars = 16, minW, className = "" }) {
+    const { t, d, w, h } = boxSize(title, text, chars, minW);
+    const top = y - h / 2;
+    return /* @__PURE__ */ import_react23.default.createElement("g", { className }, /* @__PURE__ */ import_react23.default.createElement("rect", { className: strong ? "du-dg-node du-dg-node--strong" : "du-dg-node", x: x - w / 2, y: top, width: w, height: h }), t.map((l, i) => /* @__PURE__ */ import_react23.default.createElement("text", { key: i, className: `du-dg-text diagram-title${strong ? " du-dg-text--on-strong" : ""}`, x, y: top + 8 + LH4 * (i + 0.75), textAnchor: "middle" }, l)), d.map((l, i) => /* @__PURE__ */ import_react23.default.createElement("text", { key: `d${i}`, className: `du-dg-text diagram-label${strong ? " du-dg-text--on-strong" : ""}`, x, y: top + 8 + LH4 * (t.length + i + 0.75), textAnchor: "middle" }, l)));
+  }
+  function Lines({ x, y, lines, anchor = "start", className = "diagram-label", muted = false, title = false }) {
+    const cls = title && !className.includes("diagram-title") ? `diagram-title ${className.replace("diagram-label", "")}`.trim() : className;
+    return lines.map((l, i) => /* @__PURE__ */ import_react23.default.createElement("text", { key: i, className: `du-dg-text ${cls}${muted ? " du-dg-text--muted" : ""}`, x, y: y + i * LH4, textAnchor: anchor }, l));
+  }
+  function EdgeLabel({ x, y, text }) {
+    const w = textWidth(text, 14) + 10;
+    return /* @__PURE__ */ import_react23.default.createElement("g", null, /* @__PURE__ */ import_react23.default.createElement("rect", { className: "du-dg-relation-bg", x: x - w / 2, y: y - 11, width: w, height: 20 }), /* @__PURE__ */ import_react23.default.createElement("text", { className: "du-dg-relation", x, y: y + 4, textAnchor: "middle" }, text));
+  }
+  var rampFor = (i, n, darkFirst = true) => {
+    const k = n <= 1 ? 1 : Math.round((darkFirst ? i : n - 1 - i) * 3 / (n - 1)) + 1;
+    return Math.min(4, Math.max(1, k));
+  };
+
+  // src/components/diagrams/TreeDiagram.jsx
+  var SLOT = 150;
+  var LEVEL = 110;
+  var listOf = (n) => /* @__PURE__ */ import_react24.default.createElement("li", { key: n.label }, /* @__PURE__ */ import_react24.default.createElement("strong", null, n.label), n.detail ? /* @__PURE__ */ import_react24.default.createElement("span", { className: "du-diagram-list__detail" }, " \xB7 ", n.detail) : null, n.children && n.children.length ? /* @__PURE__ */ import_react24.default.createElement("ul", null, n.children.map(listOf)) : null);
+  function TreeDiagram({ root, label, direction = "auto" }) {
+    let leaf = 0;
+    let maxDepth = 0;
+    const place = (node, depth) => {
+      maxDepth = Math.max(maxDepth, depth);
+      const kids = (node.children || []).map((c) => place(c, depth + 1));
+      const x = kids.length ? (kids[0].x + kids[kids.length - 1].x) / 2 : (leaf++ + 0.5) * SLOT;
+      return { ...node, x, depth, kids, size: boxSize(node.label, node.detail, 14) };
+    };
+    const tree = place(root, 0);
+    const across = direction === "right" || direction === "auto" && leaf * SLOT > 680;
+    if (across) return /* @__PURE__ */ import_react24.default.createElement(TreeAcross, { tree, leaves: leaf, depth: maxDepth, root, label, listOf });
+    const W14 = Math.max(680, leaf * SLOT);
+    const off = (W14 - leaf * SLOT) / 2;
+    const H6 = (maxDepth + 1) * LEVEL + 10;
+    const nodes = [];
+    const edges = [];
+    const walk = (n) => {
+      const y = 50 + n.depth * LEVEL;
+      nodes.push(/* @__PURE__ */ import_react24.default.createElement(NodeBox, { key: nodes.length, x: n.x + off, y, title: n.label, text: n.detail, strong: n.depth === 0, chars: 14 }));
+      for (const k of n.kids) {
+        const y2 = 50 + k.depth * LEVEL;
+        const mid = (y + y2) / 2;
+        edges.push(/* @__PURE__ */ import_react24.default.createElement("path", { key: edges.length, className: "du-dg-edge", d: `M ${n.x + off} ${y + n.size.h / 2} V ${mid} H ${k.x + off} V ${y2 - k.size.h / 2}` }));
+        walk(k);
+      }
+    };
+    walk(tree);
+    return /* @__PURE__ */ import_react24.default.createElement(
+      DiagramFrame,
+      {
+        width: W14,
+        height: H6,
+        label: label || `Jerarqu\xEDa: ${root.label}`,
+        warn: maxDepth > 3 || leaf > 8 ? `label-long: \xE1rbol de ${leaf} hojas y ${maxDepth + 1} niveles; div\xEDdalo` : null,
+        list: /* @__PURE__ */ import_react24.default.createElement("ul", { className: "du-diagram-list__tree" }, listOf(root))
+      },
+      edges,
+      nodes
+    );
+  }
+  function TreeAcross({ tree, depth, root, label }) {
+    const W14 = 680;
+    const col = W14 / (depth + 1);
+    const chars = Math.max(10, Math.floor((col - 40) / 8.5));
+    let y = 10;
+    const nodes = [];
+    const edges = [];
+    const place = (n) => {
+      const size = boxSize(n.label, n.detail, chars);
+      const kids = (n.children || []).map(place);
+      let cy;
+      if (kids.length) cy = (kids[0].cy + kids[kids.length - 1].cy) / 2;
+      else {
+        cy = y + size.h / 2;
+        y += size.h + 14;
+      }
+      return { ...n, size, kids, cy };
+    };
+    const t = place(tree);
+    const H6 = y;
+    const walk = (n, d) => {
+      const cx = col * d + col / 2;
+      nodes.push(/* @__PURE__ */ import_react24.default.createElement(NodeBox, { key: nodes.length, x: cx, y: n.cy, title: n.label, text: n.detail, strong: d === 0, chars }));
+      for (const k of n.kids) {
+        const kx = col * (d + 1) + col / 2;
+        const mid = (cx + n.size.w / 2 + kx - k.size.w / 2) / 2;
+        edges.push(/* @__PURE__ */ import_react24.default.createElement("path", { key: edges.length, className: "du-dg-edge", d: `M ${cx + n.size.w / 2} ${n.cy} H ${mid} V ${k.cy} H ${kx - k.size.w / 2}` }));
+        walk(k, d + 1);
+      }
+    };
+    walk(t, 0);
+    return /* @__PURE__ */ import_react24.default.createElement(
+      DiagramFrame,
+      {
+        width: W14,
+        height: H6,
+        label: label || `Jerarqu\xEDa: ${root.label}`,
+        warn: depth > 3 ? `label-long: \xE1rbol de ${depth + 1} niveles; div\xEDdalo` : null,
+        list: /* @__PURE__ */ import_react24.default.createElement("ul", { className: "du-diagram-list__tree" }, listOf(root))
+      },
+      edges,
+      nodes
+    );
+  }
+
+  // src/components/diagrams/ConceptMap.jsx
+  var import_react25 = __toESM(require_react(), 1);
+  var W4 = 680;
+  var ROW = 130;
+  function ConceptMap({ nodes, links, label }) {
+    const [defs, arrow] = useArrow();
+    const levels = [...new Set(nodes.map((n) => n.level ?? 0))].sort((a, b) => a - b);
+    const pos = {};
+    levels.forEach((lv, r) => {
+      const row = nodes.filter((n) => (n.level ?? 0) === lv);
+      row.forEach((n, i) => {
+        pos[n.id] = { x: W4 * (i + 1) / (row.length + 1), y: 50 + r * ROW, ...boxSize(n.label, n.detail, 14), n };
+      });
+    });
+    const H6 = 50 + (levels.length - 1) * ROW + 60;
+    const crowded = levels.some((lv) => nodes.filter((n) => (n.level ?? 0) === lv).length > 4);
+    const byId = Object.fromEntries(nodes.map((n) => [n.id, n]));
+    return /* @__PURE__ */ import_react25.default.createElement(
+      DiagramFrame,
+      {
+        width: W4,
+        height: H6,
+        label: label || "Mapa conceptual",
+        warn: crowded ? "label-long: m\xE1s de 4 conceptos en un nivel" : null,
+        list: /* @__PURE__ */ import_react25.default.createElement("ul", null, links.map((l, i) => /* @__PURE__ */ import_react25.default.createElement("li", { key: i }, /* @__PURE__ */ import_react25.default.createElement("strong", null, byId[l.from]?.label), " ", /* @__PURE__ */ import_react25.default.createElement("span", { className: "du-diagram-list__rel" }, "\u2014 ", l.label, " \u2192"), " ", /* @__PURE__ */ import_react25.default.createElement("strong", null, byId[l.to]?.label))))
+      },
+      defs,
+      links.map((l, i) => {
+        const a = pos[l.from], b = pos[l.to];
+        if (!a || !b) return null;
+        const same = a.y === b.y;
+        const x1 = same ? a.x + Math.sign(b.x - a.x) * a.w / 2 : a.x, y1 = same ? a.y : a.y + Math.sign(b.y - a.y) * a.h / 2;
+        const x2 = same ? b.x - Math.sign(b.x - a.x) * b.w / 2 : b.x, y2 = same ? b.y : b.y - Math.sign(b.y - a.y) * b.h / 2;
+        return /* @__PURE__ */ import_react25.default.createElement("line", { key: i, className: "du-dg-edge", x1, y1, x2, y2, markerEnd: arrow });
+      }),
+      nodes.map((n) => /* @__PURE__ */ import_react25.default.createElement(NodeBox, { key: n.id, x: pos[n.id].x, y: pos[n.id].y, title: n.label, text: n.detail, strong: (n.level ?? 0) === levels[0], chars: 14 })),
+      links.map((l, i) => {
+        const a = pos[l.from], b = pos[l.to];
+        return a && b && l.label ? /* @__PURE__ */ import_react25.default.createElement(EdgeLabel, { key: `l${i}`, x: (a.x + b.x) / 2, y: (a.y + b.y) / 2, text: l.label }) : null;
+      })
+    );
+  }
+
+  // src/components/diagrams/MindMap.jsx
+  var import_react26 = __toESM(require_react(), 1);
+  var W5 = 680;
+  var CX = 340;
+  function MindMap({ center, branches, label }) {
+    const right = branches.slice(0, Math.ceil(branches.length / 2));
+    const left = branches.slice(Math.ceil(branches.length / 2));
+    const blockH = (b) => Math.max(boxSize(b.label, null, 14).h, (b.items || []).flatMap((it) => wrap(it, 15)).length * LH4 + (b.items || []).length * 4) + 24;
+    const H6 = Math.max(260, Math.max(right.reduce((a, b) => a + blockH(b), 0), left.reduce((a, b) => a + blockH(b), 0)) + 20);
+    const CY2 = H6 / 2;
+    const side = (list, dir) => {
+      const total = list.reduce((a, b) => a + blockH(b), 0);
+      let y = CY2 - total / 2;
+      return list.map((b, i) => {
+        const h = blockH(b);
+        const by = y + h / 2;
+        y += h;
+        const bx = CX + dir * 132;
+        const bw = boxSize(b.label, null, 14, 96).w;
+        const lines = (b.items || []).map((it) => wrap(it, 15));
+        const count = lines.flat().length + (lines.length - 1) * 0.25;
+        let ty = by - count * LH4 / 2 + 13;
+        const tx = CX + dir * (132 + bw / 2 + 22);
+        return /* @__PURE__ */ import_react26.default.createElement("g", { key: `${dir}${i}` }, /* @__PURE__ */ import_react26.default.createElement("path", { className: "du-dg-edge", d: `M ${CX + dir * 60} ${CY2} C ${CX + dir * 90} ${CY2}, ${bx - dir * (bw / 2 + 30)} ${by}, ${bx - dir * bw / 2} ${by}` }), lines.length ? /* @__PURE__ */ import_react26.default.createElement("line", { className: "du-dg-leader", x1: bx + dir * bw / 2, y1: by, x2: tx - dir * 8, y2: by }) : null, /* @__PURE__ */ import_react26.default.createElement(NodeBox, { x: bx, y: by, title: b.label, chars: 14, minW: 96 }), lines.map((ls, j) => {
+          const el = /* @__PURE__ */ import_react26.default.createElement(Lines, { key: j, x: tx, y: ty, lines: ls.map((l, k) => k === 0 ? `\u2022 ${l}` : `  ${l}`), anchor: dir > 0 ? "start" : "end" });
+          ty += ls.length * LH4 + 4;
+          return el;
+        }));
+      });
+    };
+    return /* @__PURE__ */ import_react26.default.createElement(
+      DiagramFrame,
+      {
+        width: W5,
+        height: H6,
+        label: label || `Mapa mental: ${center}`,
+        list: /* @__PURE__ */ import_react26.default.createElement(import_react26.default.Fragment, null, /* @__PURE__ */ import_react26.default.createElement("p", { className: "du-diagram-list__center diagram-title" }, center), /* @__PURE__ */ import_react26.default.createElement("ul", null, branches.map((b, i) => /* @__PURE__ */ import_react26.default.createElement("li", { key: i }, /* @__PURE__ */ import_react26.default.createElement("strong", null, b.label), b.items && b.items.length ? /* @__PURE__ */ import_react26.default.createElement("ul", null, b.items.map((it, j) => /* @__PURE__ */ import_react26.default.createElement("li", { key: j }, it))) : null))))
+      },
+      side(right, 1),
+      side(left, -1),
+      /* @__PURE__ */ import_react26.default.createElement(NodeBox, { x: CX, y: CY2, title: center, strong: true, chars: 12, minW: 110 })
+    );
+  }
+
+  // src/components/diagrams/VennDiagram.jsx
+  var import_react27 = __toESM(require_react(), 1);
+  var SETS2 = { W: 680, H: 380, c: [[265, 200], [415, 200]], r: 150, at: { a: [185, 200], b: [495, 200], ab: [340, 200] }, labels: [[200, 34], [480, 34]] };
+  var SETS3 = { W: 680, H: 470, c: [[280, 190], [400, 190], [340, 295]], r: 130, at: { a: [225, 160], b: [455, 160], c: [340, 360], ab: [340, 138], ac: [256, 270], bc: [424, 270], abc: [340, 222] }, labels: [[175, 44], [505, 44], [340, 456]] };
+  var NAMES = { a: 0, b: 1, c: 2 };
+  function VennDiagram({ sets, regions = {}, label }) {
+    const L = sets.length === 3 ? SETS3 : SETS2;
+    const chars = sets.length === 3 ? 12 : 16;
+    const regionName = (k) => k.length === 1 ? `Solo ${sets[NAMES[k]]}` : k.split("").map((c) => sets[NAMES[c]]).join(" y ");
+    return /* @__PURE__ */ import_react27.default.createElement(
+      DiagramFrame,
+      {
+        width: L.W,
+        height: L.H,
+        label: label || `Diagrama de Venn: ${sets.join(", ")}`,
+        list: /* @__PURE__ */ import_react27.default.createElement("ul", null, Object.keys(L.at).filter((k) => regions[k] && regions[k].length).map((k) => /* @__PURE__ */ import_react27.default.createElement("li", { key: k }, /* @__PURE__ */ import_react27.default.createElement("strong", null, regionName(k), ":"), " ", regions[k].join("; "))))
+      },
+      L.c.slice(0, sets.length).map(([x, y], i) => /* @__PURE__ */ import_react27.default.createElement("circle", { key: i, className: `du-dg-venn du-dg-venn--${i + 1}`, cx: x, cy: y, r: L.r })),
+      sets.map((s, i) => /* @__PURE__ */ import_react27.default.createElement(Lines, { key: i, x: L.labels[i][0], y: L.labels[i][1], lines: wrap(s, 22), anchor: "middle", title: true })),
+      Object.entries(L.at).map(([k, [x, y]]) => {
+        const items = (regions[k] || []).flatMap((it) => wrap(it, chars));
+        return items.length ? /* @__PURE__ */ import_react27.default.createElement(Lines, { key: k, x, y: y - (items.length - 1) * LH4 / 2 + 5, lines: items, anchor: "middle" }) : null;
+      })
+    );
+  }
+
+  // src/components/diagrams/QuadrantMatrix.jsx
+  var import_react28 = __toESM(require_react(), 1);
+  var W6 = 680;
+  var H2 = 460;
+  var X0 = 110;
+  var X1 = 660;
+  var Y0 = 20;
+  var Y1 = 400;
+  function QuadrantMatrix({ xAxis, yAxis, quadrants, label }) {
+    const mx = (X0 + X1) / 2, my = (Y0 + Y1) / 2;
+    const cells = [[X0, Y0], [mx, Y0], [X0, my], [mx, my]];
+    const names = [`${yAxis.high} \xB7 ${xAxis.low}`, `${yAxis.high} \xB7 ${xAxis.high}`, `${yAxis.low} \xB7 ${xAxis.low}`, `${yAxis.low} \xB7 ${xAxis.high}`];
+    return /* @__PURE__ */ import_react28.default.createElement(
+      DiagramFrame,
+      {
+        width: W6,
+        height: H2,
+        label: label || `Matriz: ${yAxis.label} por ${xAxis.label}`,
+        list: /* @__PURE__ */ import_react28.default.createElement("ul", null, quadrants.map((q, i) => /* @__PURE__ */ import_react28.default.createElement("li", { key: i }, /* @__PURE__ */ import_react28.default.createElement("span", { className: "du-diagram-list__rel" }, names[i], ":"), " ", /* @__PURE__ */ import_react28.default.createElement("strong", null, q.title), q.text ? /* @__PURE__ */ import_react28.default.createElement("span", { className: "du-diagram-list__detail" }, " \xB7 ", q.text) : null)))
+      },
+      cells.map(([x, y], i) => {
+        const q = quadrants[i] || {};
+        const t = wrap(q.title || "", 22);
+        const d = q.text ? wrap(q.text, 30) : [];
+        return /* @__PURE__ */ import_react28.default.createElement("g", { key: i }, /* @__PURE__ */ import_react28.default.createElement("rect", { className: `du-dg-quad du-dg-quad--${i === 1 ? "strong" : "plain"}`, x: x + 3, y: y + 3, width: (X1 - X0) / 2 - 6, height: (Y1 - Y0) / 2 - 6 }), /* @__PURE__ */ import_react28.default.createElement(Lines, { x: x + (X1 - X0) / 4, y: y + (Y1 - Y0) / 4 - (t.length + d.length - 1) * LH4 / 2 + 5, lines: t, anchor: "middle", title: true }), /* @__PURE__ */ import_react28.default.createElement(Lines, { x: x + (X1 - X0) / 4, y: y + (Y1 - Y0) / 4 - (t.length + d.length - 1) * LH4 / 2 + 5 + t.length * LH4, lines: d, anchor: "middle", muted: true }));
+      }),
+      /* @__PURE__ */ import_react28.default.createElement("line", { className: "du-dg-axis", x1: X0, y1: Y1, x2: X1, y2: Y1 }),
+      /* @__PURE__ */ import_react28.default.createElement("line", { className: "du-dg-axis", x1: X0, y1: Y1, x2: X0, y2: Y0 }),
+      /* @__PURE__ */ import_react28.default.createElement(Lines, { x: X0, y: Y1 + 22, lines: [xAxis.low], anchor: "start", muted: true }),
+      /* @__PURE__ */ import_react28.default.createElement(Lines, { x: X1, y: Y1 + 22, lines: [xAxis.high], anchor: "end", muted: true }),
+      /* @__PURE__ */ import_react28.default.createElement(Lines, { x: mx, y: Y1 + 46, lines: [`${xAxis.label} \u2192`], anchor: "middle", title: true }),
+      /* @__PURE__ */ import_react28.default.createElement(Lines, { x: X0 - 10, y: Y1 - 4, lines: [yAxis.low], anchor: "end", muted: true }),
+      /* @__PURE__ */ import_react28.default.createElement(Lines, { x: X0 - 10, y: Y0 + 14, lines: [yAxis.high], anchor: "end", muted: true }),
+      /* @__PURE__ */ import_react28.default.createElement("text", { className: "du-dg-text diagram-title", x: 30, y: my, textAnchor: "middle", transform: `rotate(-90 30 ${my})` }, `${yAxis.label} \u2192`)
+    );
+  }
+
+  // src/components/diagrams/Timeline.jsx
+  var import_react29 = __toESM(require_react(), 1);
+  var W7 = 680;
+  var INSET = 82;
+  function Timeline({ events, label }) {
+    const n = events.length;
+    const x = (i) => n === 1 ? W7 / 2 : INSET + i * (W7 - 2 * INSET) / (n - 1);
+    const chars = Math.min(18, Math.max(12, Math.floor((W7 - 2 * INSET) / Math.max(1, n - 1) * 1.7 / 7.5)));
+    const lines = (e) => wrap(e.title, chars).length + (e.text ? wrap(e.text, chars + 2).length : 0);
+    const most = (k) => Math.max(1, ...events.filter((_, i) => i % 2 === k).map(lines));
+    const AXIS = 34 + most(0) * LH4 + 34;
+    const H6 = AXIS + 56 + most(1) * LH4;
+    return /* @__PURE__ */ import_react29.default.createElement(
+      DiagramFrame,
+      {
+        width: W7,
+        height: H6,
+        label: label || "L\xEDnea de tiempo",
+        warn: n > 8 ? "label-long: m\xE1s de 8 hitos; divida la l\xEDnea de tiempo" : null,
+        list: /* @__PURE__ */ import_react29.default.createElement("ol", { className: "du-diagram-list__timeline" }, events.map((e, i) => /* @__PURE__ */ import_react29.default.createElement("li", { key: i }, /* @__PURE__ */ import_react29.default.createElement("strong", null, e.date), " \xB7 ", e.title, e.text ? /* @__PURE__ */ import_react29.default.createElement("span", { className: "du-diagram-list__detail" }, " \u2014 ", e.text) : null)))
+      },
+      /* @__PURE__ */ import_react29.default.createElement("line", { className: "du-dg-edge", x1: 20, y1: AXIS, x2: W7 - 20, y2: AXIS }),
+      events.map((e, i) => {
+        const up = i % 2 === 0;
+        const t = wrap(e.title, chars);
+        const d = e.text ? wrap(e.text, chars + 2) : [];
+        const block = [...t, ...d].length;
+        const y0 = up ? AXIS - 34 - (block - 1) * LH4 : AXIS + 56;
+        return /* @__PURE__ */ import_react29.default.createElement("g", { key: i }, /* @__PURE__ */ import_react29.default.createElement("line", { className: "du-dg-leader", x1: x(i), y1: AXIS, x2: x(i), y2: up ? AXIS - 28 : AXIS + 28 }), /* @__PURE__ */ import_react29.default.createElement("circle", { className: "du-dg-dot", cx: x(i), cy: AXIS, r: 7 }), /* @__PURE__ */ import_react29.default.createElement("text", { className: "du-dg-text diagram-title du-dg-date", x: x(i), y: up ? AXIS + 26 : AXIS - 16, textAnchor: "middle" }, e.date), /* @__PURE__ */ import_react29.default.createElement(Lines, { x: x(i), y: y0, lines: t, anchor: "middle", title: true }), /* @__PURE__ */ import_react29.default.createElement(Lines, { x: x(i), y: y0 + t.length * LH4, lines: d, anchor: "middle", muted: true }));
+      })
+    );
+  }
+
+  // src/components/diagrams/Fishbone.jsx
+  var import_react30 = __toESM(require_react(), 1);
+  var W8 = 680;
+  var H3 = 440;
+  var SPINE = 220;
+  var EFFECT_X = 540;
+  function Fishbone({ effect, causes, label }) {
+    const [defs, arrow] = useArrow();
+    const cols = Math.ceil(causes.length / 2);
+    const step = (EFFECT_X - 40) / cols;
+    const eff = wrap(effect, 14);
+    return /* @__PURE__ */ import_react30.default.createElement(
+      DiagramFrame,
+      {
+        width: W8,
+        height: H3,
+        label: label || `Diagrama de causas: ${effect}`,
+        list: /* @__PURE__ */ import_react30.default.createElement(import_react30.default.Fragment, null, /* @__PURE__ */ import_react30.default.createElement("p", { className: "du-diagram-list__center diagram-title" }, "Efecto: ", effect), /* @__PURE__ */ import_react30.default.createElement("ul", null, causes.map((c, i) => /* @__PURE__ */ import_react30.default.createElement("li", { key: i }, /* @__PURE__ */ import_react30.default.createElement("strong", null, c.category), c.items && c.items.length ? /* @__PURE__ */ import_react30.default.createElement("ul", null, c.items.map((it, j) => /* @__PURE__ */ import_react30.default.createElement("li", { key: j }, it))) : null))))
+      },
+      defs,
+      /* @__PURE__ */ import_react30.default.createElement("line", { className: "du-dg-edge", x1: 20, y1: SPINE, x2: EFFECT_X - 4, y2: SPINE, markerEnd: arrow }),
+      /* @__PURE__ */ import_react30.default.createElement("rect", { className: "du-dg-node du-dg-node--strong", x: EFFECT_X, y: SPINE - (eff.length * LH4 + 16) / 2, width: W8 - EFFECT_X - 6, height: eff.length * LH4 + 16 }),
+      /* @__PURE__ */ import_react30.default.createElement(Lines, { x: (EFFECT_X + W8 - 6) / 2, y: SPINE - (eff.length - 1) * LH4 / 2 + 5, lines: eff, anchor: "middle", title: true, className: "diagram-title du-dg-text--on-strong" }),
+      causes.map((c, i) => {
+        const up = i % 2 === 0;
+        const col = Math.floor(i / 2);
+        const bx = 40 + col * step + step * 0.55;
+        const ey = up ? 40 : H3 - 40;
+        const ex = bx - 70;
+        const items = (c.items || []).slice(0, 3);
+        return /* @__PURE__ */ import_react30.default.createElement("g", { key: i }, /* @__PURE__ */ import_react30.default.createElement("line", { className: "du-dg-edge", x1: ex, y1: ey, x2: bx, y2: SPINE }), /* @__PURE__ */ import_react30.default.createElement(Lines, { x: ex, y: up ? ey - 12 : ey + 24, lines: wrap(c.category, 18), anchor: "middle", title: true }), items.map((it, j) => {
+          const f = (j + 1) / (items.length + 1);
+          const px = ex + (bx - ex) * f, py = ey + (SPINE - ey) * f;
+          return /* @__PURE__ */ import_react30.default.createElement("g", { key: j }, /* @__PURE__ */ import_react30.default.createElement("line", { className: "du-dg-leader", x1: px, y1: py, x2: px - 14, y2: py }), /* @__PURE__ */ import_react30.default.createElement(Lines, { x: px - 18, y: py + 5, lines: wrap(it, 16).slice(0, 2), anchor: "end" }));
+        }));
+      })
+    );
+  }
+
+  // src/components/diagrams/Spectrum.jsx
+  var import_react31 = __toESM(require_react(), 1);
+  var W9 = 680;
+  var X02 = 60;
+  var X12 = 620;
+  var BAR = 170;
+  function Spectrum({ left, right, points = [], label }) {
+    const id = `sp${(0, import_react31.useId)().replace(/:/g, "")}`;
+    const sorted = [...points].sort((a, b) => a.position - b.position);
+    const H6 = 290;
+    return /* @__PURE__ */ import_react31.default.createElement(
+      DiagramFrame,
+      {
+        width: W9,
+        height: H6,
+        label: label || `Continuo entre ${left} y ${right}`,
+        list: /* @__PURE__ */ import_react31.default.createElement(import_react31.default.Fragment, null, /* @__PURE__ */ import_react31.default.createElement("p", { className: "du-diagram-list__note diagram-label" }, "De ", /* @__PURE__ */ import_react31.default.createElement("strong", null, left), " a ", /* @__PURE__ */ import_react31.default.createElement("strong", null, right), ":"), /* @__PURE__ */ import_react31.default.createElement("ol", null, sorted.map((p, i) => /* @__PURE__ */ import_react31.default.createElement("li", { key: i }, /* @__PURE__ */ import_react31.default.createElement("strong", null, p.label), p.text ? /* @__PURE__ */ import_react31.default.createElement("span", { className: "du-diagram-list__detail" }, " \xB7 ", p.text) : null, " ", /* @__PURE__ */ import_react31.default.createElement("span", { className: "du-diagram-list__rel" }, "(", p.position < 0.4 ? `m\xE1s cerca de ${left}` : p.position > 0.6 ? `m\xE1s cerca de ${right}` : "en el centro", ")")))))
+      },
+      /* @__PURE__ */ import_react31.default.createElement("defs", null, /* @__PURE__ */ import_react31.default.createElement("linearGradient", { id, x1: "0", x2: "1", y1: "0", y2: "0" }, /* @__PURE__ */ import_react31.default.createElement("stop", { offset: "0%", className: "du-dg-stop--a" }), /* @__PURE__ */ import_react31.default.createElement("stop", { offset: "100%", className: "du-dg-stop--b" }))),
+      /* @__PURE__ */ import_react31.default.createElement("rect", { x: X02, y: BAR - 12, width: X12 - X02, height: 24, rx: 12, fill: `url(#${id})`, className: "du-dg-spectrum" }),
+      /* @__PURE__ */ import_react31.default.createElement(Lines, { x: X02, y: 28, lines: [`\u2190 ${left}`], anchor: "start", title: true }),
+      /* @__PURE__ */ import_react31.default.createElement(Lines, { x: X12, y: 28, lines: [`${right} \u2192`], anchor: "end", title: true }),
+      sorted.map((p, i) => {
+        const x = X02 + p.position * (X12 - X02);
+        const up = i % 2 === 0;
+        const t = wrap(p.label, 16);
+        const d = p.text ? wrap(p.text, 20) : [];
+        const y0 = up ? BAR - 40 - (t.length + d.length - 1) * LH4 : BAR + 56;
+        return /* @__PURE__ */ import_react31.default.createElement("g", { key: i }, /* @__PURE__ */ import_react31.default.createElement("line", { className: "du-dg-leader", x1: x, y1: up ? BAR - 14 : BAR + 14, x2: x, y2: up ? BAR - 32 : BAR + 38 }), /* @__PURE__ */ import_react31.default.createElement("circle", { className: "du-dg-dot", cx: x, cy: BAR, r: 8 }), /* @__PURE__ */ import_react31.default.createElement(Lines, { x, y: y0, lines: t, anchor: "middle", title: true }), /* @__PURE__ */ import_react31.default.createElement(Lines, { x, y: y0 + t.length * LH4, lines: d, anchor: "middle", muted: true }));
+      })
+    );
+  }
+
+  // src/components/diagrams/Funnel.jsx
+  var import_react32 = __toESM(require_react(), 1);
+  var W10 = 680;
+  var LEVEL2 = 70;
+  var FW = 380;
+  var CX2 = 200;
+  function Funnel({ stages, label }) {
+    const n = stages.length;
+    const H6 = n * LEVEL2 + 10;
+    const half = (y) => FW / 2 * (1 - 0.6 * (y / (n * LEVEL2)));
+    return /* @__PURE__ */ import_react32.default.createElement(
+      DiagramFrame,
+      {
+        width: W10,
+        height: H6,
+        label: label || `Embudo: ${stages.map((s) => s.title).join(", ")}`,
+        list: /* @__PURE__ */ import_react32.default.createElement("ol", { className: "du-diagram-list du-diagram-list--pyramid" }, stages.map((s, i) => {
+          const r = rampFor(i, n, false);
+          return /* @__PURE__ */ import_react32.default.createElement("li", { key: i, className: `du-diagram-list__level du-dg-bar--${r}` }, /* @__PURE__ */ import_react32.default.createElement("strong", { className: `diagram-title du-dg-on-bar--${r}` }, s.title), s.text ? /* @__PURE__ */ import_react32.default.createElement("span", { className: "diagram-label" }, s.text) : null);
+        }))
+      },
+      stages.map((s, i) => {
+        const y1 = i * LEVEL2 + 4, y2 = (i + 1) * LEVEL2;
+        const r = rampFor(i, n, false);
+        const mid = (y1 + y2) / 2;
+        const t = wrap(s.title, 22);
+        const d = s.text ? wrap(s.text, 30) : [];
+        return /* @__PURE__ */ import_react32.default.createElement("g", { key: i }, /* @__PURE__ */ import_react32.default.createElement("polygon", { className: `du-dg-ramp du-dg-ramp--${r}`, points: `${CX2 - half(y1)},${y1} ${CX2 + half(y1)},${y1} ${CX2 + half(y2)},${y2} ${CX2 - half(y2)},${y2}` }), /* @__PURE__ */ import_react32.default.createElement(Lines, { x: CX2, y: mid - (t.length - 1) * LH4 / 2 + 5, lines: t, anchor: "middle", title: true, className: `diagram-title du-dg-on-ramp--${r}` }), d.length ? /* @__PURE__ */ import_react32.default.createElement("line", { className: "du-dg-leader", x1: CX2 + half(mid) + 8, y1: mid, x2: CX2 + FW / 2 + 24, y2: mid }) : null, /* @__PURE__ */ import_react32.default.createElement(Lines, { x: CX2 + FW / 2 + 32, y: mid - (d.length - 1) * LH4 / 2 + 5, lines: d }));
+      })
+    );
+  }
+
+  // src/components/diagrams/Staircase.jsx
+  var import_react33 = __toESM(require_react(), 1);
+  var W11 = 680;
+  function Staircase({ steps, label }) {
+    const n = steps.length;
+    const sw = (W11 - 20) / n;
+    const rise = 46;
+    const base = 110;
+    const H6 = base + (n - 1) * rise + 20;
+    return /* @__PURE__ */ import_react33.default.createElement(
+      DiagramFrame,
+      {
+        width: W11,
+        height: H6,
+        label: label || `Escalera: ${steps.map((s) => s.title).join(", ")}`,
+        list: /* @__PURE__ */ import_react33.default.createElement("ol", { className: "du-diagram-list du-diagram-list--pyramid" }, [...steps].reverse().map((s, k) => {
+          const i = n - 1 - k;
+          const r = rampFor(i, n, false);
+          return /* @__PURE__ */ import_react33.default.createElement("li", { key: i, className: `du-diagram-list__level du-dg-bar--${r}` }, /* @__PURE__ */ import_react33.default.createElement("strong", { className: `diagram-title du-dg-on-bar--${r}` }, i + 1, ". ", s.title), s.text ? /* @__PURE__ */ import_react33.default.createElement("span", { className: "diagram-label" }, s.text) : null);
+        }))
+      },
+      steps.map((s, i) => {
+        const h = base + i * rise;
+        const x = 10 + i * sw;
+        const y = H6 - 10 - h;
+        const r = rampFor(i, n, false);
+        const chars = Math.max(9, Math.floor(sw / 9));
+        const t = wrap(s.title, chars);
+        const d = s.text ? wrap(s.text, chars + 2) : [];
+        return /* @__PURE__ */ import_react33.default.createElement("g", { key: i }, /* @__PURE__ */ import_react33.default.createElement("rect", { className: `du-dg-ramp du-dg-ramp--${r}`, x: x + 2, y, width: sw - 4, height: h }), /* @__PURE__ */ import_react33.default.createElement(Lines, { x: x + sw / 2, y: y + 22, lines: t, anchor: "middle", title: true, className: `diagram-title du-dg-on-ramp--${r}` }), /* @__PURE__ */ import_react33.default.createElement(Lines, { x: x + sw / 2, y: y + 24 + t.length * LH4, lines: d, anchor: "middle", className: `diagram-label du-dg-on-ramp--${r}` }));
+      })
+    );
+  }
+
+  // src/components/diagrams/NestedCircles.jsx
+  var import_react34 = __toESM(require_react(), 1);
+  var W12 = 680;
+  var H4 = 440;
+  var CX3 = 210;
+  var CY = 220;
+  var RMAX = 200;
+  function NestedCircles({ layers, label }) {
+    const n = layers.length;
+    const r = (i) => RMAX * (i + 1) / n;
+    const legendH = layers.reduce((a, l) => a + (1 + (l.text ? wrap(l.text, 26).length : 0)) * LH4 + 12, 0);
+    const textY = (i) => CY - (r(i) + (i ? r(i - 1) : 0)) / 2;
+    return /* @__PURE__ */ import_react34.default.createElement(
+      DiagramFrame,
+      {
+        width: W12,
+        height: H4,
+        label: label || `Niveles anidados: ${layers.map((l) => l.title).join(" dentro de ")}`,
+        list: /* @__PURE__ */ import_react34.default.createElement("ul", { className: "du-diagram-list__nested" }, [...layers].reverse().map((l, k) => /* @__PURE__ */ import_react34.default.createElement("li", { key: k, style: { marginLeft: `${k * 12}px` } }, /* @__PURE__ */ import_react34.default.createElement("strong", null, l.title), l.text ? /* @__PURE__ */ import_react34.default.createElement("span", { className: "du-diagram-list__detail" }, " \xB7 ", l.text) : null)))
+      },
+      [...layers].map((_, k) => n - 1 - k).map((i) => {
+        const ramp = rampFor(i, n, true);
+        return /* @__PURE__ */ import_react34.default.createElement("circle", { key: i, className: `du-dg-ramp du-dg-ramp--${ramp} du-dg-ring`, cx: CX3, cy: CY, r: r(i) });
+      }),
+      layers.map((l, i) => {
+        const ramp = rampFor(i, n, true);
+        const y = i === 0 ? CY + 5 : textY(i) + 5;
+        return /* @__PURE__ */ import_react34.default.createElement("text", { key: i, className: `du-dg-text diagram-title du-dg-on-ramp--${ramp}`, x: CX3, y, textAnchor: "middle" }, l.title);
+      }),
+      (() => {
+        let ly = CY - legendH / 2 + 14;
+        return [...layers].map((l, i) => ({ l, i })).reverse().map(({ l, i }) => {
+          const d = l.text ? wrap(l.text, 26) : [];
+          const ramp = rampFor(i, n, true);
+          const y = ly;
+          ly += (1 + d.length) * LH4 + 12;
+          return /* @__PURE__ */ import_react34.default.createElement("g", { key: `k${i}` }, /* @__PURE__ */ import_react34.default.createElement("rect", { className: `du-dg-ramp du-dg-ramp--${ramp}`, x: 440, y: y - 12, width: 14, height: 14, rx: 2 }), /* @__PURE__ */ import_react34.default.createElement("text", { className: "du-dg-text diagram-title", x: 462, y }, l.title), /* @__PURE__ */ import_react34.default.createElement(Lines, { x: 462, y: y + LH4, lines: d, muted: true }));
+        });
+      })()
+    );
+  }
+
+  // src/components/diagrams/Iceberg.jsx
+  var import_react35 = __toESM(require_react(), 1);
+  var W13 = 680;
+  var H5 = 440;
+  var SEA = 150;
+  function Iceberg({ visible, hidden, visibleTitle = "Lo visible", hiddenTitle = "Lo que no se ve", label }) {
+    const vis = visible.flatMap((v) => wrap(`\u2022 ${v}`, 34));
+    const hid = hidden.flatMap((v) => wrap(`\u2022 ${v}`, 34));
+    return /* @__PURE__ */ import_react35.default.createElement(
+      DiagramFrame,
+      {
+        width: W13,
+        height: H5,
+        label: label || `Iceberg: ${visibleTitle} y ${hiddenTitle}`,
+        list: /* @__PURE__ */ import_react35.default.createElement(import_react35.default.Fragment, null, /* @__PURE__ */ import_react35.default.createElement("p", { className: "du-diagram-list__note diagram-title" }, visibleTitle), /* @__PURE__ */ import_react35.default.createElement("ul", null, visible.map((v, i) => /* @__PURE__ */ import_react35.default.createElement("li", { key: i }, v))), /* @__PURE__ */ import_react35.default.createElement("p", { className: "du-diagram-list__note diagram-title" }, hiddenTitle), /* @__PURE__ */ import_react35.default.createElement("ul", null, hidden.map((v, i) => /* @__PURE__ */ import_react35.default.createElement("li", { key: i }, v))))
+      },
+      /* @__PURE__ */ import_react35.default.createElement("rect", { className: "du-dg-water", x: 0, y: SEA, width: W13, height: H5 - SEA }),
+      /* @__PURE__ */ import_react35.default.createElement("polygon", { className: "du-dg-ice", points: `150,30 205,85 235,${SEA} 300,${SEA + 60} 285,330 205,${H5 - 20} 110,370 60,260 85,${SEA} 110,80` }),
+      /* @__PURE__ */ import_react35.default.createElement("line", { className: "du-dg-sea", x1: 0, y1: SEA, x2: W13, y2: SEA }),
+      /* @__PURE__ */ import_react35.default.createElement(Lines, { x: 340, y: 44, lines: [visibleTitle], title: true }),
+      /* @__PURE__ */ import_react35.default.createElement(Lines, { x: 340, y: 44 + LH4 + 4, lines: vis }),
+      /* @__PURE__ */ import_react35.default.createElement(Lines, { x: 340, y: SEA + 40, lines: [hiddenTitle], title: true }),
+      /* @__PURE__ */ import_react35.default.createElement(Lines, { x: 340, y: SEA + 40 + LH4 + 4, lines: hid })
+    );
   }
   return __toCommonJS(index_exports);
 })();

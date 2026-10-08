@@ -24,3 +24,4 @@ export { formatCitation, formatCitations, formatLocator } from './cite.js';
 export { BLOOM, bloomLevel } from './bloom.js';
 export { checkAlignment, objectiveId } from './alignment.js';
 export { referenceSegments, referenceText, orderWorks, yearLabels, authorList } from './references.js';
+export * from './components/diagrams/index.js';

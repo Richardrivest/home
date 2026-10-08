@@ -724,7 +724,7 @@
   border-bottom-width: var(--stroke-strong);
   border-style: solid;
   border-color: var(--rule-strong);
-  background-color: var(--band);
+  background-color: var(--table-head-surface);
   color: var(--navy);
   font-family: var(--font-sans);
 }
@@ -739,7 +739,9 @@
   color: var(--ink);
 }
 
-.du-table tbody tr:nth-child(even) td {
+/* One colour per row: even rows (row-header cell included) take `band`, odd rows stay `paper`. */
+
+.du-table tbody tr:nth-child(even) > * {
   background-color: var(--band);
 }
 
@@ -748,7 +750,6 @@
 }
 
 .du-table--concept tbody th {
-  background-color: var(--band);
   font-weight: 700;
   color: var(--navy);
   font-family: var(--font-sans);
@@ -969,6 +970,124 @@ ol.du-diagram-list--pyramid {
 
 .du-dg-on-ramp--3, .du-dg-on-ramp--4 {
   fill: var(--ink);
+}
+
+/* v3.3 diagrams. Fills stay light so 14px ink labels keep 4.5:1 on every region. */
+
+.du-dg-venn {
+  stroke-width: var(--stroke-strong);
+  fill-opacity: 0.16;
+}
+
+.du-dg-venn--1 {
+  fill: var(--keypoints-accent);
+  stroke: var(--keypoints-accent);
+}
+
+.du-dg-venn--2 {
+  fill: var(--objectives-accent);
+  stroke: var(--objectives-accent);
+}
+
+.du-dg-venn--3 {
+  fill: var(--activities-accent);
+  stroke: var(--activities-accent);
+}
+
+.du-dg-quad {
+  stroke-width: var(--stroke-hair);
+  rx: var(--radius-node);
+}
+
+.du-dg-quad--plain {
+  fill: var(--diagram-node);
+  stroke: var(--diagram-node-border);
+}
+
+.du-dg-quad--strong {
+  fill: var(--table-head-surface);
+  stroke: var(--diagram-node-strong);
+  stroke-width: var(--stroke-strong);
+}
+
+.du-dg-axis {
+  stroke: var(--ink-muted);
+  stroke-width: var(--stroke-strong);
+}
+
+.du-dg-dot {
+  fill: var(--diagram-node-strong);
+  stroke: var(--paper);
+  stroke-width: 3;
+}
+
+.du-dg-date {
+  fill: var(--navy);
+}
+
+.du-dg-stop--a {
+  stop-color: var(--ramp-4);
+}
+
+.du-dg-stop--b {
+  stop-color: var(--ramp-1);
+}
+
+.du-dg-spectrum {
+  stroke: var(--diagram-node-border);
+  stroke-width: var(--stroke-hair);
+}
+
+.du-dg-ring {
+  stroke: var(--paper);
+  stroke-width: 3;
+}
+
+.du-dg-water {
+  fill: var(--water);
+}
+
+.du-dg-ice {
+  fill: var(--ice);
+  stroke: var(--diagram-node-border);
+  stroke-width: var(--stroke-strong);
+}
+
+.du-dg-sea {
+  stroke: var(--azure);
+  stroke-width: var(--stroke-strong);
+  stroke-dasharray: 8 5;
+}
+
+ul.du-diagram-list__tree ul {
+  margin-top: var(--space-1);
+  border-left: var(--stroke-hair) solid var(--rule-strong);
+}
+
+ol.du-diagram-list__timeline {
+  list-style-type: none;
+  padding-left: 0px;
+}
+
+ol.du-diagram-list__timeline li {
+  padding-left: var(--space-3);
+  padding-bottom: var(--space-2);
+  border-left: var(--stroke-strong) solid var(--diagram-node-strong);
+}
+
+ol.du-diagram-list__timeline li span {
+  display: block;
+  color: var(--ink-muted);
+}
+
+ul.du-diagram-list__nested {
+  list-style-type: none;
+  padding-left: 0px;
+}
+
+ul.du-diagram-list__nested li {
+  padding-left: var(--space-3);
+  border-left: var(--stroke-strong) solid var(--rule-strong);
 }
 
 .du-flow {

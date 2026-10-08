@@ -49,6 +49,26 @@ test('diagrams render a list fallback for narrow containers', async () => {
   assert.match(html, /el ciclo vuelve al paso 1/);
 });
 
+test('the twelve v3.3 diagrams each render a list fallback with their content', async () => {
+  const html = await render(`h('div', null,
+    h(D.TreeDiagram, { root: { label: 'Evaluación', children: [{ label: 'Formativa' }, { label: 'Sumativa' }] } }),
+    h(D.TreeDiagram, { direction: 'right', root: { label: 'Raíz', children: [{ label: 'Hoja' }] } }),
+    h(D.ConceptMap, { nodes: [{ id: 'a', label: 'Aprendizaje', level: 0 }, { id: 'b', label: 'Ideas previas', level: 1 }], links: [{ from: 'a', to: 'b', label: 'parte de' }] }),
+    h(D.MindMap, { center: 'Clase', branches: [{ label: 'Objetivos', items: ['Verbo'] }, { label: 'Recursos' }] }),
+    h(D.VennDiagram, { sets: ['A', 'B'], regions: { a: ['solo a'], ab: ['común'] } }),
+    h(D.QuadrantMatrix, { xAxis: { label: 'X', low: 'bajo', high: 'alto' }, yAxis: { label: 'Y', low: 'baja', high: 'alta' }, quadrants: [{ title: 'Q1' }, { title: 'ZDP' }, { title: 'Q3' }, { title: 'Q4' }] }),
+    h(D.Timeline, { events: [{ date: '1968', title: 'Ausubel' }, { date: '1978', title: 'Vygotsky' }] }),
+    h(D.Fishbone, { effect: 'Bajo rendimiento', causes: [{ category: 'Estudiante', items: ['Estudio memorístico'] }] }),
+    h(D.Spectrum, { left: 'Docente', right: 'Estudiante', points: [{ label: 'Seminario', position: 0.8 }] }),
+    h(D.Funnel, { stages: [{ title: 'Perfil' }, { title: 'Clase' }] }),
+    h(D.Staircase, { steps: [{ title: 'Recordar' }, { title: 'Crear' }] }),
+    h(D.NestedCircles, { layers: [{ title: 'Aula' }, { title: 'Carrera' }] }),
+    h(D.Iceberg, { visible: ['Plan de estudios'], hidden: ['Expectativas tácitas'] }))`);
+  assert.equal((html.match(/<div class="du-diagram-list">/g) || []).length, 13);
+  assert.equal((html.match(/<svg class="du-diagram"/g) || []).length, 13);
+  for (const s of ['parte de', 'Verbo', 'común', 'ZDP', '1978', 'Estudio memorístico', 'más cerca de Estudiante', 'Expectativas tácitas']) assert.ok(html.includes(s), s);
+});
+
 test('checker: Antes de leer missing, then present but not revisited', async () => {
   const box = (before, revisit) => render(`h('div', { className: 'du-page' }, h(D.ChapterOpener, { title: 'T' }),
     h(D.KeyPoints, { items: ['a', 'b', 'c'], before: ${before} }), h(D.ThinkFurther, { questions: ['q'], revisit: ${revisit} }), h(D.ReferencesBox, null))`);
