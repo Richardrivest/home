@@ -39,17 +39,19 @@ test('Cite with an unknown id says so', async () => {
   assert.match(html, /obra sin registrar: zz/);
 });
 
-test('diagrams render a list fallback for narrow containers', async () => {
+test('diagrams keep the drawing in a scroll frame and the list under “Ver como texto”', async () => {
   const html = await render(`h('div', null,
     h(D.ConceptWeb, { center: 'Aprendizaje', nodes: [{ label: 'Mediación social', relation: 'se produce en' }, { label: 'Carga cognitiva' }, { label: 'Motivación' }] }),
     h(D.CycleDiagram, { steps: [{ title: 'Planificar' }, { title: 'Evaluar' }, { title: 'Ajustar' }] }),
     h(D.Pyramid, { levels: [{ title: 'Hace' }, { title: 'Sabe' }] }))`);
   assert.equal((html.match(/class="du-diagram-list[" ]/g) || []).length, 3);
+  assert.equal((html.match(/<div class="du-diagram-scroll"[^>]*><svg class="du-diagram"/g) || []).length, 3);
+  assert.equal((html.match(/<details class="du-diagram-text"><summary[^>]*>Ver como texto<\/summary>/g) || []).length, 3);
   assert.match(html, /se produce en/);
   assert.match(html, /el ciclo vuelve al paso 1/);
 });
 
-test('the twelve v3.3 diagrams each render a list fallback with their content', async () => {
+test('the twelve v3.3 diagrams each render the drawing and a text version with their content', async () => {
   const html = await render(`h('div', null,
     h(D.TreeDiagram, { root: { label: 'Evaluación', children: [{ label: 'Formativa' }, { label: 'Sumativa' }] } }),
     h(D.TreeDiagram, { direction: 'right', root: { label: 'Raíz', children: [{ label: 'Hoja' }] } }),
@@ -66,6 +68,8 @@ test('the twelve v3.3 diagrams each render a list fallback with their content', 
     h(D.Iceberg, { visible: ['Plan de estudios'], hidden: ['Expectativas tácitas'] }))`);
   assert.equal((html.match(/<div class="du-diagram-list">/g) || []).length, 13);
   assert.equal((html.match(/<svg class="du-diagram"/g) || []).length, 13);
+  assert.equal((html.match(/<div class="du-diagram-scroll"[^>]*><svg class="du-diagram"/g) || []).length, 13);
+  assert.equal((html.match(/>Ver como texto<\/summary>/g) || []).length, 13);
   for (const s of ['parte de', 'Verbo', 'común', 'ZDP', '1978', 'Estudio memorístico', 'más cerca de Estudiante', 'Expectativas tácitas']) assert.ok(html.includes(s), s);
 });
 

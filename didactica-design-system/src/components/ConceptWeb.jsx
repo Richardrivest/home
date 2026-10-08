@@ -1,5 +1,6 @@
 import React from 'react';
 import { wrap, textWidth } from '../diagram-utils.js';
+import { DiagramScroll, DiagramText } from './diagrams/parts.jsx';
 
 const W = 680;
 const LH = 18;
@@ -37,9 +38,11 @@ export function ConceptWeb({ center, nodes, label }) {
     const a = -Math.PI / 2 + (2 * Math.PI * i) / n;
     return [cx + rx * Math.cos(a), cy + ry * Math.sin(a)];
   });
+  const aria = label || `Red conceptual: ${center}`;
   return (
     <div className="du-diagram-wrap">
-    <svg className="du-diagram" viewBox={`0 0 ${W} ${H}`} role="img" aria-label={label || `Red conceptual: ${center}`} data-warn={long.length ? `label-long: ${long.join(' | ')}` : undefined}>
+    <DiagramScroll label={aria}>
+    <svg className="du-diagram" viewBox={`0 0 ${W} ${H}`} role="img" aria-label={aria} data-warn={long.length ? `label-long: ${long.join(' | ')}` : undefined}>
       {pos.map(([x, y], i) => <line key={i} className="du-dg-edge" x1={cx} y1={cy} x2={x} y2={y} />)}
       <Node x={cx} y={cy} lines={wrap(center, 16)} strong />
       {nodes.map((nd, i) => (
@@ -53,7 +56,9 @@ export function ConceptWeb({ center, nodes, label }) {
         </g>
       ) : null)}
     </svg>
-    {/* Narrow containers: the same structure as a list. */}
+    </DiagramScroll>
+    {/* The same structure as a list, collapsed under the drawing. */}
+    <DiagramText>
     <div className="du-diagram-list">
       <p className="du-diagram-list__center diagram-title">{center}</p>
       <ul>
@@ -65,6 +70,7 @@ export function ConceptWeb({ center, nodes, label }) {
         ))}
       </ul>
     </div>
+    </DiagramText>
     </div>
   );
 }

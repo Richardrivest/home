@@ -115,17 +115,17 @@ Every diagram goes inside a `Figure`. Give it an `id` and list the ids in `Numbe
 
 c('ConceptWeb',420,"""**Consumer provides:** `center`, and 3–8 `nodes` with `{ label, relation?, detail? }`, placed clockwise from the top.
 
-Use it to show how one concept relates to others. Keep relations to short verb phrases (“se produce en”) and details to an author or a few words; labels that wrap past three lines are flagged by the content checker. Below 600px of available width the web is replaced by the same structure as a list, so labels never shrink under 12px.""",
+Use it to show how one concept relates to others. Keep relations to short verb phrases (“se produce en”) and details to an author or a few words; labels that wrap past three lines are flagged by the content checker. Below 600px of available width it keeps its full size and scrolls sideways, so labels never shrink under 12px; “Ver como texto” under it opens the same structure as a list.""",
 """h(ConceptWeb,{center:'Aprendizaje',nodes:[{label:'Conocimiento previo',relation:'parte de',detail:'Ausubel'},{label:'Mediación social',relation:'se produce en',detail:'Vygotsky'},{label:'Carga cognitiva',relation:'limitado por',detail:'Sweller'},{label:'Enfoque profundo',relation:'inducido por la evaluación',detail:'Biggs y Tang'},{label:'Motivación',relation:'sostenido por',detail:'Ambrose et al.'}]})""")
 
 c('CycleDiagram',440,"""**Consumer provides:** 3–8 `steps` `{ title, text? }`, clockwise from the top, and an optional `center` label.
 
-Use it for processes that loop, such as self-regulation, reflective practice or action research. Below 600px of available width it becomes a numbered list ending “↻ Después del paso N, el ciclo vuelve al paso 1”.""",
+Use it for processes that loop, such as self-regulation, reflective practice or action research. Below 600px of available width it keeps its full size and scrolls sideways, so labels never shrink under 12px; “Ver como texto” under it opens the same structure as a numbered list ending “↻ Después del paso N, el ciclo vuelve al paso 1”.""",
 """h(CycleDiagram,{center:'Aprendiz autorregulado',steps:[{title:'Planificar',text:'anticipar dificultades'},{title:'Monitorear',text:'controlar el progreso'},{title:'Evaluar',text:'valorar el resultado'},{title:'Ajustar',text:'cambiar de estrategia'}]})""")
 
 c('Pyramid',320,"""**Consumer provides:** 2–6 `levels` `{ title, text? }`, from the apex to the base.
 
-Use it for hierarchies where higher levels build on lower ones, such as Miller's pyramid or Bloom's levels. The fill darkens toward the apex. Keep the apex title to one short word. Below 600px of available width it becomes a stack of bars in the same ramp colours.""",
+Use it for hierarchies where higher levels build on lower ones, such as Miller's pyramid or Bloom's levels. The fill darkens toward the apex. Keep the apex title to one short word. Below 600px of available width it keeps its full size and scrolls sideways, so labels never shrink under 12px; “Ver como texto” under it opens the same structure as a stack of bars in the same ramp colours.""",
 """h(Pyramid,{levels:[{title:'Hace',text:'Desempeño en la práctica real'},{title:'Muestra cómo',text:'Desempeño en entorno controlado (OSCE)'},{title:'Sabe cómo',text:'Aplicación del conocimiento a casos'},{title:'Sabe',text:'Conocimiento factual'}]})""")
 
 c('ProcessFlow',190,"""**Consumer provides:** 2–5 `steps` `{ title, text? }` in order.
@@ -135,62 +135,62 @@ Use it for linear sequences, such as constructive alignment or the phases of a c
 
 c('TreeDiagram',360,"""**Consumer provides:** a `root` `{ label, detail?, children? }`, up to three levels below it.
 
-Use it for classifications and structures (types of assessment, the parts of a curriculum). With up to 4 leaves it draws top-down; with more it turns left to right so labels keep their size. More than 8 leaves or 4 levels is flagged: split the tree. Below 600px of available width it becomes the same structure as a list, which is also what screen readers read.""",
+Use it for classifications and structures (types of assessment, the parts of a curriculum). With up to 4 leaves it draws top-down; with more it turns left to right so labels keep their size. More than 8 leaves or 4 levels is flagged: split the tree. Below 600px of available width it keeps its full size and scrolls sideways, so labels never shrink under 12px; “Ver como texto” under it opens the same structure as a list.""",
 """h(TreeDiagram,{root:{label:'Evaluación del aprendizaje',children:[{label:'Según su función',children:[{label:'Diagnóstica',detail:'antes de enseñar'},{label:'Formativa',detail:'durante el proceso'},{label:'Sumativa',detail:'al cierre'}]},{label:'Según el agente',children:[{label:'Autoevaluación'},{label:'Coevaluación'},{label:'Heteroevaluación'}]}]}})""")
 
 c('ConceptMap',420,"""**Consumer provides:** `nodes` `{ id, label, detail?, level }` (level 0 is the most general) and `links` `{ from, to, label }`.
 
-Use it when the relations matter as much as the concepts: each arrow carries linking words, so “concept → linking words → concept” reads as a proposition, as in Novak's concept maps. Keep 2–4 concepts per level. Below 600px of available width it becomes the same structure as a list, which is also what screen readers read.""",
+Use it when the relations matter as much as the concepts: each arrow carries linking words, so “concept → linking words → concept” reads as a proposition, as in Novak's concept maps. Keep 2–4 concepts per level. Below 600px of available width it keeps its full size and scrolls sideways, so labels never shrink under 12px; “Ver como texto” under it opens the same structure as a list.""",
 """h(ConceptMap,{nodes:[{id:'as',label:'Aprendizaje significativo',level:0},{id:'cp',label:'Conocimientos previos',level:1},{id:'mn',label:'Material nuevo',detail:'potencialmente significativo',level:1},{id:'di',label:'Disposición',detail:'del estudiante',level:1},{id:'ec',label:'Estructura cognitiva',detail:'más rica y organizada',level:2}],links:[{from:'as',to:'cp',label:'parte de'},{from:'as',to:'mn',label:'requiere'},{from:'as',to:'di',label:'exige'},{from:'mn',to:'ec',label:'se ancla en'}]})""")
 
 c('MindMap',320,"""**Consumer provides:** a `center` topic and up to 6 `branches` `{ label, items? }` with up to 3 short ideas each.
 
-Use it for brainstorming and planning: decisions that depend on one topic, without ranking them. Branches alternate right then left. Below 600px of available width it becomes the same structure as a list, which is also what screen readers read.""",
+Use it for brainstorming and planning: decisions that depend on one topic, without ranking them. Branches alternate right then left. Below 600px of available width it keeps its full size and scrolls sideways, so labels never shrink under 12px; “Ver como texto” under it opens the same structure as a list.""",
 """h(MindMap,{center:'Planificar una clase',branches:[{label:'Objetivos',items:['Verbo de Bloom','Uno por desempeño']},{label:'Contenidos',items:['Conceptos clave','Ideas previas']},{label:'Actividades',items:['Apertura','Desarrollo','Cierre']},{label:'Recursos',items:['Casos','Materiales']},{label:'Evaluación',items:['Criterios','Retroalimentación']}]})""")
 
 c('VennDiagram',480,"""**Consumer provides:** two or three `sets` and `regions` `{ a, b, c, ab, ac, bc, abc }`, each a list of one- or two-word items.
 
-Use it to compare perspectives or concepts: what they share and what is exclusive to each. Fills are light, translucent accents, so ink text keeps 4.5:1 in every region. Below 600px of available width it becomes the same structure as a list, which is also what screen readers read.""",
+Use it to compare perspectives or concepts: what they share and what is exclusive to each. Fills are light, translucent accents, so ink text keeps 4.5:1 in every region. Below 600px of available width it keeps its full size and scrolls sideways, so labels never shrink under 12px; “Ver como texto” under it opens the same structure as a list.""",
 """h(VennDiagram,{sets:['Constructivista','Sociocultural','Cognitiva'],regions:{a:['Ideas previas'],b:['Mediación','ZDP'],c:['Memoria de trabajo'],ab:['Rol activo'],ac:['Esquemas'],bc:['Andamiaje'],abc:['Aprender es construir']}})""")
 
 c('QuadrantMatrix',480,"""**Consumer provides:** `xAxis` and `yAxis` `{ label, low, high }` and four `quadrants` `{ title, text? }`: top-left, top-right, bottom-left, bottom-right.
 
-Use it to cross two dimensions (demand × support, depth × autonomy). The high–high quadrant gets the header tint and a heavy frame. Below 600px of available width it becomes the same structure as a list, which is also what screen readers read.""",
+Use it to cross two dimensions (demand × support, depth × autonomy). The high–high quadrant gets the header tint and a heavy frame. Below 600px of available width it keeps its full size and scrolls sideways, so labels never shrink under 12px; “Ver como texto” under it opens the same structure as a list.""",
 """h(QuadrantMatrix,{xAxis:{label:'Apoyo del docente',low:'bajo',high:'alto'},yAxis:{label:'Exigencia',low:'baja',high:'alta'},quadrants:[{title:'Frustración',text:'la tarea supera lo que puede hacer solo'},{title:'Zona de desarrollo próximo',text:'logra con ayuda lo que aún no logra solo'},{title:'Rutina',text:'repite lo que ya domina'},{title:'Dependencia',text:'la ayuda sobra y lo vuelve pasivo'}]})""")
 
 c('Timeline',300,"""**Consumer provides:** up to 8 `events` `{ date, title, text? }` in chronological order.
 
-Use it for the history of a field or the calendar of a course. Labels alternate above and below the axis; more than 8 events is flagged. Below 600px of available width it becomes the same structure as a list, which is also what screen readers read.""",
+Use it for the history of a field or the calendar of a course. Labels alternate above and below the axis; more than 8 events is flagged. Below 600px of available width it keeps its full size and scrolls sideways, so labels never shrink under 12px; “Ver como texto” under it opens the same structure as a list.""",
 """h(Timeline,{events:[{date:'1913',title:'Conductismo',text:'manifiesto de Watson'},{date:'1956',title:'Taxonomía de Bloom',text:'objetivos por niveles'},{date:'1968',title:'Ausubel',text:'aprendizaje significativo'},{date:'1978',title:'Vygotsky en inglés',text:'Mind in Society'},{date:'1988',title:'Carga cognitiva',text:'Sweller'},{date:'1996',title:'Alineamiento',text:'Biggs'},{date:'2001',title:'Bloom revisada',text:'dos dimensiones'}]})""")
 
 c('Fishbone',470,"""**Consumer provides:** an `effect` and up to 6 `causes` `{ category, items }` with up to 3 causes each.
 
-Use it (Ishikawa) to analyse a teaching problem by categories before choosing a remedy. Categories alternate above and below the spine. Below 600px of available width it becomes the same structure as a list, which is also what screen readers read.""",
+Use it (Ishikawa) to analyse a teaching problem by categories before choosing a remedy. Categories alternate above and below the spine. Below 600px of available width it keeps its full size and scrolls sideways, so labels never shrink under 12px; “Ver como texto” under it opens the same structure as a list.""",
 """h(Fishbone,{effect:'Bajo rendimiento en el primer parcial',causes:[{category:'Estudiante',items:['Ideas previas erróneas','Estudio memorístico']},{category:'Enseñanza',items:['Exceso de contenido','Poca práctica guiada']},{category:'Evaluación',items:['Desalineada con objetivos','Sin instancias formativas']},{category:'Contexto',items:['Cursadas superpuestas','Trabajo de los estudiantes']}]})""")
 
 c('Spectrum',300,"""**Consumer provides:** the `left` and `right` poles and `points` `{ label, position, text? }`, with position from 0 (left pole) to 1 (right pole).
 
-Use it when options differ by degree, not kind (teacher- to student-centred, guided to autonomous). The bar runs the diagram ramp from light to dark. Below 600px of available width it becomes the same structure as a list, which is also what screen readers read.""",
+Use it when options differ by degree, not kind (teacher- to student-centred, guided to autonomous). The bar runs the diagram ramp from light to dark. Below 600px of available width it keeps its full size and scrolls sideways, so labels never shrink under 12px; “Ver como texto” under it opens the same structure as a list.""",
 """h(Spectrum,{left:'Centrada en el docente',right:'Centrada en el estudiante',points:[{label:'Clase magistral',position:0.08},{label:'Exposición dialogada',position:0.32,text:'preguntas durante la clase'},{label:'Seminario',position:0.58},{label:'Aprendizaje basado en problemas',position:0.8},{label:'Proyecto autónomo',position:0.95}]})""")
 
 c('Funnel',400,"""**Consumer provides:** 3–6 `stages` `{ title, text? }`, widest first.
 
-Use it for levels of curricular specification or any process that narrows (from graduate profile to classroom activity). The fill darkens as it narrows. Below 600px of available width it becomes the same structure as a list, which is also what screen readers read.""",
+Use it for levels of curricular specification or any process that narrows (from graduate profile to classroom activity). The fill darkens as it narrows. Below 600px of available width it keeps its full size and scrolls sideways, so labels never shrink under 12px; “Ver como texto” under it opens the same structure as a list.""",
 """h(Funnel,{stages:[{title:'Perfil de egreso',text:'lo que define a la titulación'},{title:'Competencias de la carrera'},{title:'Resultados de la asignatura'},{title:'Objetivos de la unidad'},{title:'Actividad de clase'}]})""")
 
 c('Staircase',360,"""**Consumer provides:** 3–6 `steps` `{ title, text? }`, lowest first.
 
-Use it for progressive levels that build on each other, such as Bloom's revised taxonomy or rubric levels; unlike `Pyramid`, it reads as a climb. Below 600px of available width it becomes the same structure as a list, which is also what screen readers read.""",
+Use it for progressive levels that build on each other, such as Bloom's revised taxonomy or rubric levels; unlike `Pyramid`, it reads as a climb. Below 600px of available width it keeps its full size and scrolls sideways, so labels never shrink under 12px; “Ver como texto” under it opens the same structure as a list.""",
 """h(Staircase,{steps:[{title:'Recordar',text:'reconocer, evocar'},{title:'Comprender',text:'explicar, resumir'},{title:'Aplicar',text:'ejecutar, usar'},{title:'Analizar',text:'comparar, organizar'},{title:'Evaluar',text:'juzgar, criticar'},{title:'Crear',text:'diseñar, producir'}]})""")
 
 c('NestedCircles',460,"""**Consumer provides:** 2–5 `layers` `{ title, text? }`, innermost first.
 
-Use it for contexts that contain one another (classroom, course, programme, institution, system). Titles sit in their ring; descriptions go in a legend at the right, outermost first. Below 600px of available width it becomes the same structure as a list, which is also what screen readers read.""",
+Use it for contexts that contain one another (classroom, course, programme, institution, system). Titles sit in their ring; descriptions go in a legend at the right, outermost first. Below 600px of available width it keeps its full size and scrolls sideways, so labels never shrink under 12px; “Ver como texto” under it opens the same structure as a list.""",
 """h(NestedCircles,{layers:[{title:'Aula',text:'consignas, interacción, clima'},{title:'Asignatura',text:'programa, cronograma, evaluación'},{title:'Carrera',text:'plan de estudios y perfil'},{title:'Institución',text:'reglamentos y recursos'},{title:'Sistema',text:'normativa y acreditación'}]})""")
 
 c('Iceberg',460,"""**Consumer provides:** `visible` and `hidden` item lists, with optional `visibleTitle` and `hiddenTitle`.
 
-Use it to show what sustains the visible, such as the explicit and the hidden curriculum. Put more items below the line than above. Below 600px of available width it becomes the same structure as a list, which is also what screen readers read.""",
+Use it to show what sustains the visible, such as the explicit and the hidden curriculum. Put more items below the line than above. Below 600px of available width it keeps its full size and scrolls sideways, so labels never shrink under 12px; “Ver como texto” under it opens the same structure as a list.""",
 """h(Iceberg,{visibleTitle:'Currículo explícito',hiddenTitle:'Currículo oculto',visible:['Plan de estudios y programas','Horarios y correlatividades','Evaluaciones formales'],hidden:['Expectativas que nadie enuncia','Normas de participación en clase','Lo que la evaluación premia de hecho','Creencias del docente sobre quién puede aprender']})""")
 
 c('GlossaryEntry',140,"""**Consumer provides:** `term` (without the colon), the definition ending with its citation, and an `id` when `Term` links to it. Prefer `Glossary`, which sorts the entries for you.""",

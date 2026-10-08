@@ -730,7 +730,7 @@ window.Didactica = (() => {
   }
 
   // src/components/ConceptWeb.jsx
-  var import_react17 = __toESM(require_react(), 1);
+  var import_react18 = __toESM(require_react(), 1);
 
   // src/diagram-utils.js
   function wrap(text, max) {
@@ -750,36 +750,78 @@ window.Didactica = (() => {
   }
   var textWidth = (s, px = 14) => s.length * px * 0.5;
 
+  // src/components/diagrams/parts.jsx
+  var import_react17 = __toESM(require_react(), 1);
+  var LH = 18;
+  function DiagramFrame({ width, height, label, warn, list, children }) {
+    return /* @__PURE__ */ import_react17.default.createElement("div", { className: "du-diagram-wrap" }, /* @__PURE__ */ import_react17.default.createElement(DiagramScroll, { label }, /* @__PURE__ */ import_react17.default.createElement("svg", { className: "du-diagram", viewBox: `0 0 ${width} ${height}`, role: "img", "aria-label": label, "data-warn": warn || void 0 }, children)), /* @__PURE__ */ import_react17.default.createElement(DiagramText, null, /* @__PURE__ */ import_react17.default.createElement("div", { className: "du-diagram-list" }, list)));
+  }
+  function DiagramScroll({ label, children }) {
+    return /* @__PURE__ */ import_react17.default.createElement(import_react17.default.Fragment, null, /* @__PURE__ */ import_react17.default.createElement("div", { className: "du-diagram-scroll", tabIndex: 0, role: "group", "aria-label": label }, children), /* @__PURE__ */ import_react17.default.createElement("p", { className: "du-diagram-hint", "aria-hidden": "true" }, "Desliz\xE1 para ver el diagrama completo \u2192"));
+  }
+  function DiagramText({ children }) {
+    return /* @__PURE__ */ import_react17.default.createElement("details", { className: "du-diagram-text" }, /* @__PURE__ */ import_react17.default.createElement("summary", { className: "diagram-label" }, "Ver como texto"), children);
+  }
+  function useArrow() {
+    const id = `ar${(0, import_react17.useId)().replace(/:/g, "")}`;
+    const defs = /* @__PURE__ */ import_react17.default.createElement("defs", null, /* @__PURE__ */ import_react17.default.createElement("marker", { id, viewBox: "0 0 10 10", refX: "9", refY: "5", markerWidth: "7", markerHeight: "7", orient: "auto-start-reverse" }, /* @__PURE__ */ import_react17.default.createElement("path", { className: "du-dg-arrowhead", d: "M 0 0 L 10 5 L 0 10 z" })));
+    return [defs, `url(#${id})`];
+  }
+  function boxSize(title, text, chars = 16, minW = 90) {
+    const t = wrap(title, chars);
+    const d = text ? wrap(text, chars + 4) : [];
+    const w = Math.max(minW, ...t.map((l) => textWidth(l, 16)), ...d.map((l) => textWidth(l, 14))) + 24;
+    return { t, d, w, h: (t.length + d.length) * LH + 16 };
+  }
+  function NodeBox({ x, y, title, text, strong = false, chars = 16, minW, className = "" }) {
+    const { t, d, w, h } = boxSize(title, text, chars, minW);
+    const top = y - h / 2;
+    return /* @__PURE__ */ import_react17.default.createElement("g", { className }, /* @__PURE__ */ import_react17.default.createElement("rect", { className: strong ? "du-dg-node du-dg-node--strong" : "du-dg-node", x: x - w / 2, y: top, width: w, height: h }), t.map((l, i) => /* @__PURE__ */ import_react17.default.createElement("text", { key: i, className: `du-dg-text diagram-title${strong ? " du-dg-text--on-strong" : ""}`, x, y: top + 8 + LH * (i + 0.75), textAnchor: "middle" }, l)), d.map((l, i) => /* @__PURE__ */ import_react17.default.createElement("text", { key: `d${i}`, className: `du-dg-text diagram-label${strong ? " du-dg-text--on-strong" : ""}`, x, y: top + 8 + LH * (t.length + i + 0.75), textAnchor: "middle" }, l)));
+  }
+  function Lines({ x, y, lines, anchor = "start", className = "diagram-label", muted = false, title = false }) {
+    const cls = title && !className.includes("diagram-title") ? `diagram-title ${className.replace("diagram-label", "")}`.trim() : className;
+    return lines.map((l, i) => /* @__PURE__ */ import_react17.default.createElement("text", { key: i, className: `du-dg-text ${cls}${muted ? " du-dg-text--muted" : ""}`, x, y: y + i * LH, textAnchor: anchor }, l));
+  }
+  function EdgeLabel({ x, y, text }) {
+    const w = textWidth(text, 14) + 10;
+    return /* @__PURE__ */ import_react17.default.createElement("g", null, /* @__PURE__ */ import_react17.default.createElement("rect", { className: "du-dg-relation-bg", x: x - w / 2, y: y - 11, width: w, height: 20 }), /* @__PURE__ */ import_react17.default.createElement("text", { className: "du-dg-relation", x, y: y + 4, textAnchor: "middle" }, text));
+  }
+  var rampFor = (i, n, darkFirst = true) => {
+    const k = n <= 1 ? 1 : Math.round((darkFirst ? i : n - 1 - i) * 3 / (n - 1)) + 1;
+    return Math.min(4, Math.max(1, k));
+  };
+
   // src/components/ConceptWeb.jsx
   var W = 680;
-  var LH = 18;
+  var LH2 = 18;
   function Node({ x, y, lines, strong, detail = [] }) {
     const all = [...lines, ...detail];
     const w = Math.max(96, ...lines.map((l) => textWidth(l, 16)), ...detail.map((l) => textWidth(l, 14))) + 24;
-    const h = all.length * LH + 16;
+    const h = all.length * LH2 + 16;
     const top = y - h / 2;
-    return /* @__PURE__ */ import_react17.default.createElement("g", null, /* @__PURE__ */ import_react17.default.createElement("rect", { className: strong ? "du-dg-node du-dg-node--strong" : "du-dg-node", x: x - w / 2, y: top, width: w, height: h }), lines.map((l, i) => /* @__PURE__ */ import_react17.default.createElement("text", { key: i, className: `du-dg-text diagram-title${strong ? " du-dg-text--on-strong" : ""}`, x, y: top + 8 + LH * (i + 0.75), textAnchor: "middle" }, l)), detail.map((l, i) => /* @__PURE__ */ import_react17.default.createElement("text", { key: `d${i}`, className: "du-dg-text diagram-label", x, y: top + 8 + LH * (lines.length + i + 0.75), textAnchor: "middle" }, l)));
+    return /* @__PURE__ */ import_react18.default.createElement("g", null, /* @__PURE__ */ import_react18.default.createElement("rect", { className: strong ? "du-dg-node du-dg-node--strong" : "du-dg-node", x: x - w / 2, y: top, width: w, height: h }), lines.map((l, i) => /* @__PURE__ */ import_react18.default.createElement("text", { key: i, className: `du-dg-text diagram-title${strong ? " du-dg-text--on-strong" : ""}`, x, y: top + 8 + LH2 * (i + 0.75), textAnchor: "middle" }, l)), detail.map((l, i) => /* @__PURE__ */ import_react18.default.createElement("text", { key: `d${i}`, className: "du-dg-text diagram-label", x, y: top + 8 + LH2 * (lines.length + i + 0.75), textAnchor: "middle" }, l)));
   }
   function ConceptWeb({ center, nodes, label }) {
     const long = nodes.filter((nd) => wrap(nd.label, 18).length > 3).map((nd) => nd.label);
     const n = nodes.length;
     const rows = nodes.map((nd) => wrap(nd.label, 18).length + (nd.detail ? wrap(nd.detail, 22).length : 0));
-    const H6 = Math.max(360, 260 + Math.max(...rows, 1) * LH * 2);
-    const cx = W / 2, cy = H6 / 2, rx = 250, ry = H6 / 2 - 30 - Math.max(...rows, 1) * LH / 2;
+    const H6 = Math.max(360, 260 + Math.max(...rows, 1) * LH2 * 2);
+    const cx = W / 2, cy = H6 / 2, rx = 250, ry = H6 / 2 - 30 - Math.max(...rows, 1) * LH2 / 2;
     const pos = nodes.map((_, i) => {
       const a = -Math.PI / 2 + 2 * Math.PI * i / n;
       return [cx + rx * Math.cos(a), cy + ry * Math.sin(a)];
     });
-    return /* @__PURE__ */ import_react17.default.createElement("div", { className: "du-diagram-wrap" }, /* @__PURE__ */ import_react17.default.createElement("svg", { className: "du-diagram", viewBox: `0 0 ${W} ${H6}`, role: "img", "aria-label": label || `Red conceptual: ${center}`, "data-warn": long.length ? `label-long: ${long.join(" | ")}` : void 0 }, pos.map(([x, y], i) => /* @__PURE__ */ import_react17.default.createElement("line", { key: i, className: "du-dg-edge", x1: cx, y1: cy, x2: x, y2: y })), /* @__PURE__ */ import_react17.default.createElement(Node, { x: cx, y: cy, lines: wrap(center, 16), strong: true }), nodes.map((nd, i) => /* @__PURE__ */ import_react17.default.createElement(Node, { key: i, x: pos[i][0], y: pos[i][1], lines: wrap(nd.label, 18), detail: nd.detail ? wrap(nd.detail, 22) : [] })), nodes.map((nd, i) => nd.relation ? /* @__PURE__ */ import_react17.default.createElement("g", { key: `r${i}` }, /* @__PURE__ */ import_react17.default.createElement("rect", { className: "du-dg-relation-bg", x: (cx + pos[i][0]) / 2 - textWidth(nd.relation, 14) / 2 - 4, y: (cy + pos[i][1]) / 2 - 10, width: textWidth(nd.relation, 14) + 8, height: 18 }), /* @__PURE__ */ import_react17.default.createElement("text", { className: "du-dg-relation", x: (cx + pos[i][0]) / 2, y: (cy + pos[i][1]) / 2 + 3, textAnchor: "middle" }, nd.relation)) : null)), /* @__PURE__ */ import_react17.default.createElement("div", { className: "du-diagram-list" }, /* @__PURE__ */ import_react17.default.createElement("p", { className: "du-diagram-list__center diagram-title" }, center), /* @__PURE__ */ import_react17.default.createElement("ul", null, nodes.map((nd, i) => /* @__PURE__ */ import_react17.default.createElement("li", { key: i, className: "diagram-label" }, nd.relation ? /* @__PURE__ */ import_react17.default.createElement("span", { className: "du-diagram-list__rel" }, nd.relation, " ") : null, /* @__PURE__ */ import_react17.default.createElement("strong", null, nd.label), nd.detail ? /* @__PURE__ */ import_react17.default.createElement("span", { className: "du-diagram-list__detail" }, " \xB7 ", nd.detail) : null)))));
+    const aria = label || `Red conceptual: ${center}`;
+    return /* @__PURE__ */ import_react18.default.createElement("div", { className: "du-diagram-wrap" }, /* @__PURE__ */ import_react18.default.createElement(DiagramScroll, { label: aria }, /* @__PURE__ */ import_react18.default.createElement("svg", { className: "du-diagram", viewBox: `0 0 ${W} ${H6}`, role: "img", "aria-label": aria, "data-warn": long.length ? `label-long: ${long.join(" | ")}` : void 0 }, pos.map(([x, y], i) => /* @__PURE__ */ import_react18.default.createElement("line", { key: i, className: "du-dg-edge", x1: cx, y1: cy, x2: x, y2: y })), /* @__PURE__ */ import_react18.default.createElement(Node, { x: cx, y: cy, lines: wrap(center, 16), strong: true }), nodes.map((nd, i) => /* @__PURE__ */ import_react18.default.createElement(Node, { key: i, x: pos[i][0], y: pos[i][1], lines: wrap(nd.label, 18), detail: nd.detail ? wrap(nd.detail, 22) : [] })), nodes.map((nd, i) => nd.relation ? /* @__PURE__ */ import_react18.default.createElement("g", { key: `r${i}` }, /* @__PURE__ */ import_react18.default.createElement("rect", { className: "du-dg-relation-bg", x: (cx + pos[i][0]) / 2 - textWidth(nd.relation, 14) / 2 - 4, y: (cy + pos[i][1]) / 2 - 10, width: textWidth(nd.relation, 14) + 8, height: 18 }), /* @__PURE__ */ import_react18.default.createElement("text", { className: "du-dg-relation", x: (cx + pos[i][0]) / 2, y: (cy + pos[i][1]) / 2 + 3, textAnchor: "middle" }, nd.relation)) : null))), /* @__PURE__ */ import_react18.default.createElement(DiagramText, null, /* @__PURE__ */ import_react18.default.createElement("div", { className: "du-diagram-list" }, /* @__PURE__ */ import_react18.default.createElement("p", { className: "du-diagram-list__center diagram-title" }, center), /* @__PURE__ */ import_react18.default.createElement("ul", null, nodes.map((nd, i) => /* @__PURE__ */ import_react18.default.createElement("li", { key: i, className: "diagram-label" }, nd.relation ? /* @__PURE__ */ import_react18.default.createElement("span", { className: "du-diagram-list__rel" }, nd.relation, " ") : null, /* @__PURE__ */ import_react18.default.createElement("strong", null, nd.label), nd.detail ? /* @__PURE__ */ import_react18.default.createElement("span", { className: "du-diagram-list__detail" }, " \xB7 ", nd.detail) : null))))));
   }
 
   // src/components/CycleDiagram.jsx
-  var import_react18 = __toESM(require_react(), 1);
+  var import_react19 = __toESM(require_react(), 1);
   var W2 = 680;
   var H = 420;
-  var LH2 = 18;
+  var LH3 = 18;
   function CycleDiagram({ steps, center, label }) {
-    const id = (0, import_react18.useId)().replace(/:/g, "");
+    const id = (0, import_react19.useId)().replace(/:/g, "");
     const n = steps.length;
     const cx = W2 / 2, cy = H / 2, R = 155;
     const ang = (i) => -Math.PI / 2 + 2 * Math.PI * i / n;
@@ -790,19 +832,20 @@ window.Didactica = (() => {
       const [x1, y1] = p(a1), [x2, y2] = p(a2);
       return `M ${x1} ${y1} A ${R} ${R} 0 0 1 ${x2} ${y2}`;
     };
-    return /* @__PURE__ */ import_react18.default.createElement("div", { className: "du-diagram-wrap" }, /* @__PURE__ */ import_react18.default.createElement("svg", { className: "du-diagram", viewBox: `0 0 ${W2} ${H}`, role: "img", "aria-label": label || `Ciclo: ${steps.map((s) => s.title).join(", ")}` }, /* @__PURE__ */ import_react18.default.createElement("defs", null, /* @__PURE__ */ import_react18.default.createElement("marker", { id: `a${id}`, viewBox: "0 0 10 10", refX: "8", refY: "5", markerWidth: "7", markerHeight: "7", orient: "auto-start-reverse" }, /* @__PURE__ */ import_react18.default.createElement("path", { className: "du-dg-arrowhead", d: "M 0 0 L 10 5 L 0 10 z" }))), steps.map((_, i) => /* @__PURE__ */ import_react18.default.createElement("path", { key: i, className: "du-dg-edge du-dg-edge--arc", d: arc(i), markerEnd: `url(#a${id})` })), center ? wrap(center, 16).map((l, i, arr) => /* @__PURE__ */ import_react18.default.createElement("text", { key: i, className: "du-dg-text du-dg-text--muted diagram-title", x: cx, y: cy + (i - (arr.length - 1) / 2) * LH2 + 5, textAnchor: "middle" }, l)) : null, steps.map((s, i) => {
+    const aria = label || `Ciclo: ${steps.map((s) => s.title).join(", ")}`;
+    return /* @__PURE__ */ import_react19.default.createElement("div", { className: "du-diagram-wrap" }, /* @__PURE__ */ import_react19.default.createElement(DiagramScroll, { label: aria }, /* @__PURE__ */ import_react19.default.createElement("svg", { className: "du-diagram", viewBox: `0 0 ${W2} ${H}`, role: "img", "aria-label": aria }, /* @__PURE__ */ import_react19.default.createElement("defs", null, /* @__PURE__ */ import_react19.default.createElement("marker", { id: `a${id}`, viewBox: "0 0 10 10", refX: "8", refY: "5", markerWidth: "7", markerHeight: "7", orient: "auto-start-reverse" }, /* @__PURE__ */ import_react19.default.createElement("path", { className: "du-dg-arrowhead", d: "M 0 0 L 10 5 L 0 10 z" }))), steps.map((_, i) => /* @__PURE__ */ import_react19.default.createElement("path", { key: i, className: "du-dg-edge du-dg-edge--arc", d: arc(i), markerEnd: `url(#a${id})` })), center ? wrap(center, 16).map((l, i, arr) => /* @__PURE__ */ import_react19.default.createElement("text", { key: i, className: "du-dg-text du-dg-text--muted diagram-title", x: cx, y: cy + (i - (arr.length - 1) / 2) * LH3 + 5, textAnchor: "middle" }, l)) : null, steps.map((s, i) => {
       const x = cx + R * Math.cos(ang(i)), y = cy + R * Math.sin(ang(i));
       const t = wrap(s.title, 16), d = s.text ? wrap(s.text, 20) : [];
       const w = Math.max(...t.map((l) => textWidth(l, 16)), ...d.map((l) => textWidth(l, 14)), 80) + 24;
-      const h = (t.length + d.length) * LH2 + 16, top = y - h / 2;
-      return /* @__PURE__ */ import_react18.default.createElement("g", { key: i }, /* @__PURE__ */ import_react18.default.createElement("rect", { className: "du-dg-node", x: x - w / 2, y: top, width: w, height: h }), t.map((l, j) => /* @__PURE__ */ import_react18.default.createElement("text", { key: j, className: "du-dg-text diagram-title", x, y: top + 8 + LH2 * (j + 0.75), textAnchor: "middle" }, l)), d.map((l, j) => /* @__PURE__ */ import_react18.default.createElement("text", { key: `d${j}`, className: "du-dg-text diagram-label", x, y: top + 8 + LH2 * (t.length + j + 0.75), textAnchor: "middle" }, l)));
-    })), /* @__PURE__ */ import_react18.default.createElement("div", { className: "du-diagram-list" }, center ? /* @__PURE__ */ import_react18.default.createElement("p", { className: "du-diagram-list__center diagram-title" }, center) : null, /* @__PURE__ */ import_react18.default.createElement("ol", { className: "du-diagram-list__cycle" }, steps.map((s, i) => /* @__PURE__ */ import_react18.default.createElement("li", { key: i, className: "diagram-label" }, /* @__PURE__ */ import_react18.default.createElement("strong", null, s.title), s.text ? /* @__PURE__ */ import_react18.default.createElement("span", { className: "du-diagram-list__detail" }, " \xB7 ", s.text) : null))), /* @__PURE__ */ import_react18.default.createElement("p", { className: "du-diagram-list__note diagram-label" }, "\u21BB Despu\xE9s del paso ", steps.length, ", el ciclo vuelve al paso 1.")));
+      const h = (t.length + d.length) * LH3 + 16, top = y - h / 2;
+      return /* @__PURE__ */ import_react19.default.createElement("g", { key: i }, /* @__PURE__ */ import_react19.default.createElement("rect", { className: "du-dg-node", x: x - w / 2, y: top, width: w, height: h }), t.map((l, j) => /* @__PURE__ */ import_react19.default.createElement("text", { key: j, className: "du-dg-text diagram-title", x, y: top + 8 + LH3 * (j + 0.75), textAnchor: "middle" }, l)), d.map((l, j) => /* @__PURE__ */ import_react19.default.createElement("text", { key: `d${j}`, className: "du-dg-text diagram-label", x, y: top + 8 + LH3 * (t.length + j + 0.75), textAnchor: "middle" }, l)));
+    }))), /* @__PURE__ */ import_react19.default.createElement(DiagramText, null, /* @__PURE__ */ import_react19.default.createElement("div", { className: "du-diagram-list" }, center ? /* @__PURE__ */ import_react19.default.createElement("p", { className: "du-diagram-list__center diagram-title" }, center) : null, /* @__PURE__ */ import_react19.default.createElement("ol", { className: "du-diagram-list__cycle" }, steps.map((s, i) => /* @__PURE__ */ import_react19.default.createElement("li", { key: i, className: "diagram-label" }, /* @__PURE__ */ import_react19.default.createElement("strong", null, s.title), s.text ? /* @__PURE__ */ import_react19.default.createElement("span", { className: "du-diagram-list__detail" }, " \xB7 ", s.text) : null))), /* @__PURE__ */ import_react19.default.createElement("p", { className: "du-diagram-list__note diagram-label" }, "\u21BB Despu\xE9s del paso ", steps.length, ", el ciclo vuelve al paso 1."))));
   }
 
   // src/components/Pyramid.jsx
-  var import_react19 = __toESM(require_react(), 1);
+  var import_react20 = __toESM(require_react(), 1);
   var W3 = 680;
-  var LH3 = 18;
+  var LH4 = 18;
   var LEVEL_H = 72;
   var PW = 330;
   function Pyramid({ levels, label }) {
@@ -811,81 +854,45 @@ window.Didactica = (() => {
     const cx = PW / 2 + 4;
     const halfAt = (y) => PW / 2 * (y / (n * LEVEL_H));
     const longApex = levels[0] && wrap(levels[0].title, 10).length > 1;
-    return /* @__PURE__ */ import_react19.default.createElement("div", { className: "du-diagram-wrap" }, /* @__PURE__ */ import_react19.default.createElement("svg", { className: "du-diagram", viewBox: `0 0 ${W3} ${H6}`, role: "img", "aria-label": label || `Pir\xE1mide: ${levels.map((l) => l.title).join(", ")}`, "data-warn": longApex ? `label-long: ${levels[0].title}` : void 0 }, levels.map((lv, i) => {
+    const aria = label || `Pir\xE1mide: ${levels.map((l) => l.title).join(", ")}`;
+    return /* @__PURE__ */ import_react20.default.createElement("div", { className: "du-diagram-wrap" }, /* @__PURE__ */ import_react20.default.createElement(DiagramScroll, { label: aria }, /* @__PURE__ */ import_react20.default.createElement("svg", { className: "du-diagram", viewBox: `0 0 ${W3} ${H6}`, role: "img", "aria-label": aria, "data-warn": longApex ? `label-long: ${levels[0].title}` : void 0 }, levels.map((lv, i) => {
       const y1 = i * LEVEL_H, y2 = (i + 1) * LEVEL_H - 4;
       const pts = [[cx - halfAt(y1), y1 + 4], [cx + halfAt(y1), y1 + 4], [cx + halfAt(y2 + 4), y2 + 4], [cx - halfAt(y2 + 4), y2 + 4]];
       const ramp = Math.min(i + 1 + Math.max(0, 4 - n), 4);
       const t = wrap(lv.title, i === 0 ? 10 : 18);
       const d = lv.text ? wrap(lv.text, 40) : [];
       const mid = (y1 + y2) / 2 + 4;
-      return /* @__PURE__ */ import_react19.default.createElement("g", { key: i }, /* @__PURE__ */ import_react19.default.createElement("polygon", { className: `du-dg-ramp du-dg-ramp--${ramp}`, points: pts.map((p) => p.join(",")).join(" ") }), t.map((l, j) => /* @__PURE__ */ import_react19.default.createElement("text", { key: j, className: `du-dg-text diagram-title du-dg-on-ramp--${ramp}`, x: cx, y: mid + (j - (t.length - 1) / 2) * LH3 + 5, textAnchor: "middle" }, l)), /* @__PURE__ */ import_react19.default.createElement("line", { className: "du-dg-leader", x1: cx + halfAt(mid) + 8, y1: mid, x2: PW + 24, y2: mid }), d.map((l, j) => /* @__PURE__ */ import_react19.default.createElement("text", { key: `d${j}`, className: "du-dg-text diagram-label", x: PW + 32, y: mid + (j - (d.length - 1) / 2) * LH3 + 5 }, l)));
-    })), /* @__PURE__ */ import_react19.default.createElement("ol", { className: "du-diagram-list du-diagram-list--pyramid" }, levels.map((lv, i) => {
+      return /* @__PURE__ */ import_react20.default.createElement("g", { key: i }, /* @__PURE__ */ import_react20.default.createElement("polygon", { className: `du-dg-ramp du-dg-ramp--${ramp}`, points: pts.map((p) => p.join(",")).join(" ") }), t.map((l, j) => /* @__PURE__ */ import_react20.default.createElement("text", { key: j, className: `du-dg-text diagram-title du-dg-on-ramp--${ramp}`, x: cx, y: mid + (j - (t.length - 1) / 2) * LH4 + 5, textAnchor: "middle" }, l)), /* @__PURE__ */ import_react20.default.createElement("line", { className: "du-dg-leader", x1: cx + halfAt(mid) + 8, y1: mid, x2: PW + 24, y2: mid }), d.map((l, j) => /* @__PURE__ */ import_react20.default.createElement("text", { key: `d${j}`, className: "du-dg-text diagram-label", x: PW + 32, y: mid + (j - (d.length - 1) / 2) * LH4 + 5 }, l)));
+    }))), /* @__PURE__ */ import_react20.default.createElement(DiagramText, null, /* @__PURE__ */ import_react20.default.createElement("ol", { className: "du-diagram-list du-diagram-list--pyramid" }, levels.map((lv, i) => {
       const ramp = Math.min(i + 1 + Math.max(0, 4 - n), 4);
-      return /* @__PURE__ */ import_react19.default.createElement("li", { key: i, className: `du-diagram-list__level du-dg-bar--${ramp}` }, /* @__PURE__ */ import_react19.default.createElement("strong", { className: `diagram-title du-dg-on-bar--${ramp}` }, lv.title), lv.text ? /* @__PURE__ */ import_react19.default.createElement("span", { className: "diagram-label" }, lv.text) : null);
-    })));
+      return /* @__PURE__ */ import_react20.default.createElement("li", { key: i, className: `du-diagram-list__level du-dg-bar--${ramp}` }, /* @__PURE__ */ import_react20.default.createElement("strong", { className: `diagram-title du-dg-on-bar--${ramp}` }, lv.title), lv.text ? /* @__PURE__ */ import_react20.default.createElement("span", { className: "diagram-label" }, lv.text) : null);
+    }))));
   }
 
   // src/components/ProcessFlow.jsx
-  var import_react20 = __toESM(require_react(), 1);
+  var import_react21 = __toESM(require_react(), 1);
   function ProcessFlow({ steps, label }) {
-    return /* @__PURE__ */ import_react20.default.createElement("ol", { className: "du-flow", "aria-label": label }, steps.map((s, i) => /* @__PURE__ */ import_react20.default.createElement("li", { key: i, className: "du-flow__step" }, /* @__PURE__ */ import_react20.default.createElement("span", { className: "du-flow__num diagram-title", "aria-hidden": "true" }, i + 1), /* @__PURE__ */ import_react20.default.createElement("span", { className: "du-flow__title diagram-title" }, s.title), s.text ? /* @__PURE__ */ import_react20.default.createElement("span", { className: "du-flow__text diagram-label" }, s.text) : null)));
+    return /* @__PURE__ */ import_react21.default.createElement("ol", { className: "du-flow", "aria-label": label }, steps.map((s, i) => /* @__PURE__ */ import_react21.default.createElement("li", { key: i, className: "du-flow__step" }, /* @__PURE__ */ import_react21.default.createElement("span", { className: "du-flow__num diagram-title", "aria-hidden": "true" }, i + 1), /* @__PURE__ */ import_react21.default.createElement("span", { className: "du-flow__title diagram-title" }, s.title), s.text ? /* @__PURE__ */ import_react21.default.createElement("span", { className: "du-flow__text diagram-label" }, s.text) : null)));
   }
 
   // src/components/GlossaryEntry.jsx
-  var import_react21 = __toESM(require_react(), 1);
+  var import_react22 = __toESM(require_react(), 1);
   function GlossaryEntry({ term, id, children }) {
-    return /* @__PURE__ */ import_react21.default.createElement("p", { className: "du-glossary glossary", id: id ? `gl-${id}` : void 0 }, /* @__PURE__ */ import_react21.default.createElement("dfn", { className: "du-glossary__term" }, term, ":"), " ", children);
+    return /* @__PURE__ */ import_react22.default.createElement("p", { className: "du-glossary glossary", id: id ? `gl-${id}` : void 0 }, /* @__PURE__ */ import_react22.default.createElement("dfn", { className: "du-glossary__term" }, term, ":"), " ", children);
   }
 
   // src/components/Glossary.jsx
-  var import_react22 = __toESM(require_react(), 1);
+  var import_react23 = __toESM(require_react(), 1);
   function Glossary({ entries }) {
     const sorted = [...entries].sort((a, b) => a.term.localeCompare(b.term, "es", { sensitivity: "base" }));
-    return /* @__PURE__ */ import_react22.default.createElement("div", { className: "du-glossary-list" }, sorted.map((e) => /* @__PURE__ */ import_react22.default.createElement(GlossaryEntry, { key: e.id, id: e.id, term: e.term }, e.definition)));
+    return /* @__PURE__ */ import_react23.default.createElement("div", { className: "du-glossary-list" }, sorted.map((e) => /* @__PURE__ */ import_react23.default.createElement(GlossaryEntry, { key: e.id, id: e.id, term: e.term }, e.definition)));
   }
   function Term({ to, children }) {
-    return /* @__PURE__ */ import_react22.default.createElement("a", { className: "du-term", href: `#gl-${to}` }, children);
+    return /* @__PURE__ */ import_react23.default.createElement("a", { className: "du-term", href: `#gl-${to}` }, children);
   }
 
   // src/components/diagrams/TreeDiagram.jsx
   var import_react24 = __toESM(require_react(), 1);
-
-  // src/components/diagrams/parts.jsx
-  var import_react23 = __toESM(require_react(), 1);
-  var LH4 = 18;
-  function DiagramFrame({ width, height, label, warn, list, children }) {
-    return /* @__PURE__ */ import_react23.default.createElement("div", { className: "du-diagram-wrap" }, /* @__PURE__ */ import_react23.default.createElement("svg", { className: "du-diagram", viewBox: `0 0 ${width} ${height}`, role: "img", "aria-label": label, "data-warn": warn || void 0 }, children), /* @__PURE__ */ import_react23.default.createElement("div", { className: "du-diagram-list" }, list));
-  }
-  function useArrow() {
-    const id = `ar${(0, import_react23.useId)().replace(/:/g, "")}`;
-    const defs = /* @__PURE__ */ import_react23.default.createElement("defs", null, /* @__PURE__ */ import_react23.default.createElement("marker", { id, viewBox: "0 0 10 10", refX: "9", refY: "5", markerWidth: "7", markerHeight: "7", orient: "auto-start-reverse" }, /* @__PURE__ */ import_react23.default.createElement("path", { className: "du-dg-arrowhead", d: "M 0 0 L 10 5 L 0 10 z" })));
-    return [defs, `url(#${id})`];
-  }
-  function boxSize(title, text, chars = 16, minW = 90) {
-    const t = wrap(title, chars);
-    const d = text ? wrap(text, chars + 4) : [];
-    const w = Math.max(minW, ...t.map((l) => textWidth(l, 16)), ...d.map((l) => textWidth(l, 14))) + 24;
-    return { t, d, w, h: (t.length + d.length) * LH4 + 16 };
-  }
-  function NodeBox({ x, y, title, text, strong = false, chars = 16, minW, className = "" }) {
-    const { t, d, w, h } = boxSize(title, text, chars, minW);
-    const top = y - h / 2;
-    return /* @__PURE__ */ import_react23.default.createElement("g", { className }, /* @__PURE__ */ import_react23.default.createElement("rect", { className: strong ? "du-dg-node du-dg-node--strong" : "du-dg-node", x: x - w / 2, y: top, width: w, height: h }), t.map((l, i) => /* @__PURE__ */ import_react23.default.createElement("text", { key: i, className: `du-dg-text diagram-title${strong ? " du-dg-text--on-strong" : ""}`, x, y: top + 8 + LH4 * (i + 0.75), textAnchor: "middle" }, l)), d.map((l, i) => /* @__PURE__ */ import_react23.default.createElement("text", { key: `d${i}`, className: `du-dg-text diagram-label${strong ? " du-dg-text--on-strong" : ""}`, x, y: top + 8 + LH4 * (t.length + i + 0.75), textAnchor: "middle" }, l)));
-  }
-  function Lines({ x, y, lines, anchor = "start", className = "diagram-label", muted = false, title = false }) {
-    const cls = title && !className.includes("diagram-title") ? `diagram-title ${className.replace("diagram-label", "")}`.trim() : className;
-    return lines.map((l, i) => /* @__PURE__ */ import_react23.default.createElement("text", { key: i, className: `du-dg-text ${cls}${muted ? " du-dg-text--muted" : ""}`, x, y: y + i * LH4, textAnchor: anchor }, l));
-  }
-  function EdgeLabel({ x, y, text }) {
-    const w = textWidth(text, 14) + 10;
-    return /* @__PURE__ */ import_react23.default.createElement("g", null, /* @__PURE__ */ import_react23.default.createElement("rect", { className: "du-dg-relation-bg", x: x - w / 2, y: y - 11, width: w, height: 20 }), /* @__PURE__ */ import_react23.default.createElement("text", { className: "du-dg-relation", x, y: y + 4, textAnchor: "middle" }, text));
-  }
-  var rampFor = (i, n, darkFirst = true) => {
-    const k = n <= 1 ? 1 : Math.round((darkFirst ? i : n - 1 - i) * 3 / (n - 1)) + 1;
-    return Math.min(4, Math.max(1, k));
-  };
-
-  // src/components/diagrams/TreeDiagram.jsx
   var SLOT = 150;
   var LEVEL = 110;
   var listOf = (n) => /* @__PURE__ */ import_react24.default.createElement("li", { key: n.label }, /* @__PURE__ */ import_react24.default.createElement("strong", null, n.label), n.detail ? /* @__PURE__ */ import_react24.default.createElement("span", { className: "du-diagram-list__detail" }, " \xB7 ", n.detail) : null, n.children && n.children.length ? /* @__PURE__ */ import_react24.default.createElement("ul", null, n.children.map(listOf)) : null);
@@ -1025,7 +1032,7 @@ window.Didactica = (() => {
   function MindMap({ center, branches, label }) {
     const right = branches.slice(0, Math.ceil(branches.length / 2));
     const left = branches.slice(Math.ceil(branches.length / 2));
-    const blockH = (b) => Math.max(boxSize(b.label, null, 14).h, (b.items || []).flatMap((it) => wrap(it, 15)).length * LH4 + (b.items || []).length * 4) + 24;
+    const blockH = (b) => Math.max(boxSize(b.label, null, 14).h, (b.items || []).flatMap((it) => wrap(it, 15)).length * LH + (b.items || []).length * 4) + 24;
     const H6 = Math.max(260, Math.max(right.reduce((a, b) => a + blockH(b), 0), left.reduce((a, b) => a + blockH(b), 0)) + 20);
     const CY2 = H6 / 2;
     const side = (list, dir) => {
@@ -1039,11 +1046,11 @@ window.Didactica = (() => {
         const bw = boxSize(b.label, null, 14, 96).w;
         const lines = (b.items || []).map((it) => wrap(it, 15));
         const count = lines.flat().length + (lines.length - 1) * 0.25;
-        let ty = by - count * LH4 / 2 + 13;
+        let ty = by - count * LH / 2 + 13;
         const tx = CX + dir * (132 + bw / 2 + 22);
         return /* @__PURE__ */ import_react26.default.createElement("g", { key: `${dir}${i}` }, /* @__PURE__ */ import_react26.default.createElement("path", { className: "du-dg-edge", d: `M ${CX + dir * 60} ${CY2} C ${CX + dir * 90} ${CY2}, ${bx - dir * (bw / 2 + 30)} ${by}, ${bx - dir * bw / 2} ${by}` }), lines.length ? /* @__PURE__ */ import_react26.default.createElement("line", { className: "du-dg-leader", x1: bx + dir * bw / 2, y1: by, x2: tx - dir * 8, y2: by }) : null, /* @__PURE__ */ import_react26.default.createElement(NodeBox, { x: bx, y: by, title: b.label, chars: 14, minW: 96 }), lines.map((ls, j) => {
           const el = /* @__PURE__ */ import_react26.default.createElement(Lines, { key: j, x: tx, y: ty, lines: ls.map((l, k) => k === 0 ? `\u2022 ${l}` : `  ${l}`), anchor: dir > 0 ? "start" : "end" });
-          ty += ls.length * LH4 + 4;
+          ty += ls.length * LH + 4;
           return el;
         }));
       });
@@ -1083,7 +1090,7 @@ window.Didactica = (() => {
       sets.map((s, i) => /* @__PURE__ */ import_react27.default.createElement(Lines, { key: i, x: L.labels[i][0], y: L.labels[i][1], lines: wrap(s, 22), anchor: "middle", title: true })),
       Object.entries(L.at).map(([k, [x, y]]) => {
         const items = (regions[k] || []).flatMap((it) => wrap(it, chars));
-        return items.length ? /* @__PURE__ */ import_react27.default.createElement(Lines, { key: k, x, y: y - (items.length - 1) * LH4 / 2 + 5, lines: items, anchor: "middle" }) : null;
+        return items.length ? /* @__PURE__ */ import_react27.default.createElement(Lines, { key: k, x, y: y - (items.length - 1) * LH / 2 + 5, lines: items, anchor: "middle" }) : null;
       })
     );
   }
@@ -1112,7 +1119,7 @@ window.Didactica = (() => {
         const q = quadrants[i] || {};
         const t = wrap(q.title || "", 22);
         const d = q.text ? wrap(q.text, 30) : [];
-        return /* @__PURE__ */ import_react28.default.createElement("g", { key: i }, /* @__PURE__ */ import_react28.default.createElement("rect", { className: `du-dg-quad du-dg-quad--${i === 1 ? "strong" : "plain"}`, x: x + 3, y: y + 3, width: (X1 - X0) / 2 - 6, height: (Y1 - Y0) / 2 - 6 }), /* @__PURE__ */ import_react28.default.createElement(Lines, { x: x + (X1 - X0) / 4, y: y + (Y1 - Y0) / 4 - (t.length + d.length - 1) * LH4 / 2 + 5, lines: t, anchor: "middle", title: true }), /* @__PURE__ */ import_react28.default.createElement(Lines, { x: x + (X1 - X0) / 4, y: y + (Y1 - Y0) / 4 - (t.length + d.length - 1) * LH4 / 2 + 5 + t.length * LH4, lines: d, anchor: "middle", muted: true }));
+        return /* @__PURE__ */ import_react28.default.createElement("g", { key: i }, /* @__PURE__ */ import_react28.default.createElement("rect", { className: `du-dg-quad du-dg-quad--${i === 1 ? "strong" : "plain"}`, x: x + 3, y: y + 3, width: (X1 - X0) / 2 - 6, height: (Y1 - Y0) / 2 - 6 }), /* @__PURE__ */ import_react28.default.createElement(Lines, { x: x + (X1 - X0) / 4, y: y + (Y1 - Y0) / 4 - (t.length + d.length - 1) * LH / 2 + 5, lines: t, anchor: "middle", title: true }), /* @__PURE__ */ import_react28.default.createElement(Lines, { x: x + (X1 - X0) / 4, y: y + (Y1 - Y0) / 4 - (t.length + d.length - 1) * LH / 2 + 5 + t.length * LH, lines: d, anchor: "middle", muted: true }));
       }),
       /* @__PURE__ */ import_react28.default.createElement("line", { className: "du-dg-axis", x1: X0, y1: Y1, x2: X1, y2: Y1 }),
       /* @__PURE__ */ import_react28.default.createElement("line", { className: "du-dg-axis", x1: X0, y1: Y1, x2: X0, y2: Y0 }),
@@ -1135,8 +1142,8 @@ window.Didactica = (() => {
     const chars = Math.min(18, Math.max(12, Math.floor((W7 - 2 * INSET) / Math.max(1, n - 1) * 1.7 / 7.5)));
     const lines = (e) => wrap(e.title, chars).length + (e.text ? wrap(e.text, chars + 2).length : 0);
     const most = (k) => Math.max(1, ...events.filter((_, i) => i % 2 === k).map(lines));
-    const AXIS = 34 + most(0) * LH4 + 34;
-    const H6 = AXIS + 56 + most(1) * LH4;
+    const AXIS = 34 + most(0) * LH + 34;
+    const H6 = AXIS + 56 + most(1) * LH;
     return /* @__PURE__ */ import_react29.default.createElement(
       DiagramFrame,
       {
@@ -1152,8 +1159,8 @@ window.Didactica = (() => {
         const t = wrap(e.title, chars);
         const d = e.text ? wrap(e.text, chars + 2) : [];
         const block = [...t, ...d].length;
-        const y0 = up ? AXIS - 34 - (block - 1) * LH4 : AXIS + 56;
-        return /* @__PURE__ */ import_react29.default.createElement("g", { key: i }, /* @__PURE__ */ import_react29.default.createElement("line", { className: "du-dg-leader", x1: x(i), y1: AXIS, x2: x(i), y2: up ? AXIS - 28 : AXIS + 28 }), /* @__PURE__ */ import_react29.default.createElement("circle", { className: "du-dg-dot", cx: x(i), cy: AXIS, r: 7 }), /* @__PURE__ */ import_react29.default.createElement("text", { className: "du-dg-text diagram-title du-dg-date", x: x(i), y: up ? AXIS + 26 : AXIS - 16, textAnchor: "middle" }, e.date), /* @__PURE__ */ import_react29.default.createElement(Lines, { x: x(i), y: y0, lines: t, anchor: "middle", title: true }), /* @__PURE__ */ import_react29.default.createElement(Lines, { x: x(i), y: y0 + t.length * LH4, lines: d, anchor: "middle", muted: true }));
+        const y0 = up ? AXIS - 34 - (block - 1) * LH : AXIS + 56;
+        return /* @__PURE__ */ import_react29.default.createElement("g", { key: i }, /* @__PURE__ */ import_react29.default.createElement("line", { className: "du-dg-leader", x1: x(i), y1: AXIS, x2: x(i), y2: up ? AXIS - 28 : AXIS + 28 }), /* @__PURE__ */ import_react29.default.createElement("circle", { className: "du-dg-dot", cx: x(i), cy: AXIS, r: 7 }), /* @__PURE__ */ import_react29.default.createElement("text", { className: "du-dg-text diagram-title du-dg-date", x: x(i), y: up ? AXIS + 26 : AXIS - 16, textAnchor: "middle" }, e.date), /* @__PURE__ */ import_react29.default.createElement(Lines, { x: x(i), y: y0, lines: t, anchor: "middle", title: true }), /* @__PURE__ */ import_react29.default.createElement(Lines, { x: x(i), y: y0 + t.length * LH, lines: d, anchor: "middle", muted: true }));
       })
     );
   }
@@ -1179,8 +1186,8 @@ window.Didactica = (() => {
       },
       defs,
       /* @__PURE__ */ import_react30.default.createElement("line", { className: "du-dg-edge", x1: 20, y1: SPINE, x2: EFFECT_X - 4, y2: SPINE, markerEnd: arrow }),
-      /* @__PURE__ */ import_react30.default.createElement("rect", { className: "du-dg-node du-dg-node--strong", x: EFFECT_X, y: SPINE - (eff.length * LH4 + 16) / 2, width: W8 - EFFECT_X - 6, height: eff.length * LH4 + 16 }),
-      /* @__PURE__ */ import_react30.default.createElement(Lines, { x: (EFFECT_X + W8 - 6) / 2, y: SPINE - (eff.length - 1) * LH4 / 2 + 5, lines: eff, anchor: "middle", title: true, className: "diagram-title du-dg-text--on-strong" }),
+      /* @__PURE__ */ import_react30.default.createElement("rect", { className: "du-dg-node du-dg-node--strong", x: EFFECT_X, y: SPINE - (eff.length * LH + 16) / 2, width: W8 - EFFECT_X - 6, height: eff.length * LH + 16 }),
+      /* @__PURE__ */ import_react30.default.createElement(Lines, { x: (EFFECT_X + W8 - 6) / 2, y: SPINE - (eff.length - 1) * LH / 2 + 5, lines: eff, anchor: "middle", title: true, className: "diagram-title du-dg-text--on-strong" }),
       causes.map((c, i) => {
         const up = i % 2 === 0;
         const col = Math.floor(i / 2);
@@ -1224,8 +1231,8 @@ window.Didactica = (() => {
         const up = i % 2 === 0;
         const t = wrap(p.label, 16);
         const d = p.text ? wrap(p.text, 20) : [];
-        const y0 = up ? BAR - 40 - (t.length + d.length - 1) * LH4 : BAR + 56;
-        return /* @__PURE__ */ import_react31.default.createElement("g", { key: i }, /* @__PURE__ */ import_react31.default.createElement("line", { className: "du-dg-leader", x1: x, y1: up ? BAR - 14 : BAR + 14, x2: x, y2: up ? BAR - 32 : BAR + 38 }), /* @__PURE__ */ import_react31.default.createElement("circle", { className: "du-dg-dot", cx: x, cy: BAR, r: 8 }), /* @__PURE__ */ import_react31.default.createElement(Lines, { x, y: y0, lines: t, anchor: "middle", title: true }), /* @__PURE__ */ import_react31.default.createElement(Lines, { x, y: y0 + t.length * LH4, lines: d, anchor: "middle", muted: true }));
+        const y0 = up ? BAR - 40 - (t.length + d.length - 1) * LH : BAR + 56;
+        return /* @__PURE__ */ import_react31.default.createElement("g", { key: i }, /* @__PURE__ */ import_react31.default.createElement("line", { className: "du-dg-leader", x1: x, y1: up ? BAR - 14 : BAR + 14, x2: x, y2: up ? BAR - 32 : BAR + 38 }), /* @__PURE__ */ import_react31.default.createElement("circle", { className: "du-dg-dot", cx: x, cy: BAR, r: 8 }), /* @__PURE__ */ import_react31.default.createElement(Lines, { x, y: y0, lines: t, anchor: "middle", title: true }), /* @__PURE__ */ import_react31.default.createElement(Lines, { x, y: y0 + t.length * LH, lines: d, anchor: "middle", muted: true }));
       })
     );
   }
@@ -1257,7 +1264,7 @@ window.Didactica = (() => {
         const mid = (y1 + y2) / 2;
         const t = wrap(s.title, 22);
         const d = s.text ? wrap(s.text, 30) : [];
-        return /* @__PURE__ */ import_react32.default.createElement("g", { key: i }, /* @__PURE__ */ import_react32.default.createElement("polygon", { className: `du-dg-ramp du-dg-ramp--${r}`, points: `${CX2 - half(y1)},${y1} ${CX2 + half(y1)},${y1} ${CX2 + half(y2)},${y2} ${CX2 - half(y2)},${y2}` }), /* @__PURE__ */ import_react32.default.createElement(Lines, { x: CX2, y: mid - (t.length - 1) * LH4 / 2 + 5, lines: t, anchor: "middle", title: true, className: `diagram-title du-dg-on-ramp--${r}` }), d.length ? /* @__PURE__ */ import_react32.default.createElement("line", { className: "du-dg-leader", x1: CX2 + half(mid) + 8, y1: mid, x2: CX2 + FW / 2 + 24, y2: mid }) : null, /* @__PURE__ */ import_react32.default.createElement(Lines, { x: CX2 + FW / 2 + 32, y: mid - (d.length - 1) * LH4 / 2 + 5, lines: d }));
+        return /* @__PURE__ */ import_react32.default.createElement("g", { key: i }, /* @__PURE__ */ import_react32.default.createElement("polygon", { className: `du-dg-ramp du-dg-ramp--${r}`, points: `${CX2 - half(y1)},${y1} ${CX2 + half(y1)},${y1} ${CX2 + half(y2)},${y2} ${CX2 - half(y2)},${y2}` }), /* @__PURE__ */ import_react32.default.createElement(Lines, { x: CX2, y: mid - (t.length - 1) * LH / 2 + 5, lines: t, anchor: "middle", title: true, className: `diagram-title du-dg-on-ramp--${r}` }), d.length ? /* @__PURE__ */ import_react32.default.createElement("line", { className: "du-dg-leader", x1: CX2 + half(mid) + 8, y1: mid, x2: CX2 + FW / 2 + 24, y2: mid }) : null, /* @__PURE__ */ import_react32.default.createElement(Lines, { x: CX2 + FW / 2 + 32, y: mid - (d.length - 1) * LH / 2 + 5, lines: d }));
       })
     );
   }
@@ -1291,7 +1298,7 @@ window.Didactica = (() => {
         const chars = Math.max(9, Math.floor(sw / 9));
         const t = wrap(s.title, chars);
         const d = s.text ? wrap(s.text, chars + 2) : [];
-        return /* @__PURE__ */ import_react33.default.createElement("g", { key: i }, /* @__PURE__ */ import_react33.default.createElement("rect", { className: `du-dg-ramp du-dg-ramp--${r}`, x: x + 2, y, width: sw - 4, height: h }), /* @__PURE__ */ import_react33.default.createElement(Lines, { x: x + sw / 2, y: y + 22, lines: t, anchor: "middle", title: true, className: `diagram-title du-dg-on-ramp--${r}` }), /* @__PURE__ */ import_react33.default.createElement(Lines, { x: x + sw / 2, y: y + 24 + t.length * LH4, lines: d, anchor: "middle", className: `diagram-label du-dg-on-ramp--${r}` }));
+        return /* @__PURE__ */ import_react33.default.createElement("g", { key: i }, /* @__PURE__ */ import_react33.default.createElement("rect", { className: `du-dg-ramp du-dg-ramp--${r}`, x: x + 2, y, width: sw - 4, height: h }), /* @__PURE__ */ import_react33.default.createElement(Lines, { x: x + sw / 2, y: y + 22, lines: t, anchor: "middle", title: true, className: `diagram-title du-dg-on-ramp--${r}` }), /* @__PURE__ */ import_react33.default.createElement(Lines, { x: x + sw / 2, y: y + 24 + t.length * LH, lines: d, anchor: "middle", className: `diagram-label du-dg-on-ramp--${r}` }));
       })
     );
   }
@@ -1306,7 +1313,7 @@ window.Didactica = (() => {
   function NestedCircles({ layers, label }) {
     const n = layers.length;
     const r = (i) => RMAX * (i + 1) / n;
-    const legendH = layers.reduce((a, l) => a + (1 + (l.text ? wrap(l.text, 26).length : 0)) * LH4 + 12, 0);
+    const legendH = layers.reduce((a, l) => a + (1 + (l.text ? wrap(l.text, 26).length : 0)) * LH + 12, 0);
     const textY = (i) => CY - (r(i) + (i ? r(i - 1) : 0)) / 2;
     return /* @__PURE__ */ import_react34.default.createElement(
       DiagramFrame,
@@ -1331,8 +1338,8 @@ window.Didactica = (() => {
           const d = l.text ? wrap(l.text, 26) : [];
           const ramp = rampFor(i, n, true);
           const y = ly;
-          ly += (1 + d.length) * LH4 + 12;
-          return /* @__PURE__ */ import_react34.default.createElement("g", { key: `k${i}` }, /* @__PURE__ */ import_react34.default.createElement("rect", { className: `du-dg-ramp du-dg-ramp--${ramp}`, x: 440, y: y - 12, width: 14, height: 14, rx: 2 }), /* @__PURE__ */ import_react34.default.createElement("text", { className: "du-dg-text diagram-title", x: 462, y }, l.title), /* @__PURE__ */ import_react34.default.createElement(Lines, { x: 462, y: y + LH4, lines: d, muted: true }));
+          ly += (1 + d.length) * LH + 12;
+          return /* @__PURE__ */ import_react34.default.createElement("g", { key: `k${i}` }, /* @__PURE__ */ import_react34.default.createElement("rect", { className: `du-dg-ramp du-dg-ramp--${ramp}`, x: 440, y: y - 12, width: 14, height: 14, rx: 2 }), /* @__PURE__ */ import_react34.default.createElement("text", { className: "du-dg-text diagram-title", x: 462, y }, l.title), /* @__PURE__ */ import_react34.default.createElement(Lines, { x: 462, y: y + LH, lines: d, muted: true }));
         });
       })()
     );
@@ -1358,9 +1365,9 @@ window.Didactica = (() => {
       /* @__PURE__ */ import_react35.default.createElement("polygon", { className: "du-dg-ice", points: `150,30 205,85 235,${SEA} 300,${SEA + 60} 285,330 205,${H5 - 20} 110,370 60,260 85,${SEA} 110,80` }),
       /* @__PURE__ */ import_react35.default.createElement("line", { className: "du-dg-sea", x1: 0, y1: SEA, x2: W13, y2: SEA }),
       /* @__PURE__ */ import_react35.default.createElement(Lines, { x: 340, y: 44, lines: [visibleTitle], title: true }),
-      /* @__PURE__ */ import_react35.default.createElement(Lines, { x: 340, y: 44 + LH4 + 4, lines: vis }),
+      /* @__PURE__ */ import_react35.default.createElement(Lines, { x: 340, y: 44 + LH + 4, lines: vis }),
       /* @__PURE__ */ import_react35.default.createElement(Lines, { x: 340, y: SEA + 40, lines: [hiddenTitle], title: true }),
-      /* @__PURE__ */ import_react35.default.createElement(Lines, { x: 340, y: SEA + 40 + LH4 + 4, lines: hid })
+      /* @__PURE__ */ import_react35.default.createElement(Lines, { x: 340, y: SEA + 40 + LH + 4, lines: hid })
     );
   }
   return __toCommonJS(index_exports);

@@ -235,14 +235,23 @@
 .du-figure__body { @apply w-full; }
 .du-diagram { @apply block w-full h-auto; max-width: 680px; margin: 0 auto; }
 
-/* Below 600px of available width the SVG would shrink its labels under 12px:
-   the same structure is shown as a list instead (also the screen-reader view). */
+/* The drawing always shows. Below 600px of available width it keeps 600px (14px labels
+   stay above 12px) and its frame scrolls sideways. The same structure as a list sits
+   under it, collapsed behind “Ver como texto”. */
 .du-diagram-wrap { container-type: inline-size; }
-.du-diagram-list { display: none; }
+.du-diagram-scroll { overflow-x: auto; overscroll-behavior-x: contain; border-radius: var(--radius-node); }
+.du-diagram-scroll:focus-visible { outline: var(--stroke-strong) solid var(--focus); outline-offset: 2px; }
+.du-diagram-hint { display: none; @apply m-0 mt-1 text-ink-muted; font-family: var(--font-sans); font-size: 14px; }
 @container (max-width: 599px) {
-  .du-diagram { display: none; }
-  .du-diagram-list { display: block; }
+  .du-diagram { min-width: 600px; }
+  .du-diagram-scroll { padding-bottom: 4px; }
+  .du-diagram-hint { display: block; }
 }
+.du-diagram-text { @apply mt-2; }
+.du-diagram-text > summary { @apply text-ink-muted cursor-pointer; font-family: var(--font-sans); font-size: 14px; }
+.du-diagram-text > summary:hover { @apply text-navy; }
+.du-diagram-text[open] > summary { @apply mb-2; }
+.du-diagram-list, .du-diagram-list li { font-family: var(--font-sans); }
 .du-diagram-list { @apply m-0 p-3 border-hair border-solid rounded-node; background: var(--diagram-node); border-color: var(--diagram-node-border); }
 .du-diagram-list ul, .du-diagram-list ol { @apply m-0 pl-5; }
 .du-diagram-list li { @apply text-ink mb-1; }
@@ -256,7 +265,7 @@ ol.du-diagram-list--pyramid { @apply list-none p-0 border-0 bg-transparent; }
 .du-dg-bar--3 { background: var(--ramp-3); } .du-dg-bar--4 { background: var(--ramp-4); }
 .du-dg-bar--1 span, .du-dg-bar--2 span, .du-dg-on-bar--1, .du-dg-on-bar--2 { color: var(--on-table-head); }
 .du-dg-bar--3 span, .du-dg-bar--4 span, .du-dg-on-bar--3, .du-dg-on-bar--4 { color: var(--ink); }
-@media print { .du-diagram { display: block !important; } .du-diagram-list { display: none !important; } }
+@media print { .du-diagram { min-width: 0 !important; } .du-diagram-scroll { overflow: visible; } .du-diagram-text, .du-diagram-hint { display: none !important; } }
 .du-dg-node { fill: var(--diagram-node); stroke: var(--diagram-node-border); stroke-width: var(--stroke-hair); rx: var(--radius-node); }
 .du-dg-node--strong { fill: var(--diagram-node-strong); stroke: var(--diagram-node-strong); }
 .du-dg-text { fill: var(--ink); }

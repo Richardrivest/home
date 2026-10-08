@@ -1,19 +1,25 @@
-# Didáctica Universitaria — design system (v3.3)
+# Didáctica Universitaria — design system (v3.4)
 
 A design system for university teacher-education materials. It started as an extraction of the *Manual de Didáctica Universitaria* (.docx) and was then revised by a typography, colour and contrast audit. It ships tokens, React components, Tailwind, plain HTML/CSS, a SQLite database and a Node.js API.
 
 The design-system page has the brand book, the tokens, live previews and the icons: https://claude.ai/artifact/WUriWVLzv8G4y2u9oMyFhX
 
+## v3.4: diagrams stay drawings on narrow screens
+
+- **The drawing always shows.** Until v3.3 every diagram turned into a bulleted list below 600px of available width, so phones, narrow columns and the cards on the design-system page showed text instead of a picture. Now the drawing stays. Below 600px it keeps a 600px width (14px labels stay above 12px) inside a frame that scrolls sideways, with a “Deslizá para ver el diagrama completo →” hint. The frame takes keyboard focus so it can be scrolled without a mouse.
+- **Text version on demand.** The same structure as a list now sits under every drawing, collapsed behind “Ver como texto”, at every width. Lists use the sans face throughout. Print shows the drawing without the text version or the hint.
+- **Tests:** the two diagram tests now check the scroll frame and the “Ver como texto” text version.
+
 ## v3.3: tables and twelve more diagrams
 
 - **Tables.** The header row has its own colour, `table-head-surface` (navy text at 7.8:1 in light, 7.5:1 in dark). Body rows alternate one colour per row (`paper`, `band`). Row headers keep their row's colour and stand out by bold navy sans text, so the header row, the first column and the stripes no longer mix. The Word template uses the same fills.
-- **Twelve new diagram types**, all SVG with the list fallback under 600px:
+- **Twelve new diagram types**, all SVG with a text version as a list:
   - hierarchies: `TreeDiagram` (turns left to right when leaves don't fit), `Staircase`, `Funnel`, `NestedCircles`;
   - connections: `ConceptMap` (labelled propositions), `MindMap`, `VennDiagram` (2 or 3 sets), `Fishbone` (Ishikawa);
   - organisation: `QuadrantMatrix`, `Timeline`, `Spectrum`, `Iceberg`.
 
   The style guide has a “which diagram for which information” table, and the example gallery shows each one with content from the manual.
-- **Tests:** 26 in total, including one that renders all twelve and checks their list fallbacks.
+- **Tests:** 26 in total, including one that renders all twelve and checks their text versions.
 
 ## v3.2: the remaining audit items
 
