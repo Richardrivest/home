@@ -6,7 +6,7 @@
   <title>Didáctica Universitaria — React</title>
   <link rel="stylesheet" href="../dist/tokens.css">
   <link rel="stylesheet" href="../dist/didactica.css">
-  <style>body { margin: 0; background: var(--band); padding: var(--space-16pt) var(--space-9pt); }</style>
+  <style>body { margin: 0; background: var(--surface); padding: var(--space-5) var(--space-3); }</style>
   <script src="https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
   <script src="../dist/didactica.iife.js"></script>
@@ -15,30 +15,22 @@
   <div id="root"></div>
   <script>
     const h = React.createElement;
-    const { Page, TableOfContents, Heading, Paragraph, ConceptBox, DataTable, BulletList } = window.Didactica;
+    const { Page, ChapterOpener, KeyPoints, Objectives, Paragraph, Cite, Important, CommonMistake, Figure, CycleDiagram, ThinkFurther, Activities, ReferencesBox, Reference } = window.Didactica;
+    const AMBROSE = { authors: ['Ambrose', 'Bridges', 'DiPietro', 'Lovett', 'Norman'], year: 2010, page: 'xx' };
+    const VYGOTSKY = { authors: ['Vygotsky'], year: 1978, page: 86 };
     ReactDOM.createRoot(document.getElementById('root')).render(
       h(Page, { header: 'Didáctica de la Educación Superior', page: 12 },
-        h(TableOfContents, { entries: [
-          { title: 'Unidad 2. Teorías del aprendizaje en la educación superior', page: 12 },
-          { title: '2.1. Constructivismo y aprendizaje significativo', page: 12, level: 2 },
-          { title: '2.2. La perspectiva sociocultural', page: 13, level: 2 },
-        ] }),
-        h(Heading, { level: 1 }, 'Unidad 2. Teorías del aprendizaje en la educación superior'),
-        h(Heading, { level: 2 }, '2.2. La perspectiva sociocultural'),
-        h(Paragraph, null, 'Vygotsky (1978) desplazó el foco desde el individuo hacia la matriz social del aprendizaje.'),
-        h(ConceptBox, { term: 'Zona de desarrollo próximo (ZDP)' },
-          'Franja entre el nivel de desarrollo real (lo que el estudiante resuelve solo) y el potencial (lo que resuelve con ayuda).'),
-        h(DataTable, {
-          number: 2, widths: ['22%', '39%', '39%'],
-          caption: 'Teorías del aprendizaje e implicancias didácticas. Elaboración propia.',
-          columns: ['Perspectiva', 'Cómo concibe el aprendizaje', 'Implicancia para enseñar'],
-          rows: [
-            ['Conductista', 'Cambio de conducta por asociación y refuerzo', 'Objetivos claros, práctica y retroalimentación inmediata'],
-            ['Cognitivista', 'Procesamiento de información; esquemas y memoria', 'Gestionar la carga cognitiva; organizar y secuenciar'],
-            ['Constructivista', 'Construcción activa sobre ideas previas', 'Indagar preconceptos; proponer problemas significativos'],
-          ],
-        }),
-        h(BulletList, { items: ['Planificar sistemas de evaluación válidos, formativos y sostenibles.'] })
+        h(ChapterOpener, { number: 2, title: 'Teorías del aprendizaje en la educación superior', lead: 'Toda decisión de enseñanza descansa en una teoría acerca de cómo aprenden las personas.' }),
+        h(KeyPoints, { items: ['La buena enseñanza opera en la zona de desarrollo próximo.', 'La memoria de trabajo es limitada.'] }),
+        h(Objectives, { items: [{ level: 'comprender', text: 'Explicar la noción de zona de desarrollo próximo.' }, { level: 'crear', text: 'Diseñar una tarea con andamiaje.' }] }),
+        h(Paragraph, null, h(Cite, Object.assign({ narrative: true }, VYGOTSKY)), ' desplazó el foco hacia la matriz social del aprendizaje.'),
+        h(Important, { term: 'Zona de desarrollo próximo' }, h('p', null, 'Franja entre el desarrollo real y el potencial ', h(Cite, VYGOTSKY), '.')),
+        h(CommonMistake, { misconception: 'Cada estudiante tiene un “estilo de aprendizaje”.', correction: h(React.Fragment, null, 'Carece de respaldo empírico ', h(Cite, AMBROSE), '.') }),
+        h(Figure, { number: 1, title: 'Ciclo de la autorregulación', note: 'Elaboración propia.' },
+          h(CycleDiagram, { steps: [{ title: 'Planificar' }, { title: 'Monitorear' }, { title: 'Evaluar' }, { title: 'Ajustar' }] })),
+        h(ThinkFurther, { questions: ['¿Qué supuestos revelan sus evaluaciones?'] }),
+        h(Activities, { items: [{ type: 'tarea', text: 'Diseñe una consigna que active la metacognición.' }] }),
+        h(ReferencesBox, null, h(Reference, null, 'Vygotsky, L. S. (1978). ', h('i', null, 'Mind in society'), '. Harvard University Press.'))
       )
     );
   </script>

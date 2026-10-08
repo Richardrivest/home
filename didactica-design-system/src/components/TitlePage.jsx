@@ -9,9 +9,11 @@ export function TitlePage({ kicker, title, subtitle, lede, ribbon, meta = [] }) 
       {subtitle ? <p className="du-title-page__subtitle cover-subtitle">{subtitle}</p> : null}
       {lede ? <p className="du-title-page__lede cover-lede">{lede}</p> : null}
       {ribbon ? <p className="du-ribbon ribbon">{ribbon}</p> : null}
-      {meta.map((line, i) => (
-        <p key={i} className="du-title-page__meta cover-meta">{line}</p>
-      ))}
+      {meta.length ? (
+        <div className="du-title-page__meta">
+          {meta.map((line, i) => <p key={i} className="cover-meta">{line}</p>)}
+        </div>
+      ) : null}
     </header>
   );
 }

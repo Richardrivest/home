@@ -1,0 +1,11 @@
+<!-- @dsCard group="Reference" height=220 -->
+<div id="root" style="padding:16px;background:var(--paper)"></div>
+<script>
+  const h = React.createElement;
+  const D = window.Didactica;
+  const { Page, TitlePage, TableOfContents, ChapterOpener, BoxLegend, Heading, Paragraph, BulletList, Bibliography, Cite, Quote, BlockQuote, KeyPoints, Objectives, Important, CommonMistake, Classroom, ThinkFurther, SelfCheck, Activities, AlignmentTable, ReferencesBox, Box, Icon, DataTable, Figure, Numbering, FigRef, ConceptWeb, CycleDiagram, Pyramid, ProcessFlow, GlossaryEntry, Glossary, Term, Reference } = D;
+  const A={authors:["Ambrose","Bridges","DiPietro","Lovett","Norman"],year:2010,page:"xx"}, B={authors:["Biggs","Tang"],year:2011,page:"xx"}, VY={authors:["Vygotsky"],year:1978,page:86}, AU={authors:["Ausubel"],year:1968,page:"vi"};
+  ReactDOM.createRoot(document.getElementById('root')).render(
+    h(Glossary,{entries:[{id:'zdp',term:'Zona de desarrollo próximo',definition:h(React.Fragment,null,'Distancia entre lo que el estudiante resuelve solo y lo que resuelve con ayuda ',h(Cite,VY),'.')},{id:'andamiaje',term:'Andamiaje',definition:h(React.Fragment,null,'Apoyo temporal que ofrece el docente o un par más capaz, retirado progresivamente (derivado de Vygotsky, 1978, p. 86).')}]})
+  );
+</script>

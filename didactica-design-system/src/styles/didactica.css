@@ -1,106 +1,346 @@
 /*
- * Didáctica Universitaria — component styles.
- * Colours, spacing and strokes come from the token custom properties
- * (dist/tokens.css) through the Tailwind preset; type comes from the
- * token type-style classes (.body, .h1, .concept-label …) that the
- * components add next to these.
+ * Didáctica Universitaria — component styles (v3).
+ * Colours, spacing, radii and strokes come from the token custom properties
+ * (dist/tokens.css) through the Tailwind preset; type comes from the token
+ * type-style classes (.body, .h1, .box-title …) the components add.
+ * Rules sit outside @layer so Tailwind never purges them: consumers' markup
+ * is unknown at build time. Apps that want utilities build their own CSS
+ * with tailwind/preset.cjs.
  */
-/* Rules sit outside @layer so Tailwind never purges them: consumers' markup
- is unknown at build time. Apps that want utilities build their own CSS
- with tailwind/preset.cjs. */
-/* Page frame: US Letter, 1in margins, running header and footer */
+
+/* ---------- Page ---------- */
 .du-page {
   @apply bg-paper text-ink mx-auto box-border;
   max-width: calc(var(--measure) + 2 * var(--page-margin));
-  padding: calc(var(--page-margin) / 2) var(--page-margin);
+  padding: var(--space-6) var(--page-margin);
+  box-shadow: var(--shadow-page);
+}
+@media (max-width: 720px) {
+  .du-page { padding: var(--space-5) var(--space-4); }
 }
 .du-running-header {
-  @apply text-running text-right border-0 border-b-hair border-solid border-rule pb-3pt mb-16pt m-0;
+  @apply text-running text-right border-0 border-b-hair border-solid border-rule pb-1 mb-6 m-0;
 }
-.du-page-footer {
-  @apply text-running text-center mt-16pt mb-0;
+.du-page-footer { @apply text-running text-center mt-6 mb-0; }
+.du-page a, .du-link { @apply text-link underline; text-underline-offset: 2px; }
+.du-page a:focus-visible, .du-page :focus-visible {
+  outline: var(--stroke-strong) solid var(--focus);
+  outline-offset: 2px;
 }
 
-/* Title page */
+/* ---------- Title page ---------- */
 .du-title-page { @apply text-center; }
-.du-title-page__kicker { @apply text-azure uppercase m-0 mt-16pt; }
-.du-title-page__title { @apply text-navy m-0 mt-12pt mb-5pt; }
-.du-title-page__subtitle { @apply text-subtitle italic m-0 mb-3pt; }
-.du-title-page__lede { @apply text-lede m-0 mt-3pt mb-16pt; }
-.du-ribbon {
-  @apply text-navy m-0 py-3pt border-0 border-solid border-y-ribbon border-navy;
-}
-.du-title-page__meta { @apply text-caption m-0 mt-3pt; }
-.du-title-page__meta:first-of-type { @apply mt-16pt; }
+.du-title-page__kicker { @apply text-azure uppercase m-0 mt-6; }
+.du-title-page__title { @apply text-navy m-0 mt-4 mb-3; }
+.du-title-page__subtitle { @apply text-ink italic m-0 mb-2; }
+.du-title-page__lede { @apply text-ink-muted m-0 mb-6; }
+.du-ribbon { @apply text-navy m-0 py-1 border-0 border-solid border-y-ribbon border-navy; }
+.du-title-page__meta { @apply text-ink-muted mt-6; }
+.du-title-page__meta p { @apply m-0 mb-1; }
 
-/* Headings */
-.du-h1 { @apply text-navy m-0 mt-16pt mb-8pt; }
-.du-h2 { @apply text-azure m-0 mt-12pt mb-6pt; }
-.du-h3 { @apply text-azure m-0 mt-9pt mb-5pt; }
-.du-toc-title { @apply text-navy m-0 mb-8pt; }
+/* ---------- Chapter opener and headings ---------- */
+/* Running text stays at measure-text (~66 characters); boxes, tables and figures use the full measure. */
+.du-body, .du-list, .du-chapter__lead, .du-chapter__title, .du-h1, .du-h2, .du-h3,
+.du-glossary, .du-blockquote, .du-toc { max-width: var(--measure-text); }
 
-/* Reading text */
-.du-body { @apply text-ink text-justify m-0 mb-9pt; hyphens: auto; }
-.du-body a, .du-link { @apply text-link underline; }
+.du-chapter { @apply mb-5; }
+.du-chapter__kicker { @apply text-azure uppercase m-0 mb-2; }
+.du-chapter__title { @apply text-navy m-0 mb-4; }
+.du-chapter__lead { @apply text-ink m-0; }
+.du-h1 { @apply text-navy m-0 mt-6 mb-4; }
+.du-h2 { @apply text-azure m-0 mt-6 mb-3; }
+.du-h3 { @apply text-ink m-0 mt-5 mb-2; }
+.du-toc-title { @apply text-navy m-0 mb-3; }
 
-/* Bullet list: ● ○ ■ by level, 0.5in steps, 0.25in hanging */
-.du-list { @apply list-none m-0 p-0; }
-.du-list .du-list { @apply mt-5pt; }
-.du-list__item {
-  @apply relative text-ink text-justify mb-5pt;
+/* ---------- Reading text ---------- */
+.du-body { @apply text-ink m-0 mb-3; hyphens: auto; }
+.du-cite { font-style: normal; }
+.du-quote { quotes: '\201C' '\201D' '\2018' '\2019'; }
+.du-blockquote {
+  @apply text-ink m-0 my-4;
   padding-left: var(--indent-hang);
 }
+
+/* Bullet list: ● ○ ■ by level, 0.5in steps, 0.25in hanging */
+.du-list { @apply list-none m-0 mb-3 p-0; }
+.du-list .du-list { @apply mt-2 mb-0; }
+.du-list__item { @apply relative text-ink mb-2; padding-left: var(--indent-hang); }
 .du-list__item::before {
   content: '●';
-  @apply absolute;
+  @apply absolute text-azure;
   left: var(--indent-bullet);
-  font-size: 0.7em;
-  line-height: 2;
+  font-size: 0.6em;
+  line-height: 2.7;
 }
 .du-list .du-list .du-list__item::before { content: '○'; }
 .du-list .du-list .du-list .du-list__item::before { content: '■'; }
 
-/* Concepto clave */
-.du-concept {
-  @apply bg-concept-surface text-ink border-box border-solid border-concept-border rounded-none my-9pt;
-  padding: var(--space-6pt) var(--space-8pt);
+/* ---------- The seven didactic boxes ---------- */
+.du-box {
+  --box-accent: var(--keypoints-accent);
+  --box-surface: var(--keypoints-surface);
+  --box-border: var(--keypoints-border);
+  @apply text-ink my-5 border-hair border-solid rounded-box;
+  background: var(--box-surface);
+  border-color: var(--box-border);
+  break-inside: avoid;
 }
-.du-concept__label { @apply text-navy m-0 mb-3pt; }
-.du-concept__prefix { @apply uppercase; }
-.du-concept__body { @apply text-justify m-0; }
+.du-box--keypoints  { --box-accent: var(--keypoints-accent);  --box-surface: var(--keypoints-surface);  --box-border: var(--keypoints-border); }
+.du-box--objectives { --box-accent: var(--objectives-accent); --box-surface: var(--objectives-surface); --box-border: var(--objectives-border); }
+.du-box--important  { --box-accent: var(--important-accent);  --box-surface: var(--important-surface);  --box-border: var(--important-border); }
+.du-box--mistake    { --box-accent: var(--mistake-accent);    --box-surface: var(--mistake-surface);    --box-border: var(--mistake-border); }
+.du-box--thinking   { --box-accent: var(--thinking-accent);   --box-surface: var(--thinking-surface);   --box-border: var(--thinking-border); }
+.du-box--activities { --box-accent: var(--activities-accent); --box-surface: var(--activities-surface); --box-border: var(--activities-border); }
+.du-box--references { --box-accent: var(--references-accent); --box-surface: var(--references-surface); --box-border: var(--references-border); }
 
-/* Data table + caption */
-.du-table-figure { @apply m-0 mt-9pt; }
+.du-box--example    { --box-accent: var(--example-accent);    --box-surface: var(--example-surface);    --box-border: var(--example-border); }
+.du-box--selfcheck  { --box-accent: var(--selfcheck-accent);  --box-surface: var(--selfcheck-surface);  --box-border: var(--selfcheck-border); }
+
+.du-box__header {
+  @apply flex flex-wrap items-center gap-2 px-4 py-3 border-0 border-b-hair border-solid;
+  border-color: var(--box-border);
+  color: var(--box-accent);
+}
+
+/* Families: the shape tells the box type apart even in grayscale or with colour-vision deficiency. */
+/* open — filled header band */
+.du-box--family-open { border-color: var(--box-accent); }
+.du-box--family-open .du-box__header {
+  background: var(--box-accent);
+  color: var(--paper);
+  border-color: var(--box-accent);
+  border-radius: calc(var(--radius-box) - 1px) calc(var(--radius-box) - 1px) 0 0;
+}
+/* text — heavy top rule over a tinted body */
+.du-box--family-text { border-top: var(--stroke-accent) solid var(--box-accent); }
+/* close — untinted frame */
+.du-box--family-close { background: var(--paper); }
+.du-box__icon { @apply shrink-0; }
+.du-box__title { @apply m-0 uppercase; }
+.du-box__body { @apply px-4 py-4; }
+.du-box__body > :last-child { @apply mb-0; }
+.du-box__intro { @apply m-0 mb-2; }
+.du-box__text > p { @apply m-0 mb-2; }
+.du-box__text > :last-child { @apply mb-0; }
+.du-box__term { @apply m-0 mb-1 font-bold; color: var(--box-accent); font-family: var(--font-sans); font-size: 1.0667em; }
+.du-box__pair { @apply m-0 mb-2; }
+.du-box__label { @apply font-bold; color: var(--box-accent); }
+
+.du-box__list { @apply list-none m-0 p-0; }
+.du-box__list > li { @apply relative mb-2; padding-left: var(--indent-bullet); }
+.du-box__list > li:last-child { @apply mb-0; }
+.du-box__list > li::before {
+  content: '';
+  @apply absolute left-1;
+  top: 0.62em;
+  width: 7px; height: 7px;
+  border-radius: 1px;
+  background: var(--box-accent);
+  transform: rotate(45deg);
+}
+.du-box__list--numbered { counter-reset: du-n; }
+.du-box__list--numbered > li { counter-increment: du-n; padding-left: calc(var(--indent-bullet) + var(--space-2)); }
+.du-box__list--numbered > li::before {
+  content: counter(du-n) '.';
+  @apply left-0 top-0 font-bold;
+  width: auto; height: auto; background: none; transform: none;
+  color: var(--box-accent);
+  font-family: var(--font-sans);
+}
+.du-box__list--objectives > li {
+  @apply grid items-baseline gap-x-3 gap-y-1 pl-0;
+  grid-template-columns: 2em 8.5em 1fr;
+}
+.du-box__oid { @apply font-bold; color: var(--box-accent); font-family: var(--font-sans); }
+.du-box__list--objectives > li::before { content: none; }
+.du-box__list--numbered .du-tag { @apply mr-2; }
+@media (max-width: 480px) {
+  .du-box__list--objectives > li { grid-template-columns: 2em 1fr; }
+  .du-box__list--objectives .du-box__otext { grid-column: 2; }
+  .du-box__list--objectives .du-tag { justify-self: start; }
+}
+
+.du-tag {
+  @apply inline-block border-hair border-solid rounded-pill px-2 py-0.5 uppercase whitespace-nowrap;
+  color: var(--box-accent);
+  border-color: var(--box-accent);
+  background: var(--paper);
+}
+.du-box--objectives .du-tag { min-width: 8.5em; text-align: center; }
+
+.du-box__refs .du-reference:last-child { @apply mb-0; }
+.du-box__before { @apply mt-3 pt-3 border-0 border-t-hair border-solid; border-color: var(--box-border); }
+.du-box__before .du-box__label { @apply m-0 mb-2; }
+.du-box__hint { @apply m-0 mt-2 italic; }
+.du-box__list--questions > li::before { content: '?'; @apply font-bold; background: none; transform: none; width: auto; height: auto; top: 0; color: var(--box-accent); font-family: var(--font-sans); }
+.du-box__q { @apply flex flex-col gap-1; }
+.du-box__q > .du-tag { align-self: flex-start; }
+.du-box__tags { @apply flex flex-wrap gap-1; }
+.du-tag--link { text-decoration: none; }
+.du-tag--link:hover { text-decoration: underline; }
+.du-box__discipline { margin-left: auto; }
+.du-box__answer summary {
+  @apply cursor-pointer font-bold;
+  color: var(--box-accent);
+  font-family: var(--font-sans);
+  font-size: 14px;
+}
+.du-box__answer p { @apply m-0 mt-1 pl-3 border-0 border-l-strong border-solid; border-color: var(--box-border); }
+.du-box__key { display: none; }
+
+/* Alignment table */
+.du-alignment__ok { color: var(--activities-accent); }
+.du-alignment__bad { color: var(--mistake-accent); font-weight: 700; }
+
+/* Box legend */
+.du-legend { @apply grid gap-4 my-5; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
+.du-legend__label { @apply text-azure uppercase m-0 mb-2; }
+.du-legend__list { @apply list-none m-0 p-0 grid gap-2; }
+.du-legend__item {
+  @apply flex items-center gap-2 border-hair border-solid rounded-box px-2 py-1;
+  color: var(--box-accent);
+  background: var(--box-surface);
+  border-color: var(--box-border);
+}
+.du-legend__item.du-box--family-open { background: var(--box-accent); color: var(--paper); border-color: var(--box-accent); }
+.du-legend__item.du-box--family-text { border-top: var(--stroke-accent) solid var(--box-accent); }
+.du-legend__item.du-box--family-close { background: var(--paper); }
+.du-legend__swatch { @apply inline-flex; }
+.du-legend__name { @apply uppercase; }
+
+/* ---------- Tables (APA 7: number + italic title above, horizontal rules, note below) ---------- */
+.du-table-figure, .du-figure { @apply m-0 my-5; break-inside: avoid; }
+.du-table-figure__number, .du-figure__number { @apply text-ink m-0; }
+.du-table-figure__title, .du-figure__title { @apply text-ink m-0 mb-2; }
+.du-table-scroll { overflow-x: auto; }
 .du-table {
-  @apply w-full border-collapse border-hair border-solid border-rule;
+  @apply w-full border-collapse border-0 border-y-strong border-solid border-rule-strong;
 }
-.du-table th,
-.du-table td {
-  @apply border-hair border-solid border-rule text-left align-top;
-  padding: var(--space-3pt) var(--space-5pt);
+.du-table th, .du-table td {
+  @apply text-left align-top border-0 border-b-hair border-solid border-rule px-2 py-1;
 }
-.du-table th { @apply bg-table-head text-on-table-head; }
+.du-table thead th {
+  @apply bg-band text-navy border-0 border-b-strong border-solid border-rule-strong;
+  font-family: var(--font-sans);
+}
+.du-table--filled thead th { @apply bg-table-head text-on-table-head border-b-0; }
 .du-table td { @apply text-ink; }
 .du-table tbody tr:nth-child(even) td { @apply bg-band; }
-.du-caption { @apply text-caption italic mt-3pt mb-8pt; }
+.du-table tbody tr:last-child > * { @apply border-b-0; }
+.du-table--concept tbody th { @apply bg-band text-navy font-bold; font-family: var(--font-sans); }
+.du-note { @apply text-ink-muted m-0 mt-2; }
 
-/* Glossary */
-.du-glossary { @apply text-ink text-justify m-0 mb-6pt; }
+/* ---------- Diagrams ---------- */
+.du-figure__body { @apply w-full; }
+.du-diagram { @apply block w-full h-auto; max-width: 680px; margin: 0 auto; }
+
+/* Below 600px of available width the SVG would shrink its labels under 12px:
+   the same structure is shown as a list instead (also the screen-reader view). */
+.du-diagram-wrap { container-type: inline-size; }
+.du-diagram-list { display: none; }
+@container (max-width: 599px) {
+  .du-diagram { display: none; }
+  .du-diagram-list { display: block; }
+}
+.du-diagram-list { @apply m-0 p-3 border-hair border-solid rounded-node; background: var(--diagram-node); border-color: var(--diagram-node-border); }
+.du-diagram-list ul, .du-diagram-list ol { @apply m-0 pl-5; }
+.du-diagram-list li { @apply text-ink mb-1; }
+.du-diagram-list__center { @apply m-0 mb-2 text-on-table-head px-2 py-1 rounded-node inline-block; background: var(--diagram-node-strong); }
+.du-diagram-list__rel { @apply text-ink-muted italic; }
+.du-diagram-list__detail { @apply text-ink-muted; }
+.du-diagram-list__note { @apply m-0 mt-2 text-ink-muted; }
+ol.du-diagram-list--pyramid { @apply list-none p-0 border-0 bg-transparent; }
+.du-diagram-list__level { @apply flex flex-col gap-1 px-3 py-2 mb-1 rounded-node; }
+.du-dg-bar--1 { background: var(--ramp-1); } .du-dg-bar--2 { background: var(--ramp-2); }
+.du-dg-bar--3 { background: var(--ramp-3); } .du-dg-bar--4 { background: var(--ramp-4); }
+.du-dg-bar--1 span, .du-dg-bar--2 span, .du-dg-on-bar--1, .du-dg-on-bar--2 { color: var(--on-table-head); }
+.du-dg-bar--3 span, .du-dg-bar--4 span, .du-dg-on-bar--3, .du-dg-on-bar--4 { color: var(--ink); }
+@media print { .du-diagram { display: block !important; } .du-diagram-list { display: none !important; } }
+.du-dg-node { fill: var(--diagram-node); stroke: var(--diagram-node-border); stroke-width: var(--stroke-hair); rx: var(--radius-node); }
+.du-dg-node--strong { fill: var(--diagram-node-strong); stroke: var(--diagram-node-strong); }
+.du-dg-text { fill: var(--ink); }
+.du-dg-text--on-strong { fill: var(--on-table-head); }
+.du-dg-text--muted { fill: var(--ink-muted); }
+.du-dg-edge { stroke: var(--rule-strong); stroke-width: var(--stroke-strong); fill: none; }
+.du-dg-arrowhead { fill: var(--rule-strong); }
+.du-dg-leader { stroke: var(--rule-strong); stroke-width: var(--stroke-hair); stroke-dasharray: 2 3; }
+.du-dg-relation { fill: var(--ink-muted); font-family: var(--font-sans); font-size: 14px; font-style: italic; }
+.du-dg-relation-bg { fill: var(--paper); }
+.du-dg-ramp--1 { fill: var(--ramp-1); }
+.du-dg-ramp--2 { fill: var(--ramp-2); }
+.du-dg-ramp--3 { fill: var(--ramp-3); }
+.du-dg-ramp--4 { fill: var(--ramp-4); }
+.du-dg-on-ramp--1, .du-dg-on-ramp--2 { fill: var(--on-table-head); }
+.du-dg-on-ramp--3, .du-dg-on-ramp--4 { fill: var(--ink); }
+
+.du-flow { @apply list-none m-0 p-0 grid gap-4; grid-template-columns: 1fr; }
+.du-flow__step {
+  @apply relative flex flex-col gap-1 p-3 border-hair border-solid rounded-node;
+  background: var(--diagram-node);
+  border-color: var(--diagram-node-border);
+}
+.du-flow__num {
+  @apply inline-flex items-center justify-center rounded-pill text-on-table-head;
+  width: 1.75em; height: 1.75em;
+  background: var(--diagram-node-strong);
+}
+.du-flow__title { @apply text-ink; }
+.du-flow__text { @apply text-ink-muted; }
+.du-flow__step:not(:last-child)::after {
+  content: '';
+  @apply absolute left-1/2;
+  bottom: calc(-1 * var(--space-4));
+  height: var(--space-4);
+  border-left: var(--stroke-strong) solid var(--rule-strong);
+}
+@media (min-width: 640px) {
+  .du-flow { grid-auto-flow: column; grid-auto-columns: 1fr; grid-template-columns: none; }
+  .du-flow__step:not(:last-child)::after {
+    left: 100%; top: 50%; bottom: auto;
+    width: var(--space-4); height: 0;
+    border-left: 0;
+    border-top: var(--stroke-strong) solid var(--rule-strong);
+  }
+}
+
+/* ---------- Glossary and references ---------- */
+/* A term linked to its glossary entry: reads as text, marked by a dotted azure underline. */
+.du-term { color: inherit; text-decoration: underline dotted var(--azure); text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
+.du-term:hover { text-decoration-style: solid; }
+.du-figref { color: inherit; text-decoration: none; border-bottom: 1px solid var(--rule); }
+.du-figref:hover { border-bottom-color: var(--azure); }
+.du-glossary-list { max-width: var(--measure-text); }
+.du-glossary:target, .du-figure:target, .du-table-figure:target { outline: var(--stroke-strong) solid var(--focus); outline-offset: 6px; }
+.du-glossary { @apply text-ink m-0 mb-3; }
 .du-glossary__term { @apply text-navy font-bold not-italic; }
-
-/* References (APA 7, hanging indent) */
 .du-reference {
-  @apply text-ink m-0 mb-6pt;
+  @apply text-ink m-0 mb-2;
   padding-left: var(--indent-hang);
   text-indent: calc(-1 * var(--indent-hang));
+  overflow-wrap: anywhere;
 }
-.du-references-note { @apply text-ink text-justify m-0 mb-9pt; }
 
-/* Table of contents (Word TOC, levels 1–3, dotted leader) */
+/* ---------- Table of contents ---------- */
 .du-toc { @apply list-none m-0 p-0; }
-.du-toc__entry { @apply flex items-baseline gap-5pt text-ink mb-3pt; }
+.du-toc__entry { @apply flex items-baseline gap-2 text-ink mb-1; }
 .du-toc__entry--2 { padding-left: var(--indent-bullet); }
 .du-toc__entry--3 { padding-left: var(--indent-hang); }
-.du-toc__title { @apply shrink-0; max-width: 85%; }
-.du-toc__leader { @apply flex-1 border-0 border-b-hair border-dotted border-caption; transform: translateY(-0.25em); }
+.du-toc__title { max-width: 85%; }
+.du-toc__leader { @apply flex-1 border-0 border-b-hair border-dotted border-rule-strong; transform: translateY(-0.25em); }
 .du-toc__page { @apply shrink-0; font-variant-numeric: tabular-nums; }
+
+/* ---------- Print: the manual's own page ---------- */
+@media print {
+  .du-page { box-shadow: none; max-width: none; padding: 0; }
+  .du-box, .du-legend__item { -webkit-print-color-adjust: exact; print-color-adjust: exact; border-width: 1.5px; border-color: var(--box-accent); }
+  .du-box--family-text { border-top-width: var(--stroke-accent); }
+  .du-box__answer { display: none; }
+  .du-box__key { display: block; @apply mt-3 pt-2 border-0 border-t-hair border-solid; border-color: var(--box-border); font-size: 14px; }
+  .du-box__key ol { @apply m-0 pl-5; }
+  .du-tag--link { color: var(--box-accent); }
+  .du-term { text-decoration: none; }
+  .du-figref { border-bottom: 0; }
+  .du-body, .du-list__item, .du-glossary, .du-box__text { text-align: justify; }
+  .du-chapter { break-before: page; }
+  .du-h2, .du-h3 { break-after: avoid; }
+}

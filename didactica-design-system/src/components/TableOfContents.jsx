@@ -1,6 +1,6 @@
 import React from 'react';
 
-/** «Índice»: Word TOC levels 1–3 with dotted leaders to the page number. */
+/** “Índice”: Word TOC levels 1–3 with dotted leaders to the page number. */
 export function TableOfContents({ title = 'Índice', entries }) {
   return (
     <nav aria-label={title}>

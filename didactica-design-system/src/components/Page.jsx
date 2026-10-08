@@ -1,6 +1,6 @@
 import React from 'react';
 
-/** A manual page: paper ground, 1in margins, running header and «Página N» footer. */
+/** A manual page: paper ground, 1in margins, running header and “Página N” footer. */
 export function Page({ header, page, children, className = '' }) {
   return (
     <section className={`du-page ${className}`.trim()}>

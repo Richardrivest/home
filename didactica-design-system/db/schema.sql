@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS color_value (
   PRIMARY KEY (token, theme)
 );
 
--- Spacing, radius, stroke and any other single-value family.
+-- Spacing, radius, stroke, shadow and any other family (themed values stored as JSON).
 CREATE TABLE IF NOT EXISTS dimension_token (
   family   TEXT NOT NULL,
   name     TEXT PRIMARY KEY,
@@ -65,6 +65,26 @@ CREATE TABLE IF NOT EXISTS component_prop (
   required    INTEGER NOT NULL DEFAULT 0,
   description TEXT,
   PRIMARY KEY (component, name)
+);
+
+-- The didactic boxes, with their family (shape) and Lucide icon (single-ink SVG).
+CREATE TABLE IF NOT EXISTS box_type (
+  kind      TEXT PRIMARY KEY,
+  family    TEXT NOT NULL CHECK (family IN ('open', 'text', 'close')),
+  title     TEXT NOT NULL,
+  component TEXT NOT NULL REFERENCES component(name),
+  icon      TEXT NOT NULL,
+  icon_svg  TEXT NOT NULL,
+  placement TEXT,
+  position  INTEGER NOT NULL
+);
+
+-- Bloom's revised taxonomy used by every “Objetivos” box.
+CREATE TABLE IF NOT EXISTS bloom_level (
+  id    TEXT PRIMARY KEY,
+  level INTEGER NOT NULL UNIQUE,
+  name  TEXT NOT NULL,
+  verbs TEXT NOT NULL
 );
 
 -- Flat view: every colour in every theme.

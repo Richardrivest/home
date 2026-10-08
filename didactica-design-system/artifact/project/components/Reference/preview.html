@@ -1,12 +1,11 @@
-<!-- @dsCard group="Reference" height=130 -->
+<!-- @dsCard group="Reference" height=140 -->
 <div id="root" style="padding:16px;background:var(--paper)"></div>
 <script>
   const h = React.createElement;
-  const { Page, TitlePage, TableOfContents, Heading, Paragraph, ConceptBox, DataTable, BulletList, GlossaryEntry, Reference } = window.Didactica;
+  const D = window.Didactica;
+  const { Page, TitlePage, TableOfContents, ChapterOpener, BoxLegend, Heading, Paragraph, BulletList, Bibliography, Cite, Quote, BlockQuote, KeyPoints, Objectives, Important, CommonMistake, Classroom, ThinkFurther, SelfCheck, Activities, AlignmentTable, ReferencesBox, Box, Icon, DataTable, Figure, Numbering, FigRef, ConceptWeb, CycleDiagram, Pyramid, ProcessFlow, GlossaryEntry, Glossary, Term, Reference } = D;
+  const A={authors:["Ambrose","Bridges","DiPietro","Lovett","Norman"],year:2010,page:"xx"}, B={authors:["Biggs","Tang"],year:2011,page:"xx"}, VY={authors:["Vygotsky"],year:1978,page:86}, AU={authors:["Ausubel"],year:1968,page:"vi"};
   ReactDOM.createRoot(document.getElementById('root')).render(
-    h('div', null,
-  h(Reference, null, 'Bain, K. (2004). ', h('i', null, 'What the best college teachers do'), '. Harvard University Press.'),
-  h(Reference, null, 'Biggs, J. y Tang, C. (2011). ', h('i', null, 'Teaching for quality learning at university'), ' (4.ª ed.). Open University Press.'),
-  h(Reference, null, 'Camilloni, A. R. W. de, Cols, E., Basabe, L. y Feeney, S. (2007). ', h('i', null, 'El saber didáctico'), '. Paidós.'))
+    h('div',null,h(Reference,null,'Sweller, J. (1988). Cognitive load during problem solving: Effects on learning. ',h('i',null,'Cognitive Science, 12'),'(2), 257–285.'))
   );
 </script>

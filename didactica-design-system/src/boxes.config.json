@@ -1,0 +1,11 @@
+[
+  { "kind": "keypoints",  "family": "open",  "title": "Puntos Clave",         "icon": "key-round",               "component": "KeyPoints",     "placement": "Opens each unit, right after the unit title and lead." },
+  { "kind": "objectives", "family": "open",  "title": "Objetivos",            "icon": "target",                  "component": "Objectives",    "placement": "Right after “Puntos Clave”." },
+  { "kind": "important",  "family": "text",  "title": "Importante",           "icon": "star",                    "component": "Important",     "placement": "In the text, for a key concept or definition." },
+  { "kind": "mistake",    "family": "text",  "title": "Error Frecuente",      "icon": "triangle-alert",          "component": "CommonMistake", "placement": "In the text, next to the idea it corrects." },
+  { "kind": "example",    "family": "text",  "title": "En el Aula",           "icon": "school",                  "component": "Classroom",     "placement": "In the text, after the concept it applies." },
+  { "kind": "thinking",   "family": "close", "title": "Para Seguir Pensando", "icon": "message-circle-question", "component": "ThinkFurther",  "placement": "Closing sequence, first." },
+  { "kind": "selfcheck",  "family": "close", "title": "Autoevaluación",       "icon": "list-checks",             "component": "SelfCheck",     "placement": "Closing sequence, after “Para Seguir Pensando”." },
+  { "kind": "activities", "family": "close", "title": "Actividades",          "icon": "pencil-line",             "component": "Activities",    "placement": "Closing sequence, after “Autoevaluación”, followed by the alignment table." },
+  { "kind": "references", "family": "close", "title": "Referencias",          "icon": "book-open-text",          "component": "ReferencesBox", "placement": "Closes each unit." }
+]

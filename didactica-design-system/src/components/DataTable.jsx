@@ -1,33 +1,38 @@
 import React from 'react';
+import { useNumber } from './Numbering.jsx';
 
-/** Comparison table: navy header row, hairline grid, zebra body rows and an italic «Tabla N.» caption. */
-export function DataTable({ columns, rows, widths, number, caption }) {
+/**
+ * APA 7 table: “Tabla N” (bold) and the italic title above; horizontal rules only;
+ * header in navy on `band` over a 2px rule (`filled` for a solid navy bar); optional
+ * row-header column for conceptual tables; “Nota.” below.
+ */
+export function DataTable({ columns, rows, widths, number, id, title, note, rowHeader = false, filled = false }) {
+  const auto = useNumber('table', id);
+  number = number ?? auto;
   return (
-    <figure className="du-table-figure">
-      <table className="du-table">
-        {widths ? (
-          <colgroup>
-            {widths.map((w, i) => <col key={i} style={{ width: w }} />)}
-          </colgroup>
-        ) : null}
-        <thead>
-          <tr>
-            {columns.map((c, i) => <th key={i} scope="col" className="table-head">{c}</th>)}
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row, r) => (
-            <tr key={r}>
-              {row.map((cell, c) => <td key={c} className="table-cell">{cell}</td>)}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      {caption ? (
-        <figcaption className="du-caption caption">
-          {number != null ? `Tabla ${number}. ` : ''}{caption}
-        </figcaption>
-      ) : null}
+    <figure className="du-table-figure" id={id ? `tab-${id}` : undefined}>
+      {number != null ? <p className="du-table-figure__number table-number">Tabla {number}</p> : null}
+      {title ? <p className="du-table-figure__title table-title">{title}</p> : null}
+      <div className="du-table-scroll">
+        <table className={`du-table${rowHeader ? ' du-table--concept' : ''}${filled ? ' du-table--filled' : ''}`}>
+          {widths ? <colgroup>{widths.map((w, i) => <col key={i} style={{ width: w }} />)}</colgroup> : null}
+          <thead>
+            <tr>{columns.map((c, i) => <th key={i} scope="col" className="table-head">{c}</th>)}</tr>
+          </thead>
+          <tbody>
+            {rows.map((row, r) => (
+              <tr key={r}>
+                {row.map((cell, c) =>
+                  rowHeader && c === 0
+                    ? <th key={c} scope="row" className="table-cell">{cell}</th>
+                    : <td key={c} className="table-cell">{cell}</td>
+                )}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      {note ? <p className="du-note note"><i>Nota.</i> {note}</p> : null}
     </figure>
   );
 }

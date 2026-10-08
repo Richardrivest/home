@@ -1,14 +1,16 @@
 # TitlePage
 
-TitlePage is the manual's cover. Everything is centred. From top to bottom:
+The manual's cover: kicker, title, italic subtitle, lede, ribbon and metadata lines, all centred.
 
-- a `cover-kicker` line in `azure`, upper case;
-- the `cover-title` in `navy`;
-- an italic `cover-subtitle`;
-- a `cover-lede` line;
-- the ribbon: a `ribbon` line between two `stroke-ribbon` `navy` rules;
-- `cover-meta` lines in `caption`.
+**Consumer provides:** `title`, plus the optional `kicker`, `subtitle`, `lede`, `ribbon` and `meta` lines.
 
-**Consumer provides:** `title` (required), plus optional `kicker`, `subtitle`, `lede`, `ribbon` and `meta` (an array of lines such as level, citation style and year).
+Keep it typographic, with no logo or images and one ribbon. Write metadata lines as “Clave: valor”.
 
-**Do** keep it typographic: no logo, image or color block. **Don't** add more than one ribbon. Keep metadata lines short, in the pattern «Clave: valor».
+| Prop | Type | Required | Notes |
+|---|---|---|---|
+| `kicker` | `string` | no | Series line, upper case. |
+| `title` | `string` | yes | Book title. |
+| `subtitle` | `string` | no | Italic subtitle. |
+| `lede` | `string` | no | Scope line. |
+| `ribbon` | `string` | no | Text between the two navy rules. |
+| `meta` | `string[]` | no | Metadata lines. |

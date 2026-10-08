@@ -2,24 +2,31 @@
   "name": "@didactica/design-system",
   "version": "1.0.0",
   "private": true,
-  "description": "Design system extracted from the «Manual de Didáctica Universitaria»: tokens, Tailwind preset, React components, plain HTML/CSS and a SQLite token database served by Node.js.",
+  "description": "Design system extracted from the “Manual de Didáctica Universitaria”: tokens, Tailwind preset, React components, plain HTML/CSS and a SQLite token database served by Node.js.",
   "type": "module",
   "main": "dist/index.mjs",
   "style": "dist/didactica.css",
   "scripts": {
-    "build:tokens": "node scripts/build-tokens.mjs",
-    "build:css": "tailwindcss -c tailwind.config.cjs -i src/styles/didactica.css -o dist/didactica.css && node scripts/prepend-fonts.mjs",
+    "build:tokens": "node scripts/build-tokens.mjs && node scripts/build-icons.mjs",
+    "build:css": "tailwindcss -c tailwind.config.cjs -i src/styles/didactica.css -o dist/didactica.css",
     "build:js": "node scripts/build-js.mjs",
     "build:db": "node --no-warnings scripts/build-db.mjs",
-    "build": "npm run build:tokens && npm run build:css && npm run build:js && npm run build:db",
+    "build:demo": "node scripts/build-demo.mjs",
+    "build": "npm run build:tokens && npm run build:css && npm run build:js && npm run build:db && npm run build:demo && npm run build:word",
     "serve": "node --no-warnings server/index.mjs",
-    "export:artifact": "node scripts/export-artifact.mjs"
+    "export:artifact": "node scripts/export-artifact.mjs",
+    "lint:content": "node scripts/lint-content.mjs",
+    "build:word": "node scripts/build-word-template.mjs",
+    "test": "node --test tests/*.test.mjs"
   },
   "peerDependencies": {
     "react": ">=18"
   },
   "devDependencies": {
+    "docx": "^9.7.1",
     "esbuild": "0.24.2",
+    "lucide-static": "^0.460.0",
+    "node-html-parser": "^6.1.13",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "tailwindcss": "3.4.17"

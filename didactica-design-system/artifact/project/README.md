@@ -1,60 +1,203 @@
-Didáctica Universitaria is the visual language of the *Manual de Didáctica Universitaria*: a print-first academic manual for university teacher education. It reads like a well-made textbook: serif reading text, sans-serif structure, one navy and one azure, pale-blue boxes for definitions and square hairline tables. There is no decoration beyond that.
+Didáctica Universitaria is the visual language of the *Manual de Didáctica Universitaria*. It is built for university teacher-education materials that people read on screen and in print. Reading text is serif and structure is sans-serif. The two brand inks are navy and azure. Nine boxes mark the didactic moves of every unit; each has an icon, a title word and a shape, so a box can be identified without colour. APA 7 governs every citation, table and figure.
+
+## Anatomy of a unit
+
+Every unit follows the same sequence. Never reorder it.
+
+1. `ChapterOpener`: the “Unidad N” kicker, the title and a lead paragraph.
+2. `KeyPoints` (“Puntos Clave”): 3–5 one-line key points, plus 1–3 “Antes de leer” questions.
+3. `Objectives` (“Objetivos”): 3–5 objectives, numbered O1, O2…, each tagged with its Bloom level.
+4. The body: numbered sections (`Heading` 2 and 3) and `Paragraph` with `Cite`. Add `Important`, `CommonMistake`, `Classroom`, `DataTable` and `Figure` as needed, within the density rules below.
+5. `ThinkFurther` (“Para Seguir Pensando”): 2–4 open questions, not assessed, followed by the “Antes de leer” questions again (`revisit`).
+6. `SelfCheck` (“Autoevaluación”): 3–5 recall questions with answers, including one review item from an earlier unit.
+7. `Activities` (“Actividades”): assessable tasks, each tagged with its type, Bloom level and the objectives it practises.
+8. `AlignmentTable`: which activities practise each objective, with any gaps flagged.
+9. `ReferencesBox` (“Referencias”): the unit's APA 7 reference list, generated from the citations with `auto`.
+
+Introduce the system once, in the manual's opening pages, with `BoxLegend` (“Cómo usar este manual”).
+
+## The nine boxes
+
+Boxes come in three families. The family sets the shape, so readers learn three patterns, and the shapes still work in a grayscale photocopy or for colour-blind readers.
+
+- **Opening family** (`open`): a filled header band in the box accent, with the title and icon in `paper`, over a tinted body.
+- **In-text family** (`text`): a heavy `stroke-accent` top rule in the accent, a tinted body and a thin frame. These are the only boxes meant to interrupt reading.
+- **Closing family** (`close`): an untinted frame, with the title and icon in the accent and a hairline under the header.
+
+| Box | Title | Icon | Family | Tokens | Where |
+|---|---|---|---|---|---|
+| `KeyPoints` | Puntos Clave | key | Opening | `keypoints-*` (navy) | Opens the unit |
+| `Objectives` | Objetivos | target | Opening | `objectives-*` (teal) | Right after Puntos Clave |
+| `Important` | Importante | star | In-text | `important-*` (amber) | Key concepts and definitions |
+| `CommonMistake` | Error Frecuente | warning triangle | In-text | `mistake-*` (brick red) | Next to the idea it corrects |
+| `Classroom` | En el Aula | school | In-text | `example-*` (magenta) | After the concept it applies |
+| `ThinkFurther` | Para Seguir Pensando | question bubble | Closing | `thinking-*` (plum) | First in the closing sequence |
+| `SelfCheck` | Autoevaluación | checklist | Closing | `selfcheck-*` (blue) | After Para Seguir Pensando |
+| `Activities` | Actividades | pencil | Closing | `activities-*` (green) | After Autoevaluación |
+| `ReferencesBox` | Referencias | open book | Closing | `references-*` (slate) | Closes the unit |
+
+### Density rules
+
+Signals help when they are selective. If many paragraphs sit inside boxes, nothing stands out and the argument breaks into fragments.
+
+- Use at most one in-text box (`Important`, `CommonMistake` or `Classroom`) per 800 to 1,000 words of prose.
+- Never place two boxes in a row, except in the fixed opening and closing sequences.
+- Keep `KeyPoints` to 3–5 items of one line each.
+- Never nest boxes. Never put a table or figure inside a box.
+
+### What goes in each box
+
+- **`CommonMistake`** follows the structure of a refutation text: state the belief (“Creencia frecuente”), refute it with a citation (“Lo que muestra la evidencia”), then explain why it doesn't hold or why it is attractive (“Por qué no se sostiene”).
+- **`Classroom`** is a worked example. It gives a concrete situation, the didactic decision taken and its rationale with a citation, tagged Ciencias Sociales, Ciencias de la Salud or Didáctica general.
+- **Antes de leer.** `KeyPoints` opens with 1–3 questions that ask for a prediction before reading. `ThinkFurther` brings them back (`revisit`) under “Vuelva a las preguntas del comienzo”, so readers compare their first answer with what they think now.
+- **`ThinkFurther`** holds open questions with no single answer, and is never assessed. **`Activities`** holds assessable tasks tied to the objectives.
+- **`SelfCheck`** asks for recall, not opinion. On screen each answer opens on demand; in print the answers are collected in a key at the end of the box.
+
+## Constructive alignment
+
+Objectives, activities and assessment must aim at the same performances. The system makes this visible:
+
+- Objectives are numbered O1, O2… in order, or you can pass an `id`.
+- Each activity names the objectives it practises (`objectives: ['O2']`) and the Bloom level it demands (`level`).
+- `AlignmentTable` lists, for each objective, its level, its activities and its status. It flags an objective without an activity, and an activity pitched below its objective's level.
+- `checkAlignment(objectives, activities)` returns the same problems as data, for authoring checks.
+
+Pass the same two arrays to `Objectives`, `Activities` and `AlignmentTable`.
+
+## Figures, tables and glossary terms
+
+- **Numbering.** Wrap each unit in `Numbering` with the figure and table ids in order of first mention. `Figure` and `DataTable` with an `id` take their number from it, and `FigRef` prints “Figura N”, “Tabla N” or “(véase la Figura N)”. Reordering a unit means reordering one list.
+- **Mention before showing.** Announce every figure and table in the text before it appears, and place it right after that first mention.
+- **Glossary links.** Mark the first use of a glossary term in each unit with `Term`. It reads as normal text with a dotted azure underline and links to the entry. Build the glossary with `Glossary`, which sorts the entries alphabetically with Spanish collation.
+
+## Authoring tools
+
+- **Word template** (`templates/Didactica-Universitaria.dotx` in the repository). Authors write in Word with the same system. It contains:
+  - styles mirroring the tokens: headings, “Entradilla”, APA table and figure lines, “Nota”, “Cita en bloque”, “Referencia (sangría francesa)” and box text;
+  - a guide page and a catalogue of the nine boxes, drawn as copyable tables in their family shapes;
+  - a model unit to start from.
+- **Content checker** (`npm run lint:content -- <files>`). It checks React units, rendered HTML and Word manuscripts written with the template. Errors fail the check; warnings don't.
+  - **Errors:** angle or straight quotes; “and” or “&” in a narrative citation; “y” inside a parenthetical citation; three or more authors without “et al.”; an objective verb from the wrong Bloom level; boxes out of order; alignment problems; cross-references with no target; a work cited but missing from “Referencias”.
+  - **Warnings:** citations without a page; references never cited; box density above one per 800 words; two in-text boxes in a row; Puntos Clave outside 3–5 items; no “Antes de leer” questions, or questions never revisited; figures or tables not mentioned before they appear; diagram labels too long for their shape; glossary links whose entry is in another file.
 
 ## Content fundamentals
 
-- **Language.** Spanish, formal academic register. Exposition is impersonal third person: «La didáctica es la disciplina teórica que se ocupa de la enseñanza…».
-- **Address the reader as *usted*** in activities and instructions, with imperatives: «Reconstruya una clase memorable…», «Analice el programa…», «Elabore, en un párrafo, su propia definición…».
-- **Citations are APA 7, always.** In-text as (Autor, año) or Autor (año): «(Camilloni et al., 2007)», «Barr y Tagg (1995)». Use «y», never «&». Write ordinals as «7.ª edición» and «4.ª ed.».
-- **Typographic quotes are guillemets** «…», and asides use em dashes —like this—. Never use straight quotes for terms.
-- **Numbering carries the structure.** Units are «Unidad N. Título», sections «N.N. Título», annexes «Anexo B. …», sub-sections «B.1. …». Headings are sentence case.
-- **Label patterns are fixed.** Callouts read «CONCEPTO CLAVE — Término», and the idea-fuerza box at the end of a unit reads «CONCEPTO CLAVE — Idea-fuerza de la Unidad N». Captions read «Tabla N. Descripción. Elaboración propia a partir de Autor (año).» Glossary entries read «Término: definición».
+- **Language.** Spanish, formal academic register. Exposition uses the impersonal third person.
+- **Address the reader as *usted*** in objectives, activities and instructions: “Analice…”, “Diseñe…”, “¿Qué supuestos…?”.
+- **Quotation marks are English double quotes** “…”. Nested quotes take single quotes ‘…’. Never use Spanish angle quotes («…») or straight quotes ("…") in content. Em dashes set off asides —like this—.
+- **Headings.** Units read “Unidad N” with a separate title. Sections are “N.N. Título” in sentence case.
+- **Figures** are announced in the text before they appear (“como resume la Figura 1”) and placed right after that mention.
 - **No emoji, no exclamation marks, no marketing tone.**
+
+## Citations: APA 7
+
+Every citation names the author(s), the year and the page. Where an example shows “p. xx”, the page has not been checked against the source; the format is what matters.
+
+| Case | Parenthetical | Narrative (in the sentence) |
+|---|---|---|
+| One author | (Vygotsky, 1978, p. 86) | Vygotsky (1978, p. 86) |
+| Two authors | (Biggs **&** Tang, 2011, p. xx) | Biggs **y** Tang (2011, p. xx) |
+| Three or more | (Ambrose et al., 2010, p. xx) | Ambrose et al. (2010, p. xx) |
+| Page range | (Sweller, 1988, pp. 257–285) | Sweller (1988, pp. 257–285) |
+| No pages | (Autor, 2020, párr. 4) | Autor (2020, párr. 4) |
+| Several works | (Ausubel, 1968, p. vi; Vygotsky, 1978, p. 86) | Order them alphabetically and separate them with “;” |
+
+- **"&" inside parentheses, "y" in running text.** `Cite` applies this rule for you: `<Cite authors={['Biggs','Tang']} year={2011} page="xx" />`, and add `narrative` for the in-text form.
+- **Short quotations** (under 40 words) go in “…” followed by the citation. Use `Quote`.
+- **Block quotations** (40 words or more) have no quotation marks and are indented by `indent-hang`. The citation goes after the final period. Use `BlockQuote`.
+- **References** use a French (hanging) indent of `indent-hang` and are sorted alphabetically. Book and journal titles are italic, and page ranges take an en dash.
+- **Declare works once.** Wrap each unit in `Bibliography` with its works as data: book, article, chapter or web, with authors, year and title in sentence case. Cite them by id (`<Cite id="biggs2011" page="xx" />`) and close the unit with `<ReferencesBox auto />`. The list then holds exactly the works cited, formatted in APA 7, ordered by author and year, with a/b suffixes for the same authors in the same year. Hand-written `Reference` entries still work; the content checker compares them with the citations.
+- **Tables and figures** put “Tabla N” / “Figura N” in bold, then the title in italic on the next line, both above the table or figure. The note goes below as “*Nota.* …”.
+
+## Learning objectives: Bloom's revised taxonomy
+
+Every `Objectives` box uses Anderson and Krathwohl's revised taxonomy (2001). Tag each objective with its level, and start it with a verb from that level. Tag each activity with the level it demands.
+
+| Level | Name | Verbs |
+|---|---|---|
+| 1 | Recordar | definir, enumerar, identificar, nombrar, reconocer, recuperar |
+| 2 | Comprender | explicar, describir, clasificar, resumir, ejemplificar, interpretar |
+| 3 | Aplicar | aplicar, utilizar, resolver, implementar, ejecutar, demostrar |
+| 4 | Analizar | analizar, comparar, distinguir, organizar, diferenciar, relacionar |
+| 5 | Evaluar | evaluar, juzgar, fundamentar, valorar, argumentar, criticar |
+| 6 | Crear | diseñar, elaborar, planificar, producir, construir, formular |
+
+Order objectives from the lowest level to the highest, and include at least one at level 4 or above.
 
 ## Visual foundations
 
-**Color.** Two brand inks carry the structure. Use `navy` for the strongest level: unit headings, the cover title, «Concepto clave» labels, glossary terms and the cover ribbon. Use `azure` for the next level: section headings, sub-section headings and the cover kicker. Set body copy in `ink` on `paper`. Everything else is a quiet tint:
+**Colour.**
+- `navy` sets unit titles and glossary terms.
+- `azure` sets section headings (h2) and kickers. Sub-sections (h3) are in `ink`, so the two heading levels differ by more than size.
+- `ink` sets body copy on `paper`, and `ink-muted` sets notes and secondary text.
+- `surface` is the screen backdrop behind the page sheet.
+- `rule` is for decorative hairlines. `rule-strong` is for lines that carry meaning: diagram connectors, the table header rule and the table's top and bottom rules.
+- `link` sets links and DOIs, always underlined. `focus` draws a 2px focus ring.
+- Each box owns an `*-accent` / `*-surface` / `*-border` triple. Closing-family surfaces equal `paper`.
+- Diagrams use `diagram-node`, `diagram-node-border` and `diagram-node-strong`. Ordered levels use the `ramp-1`…`ramp-4` sequence.
 
-- `concept-surface` with a `concept-border` frame for definition boxes.
-- `table-head` with `on-table-head` text for table header rows.
-- `band` for zebra rows.
-- `rule` for hairlines.
-- `caption`, `subtitle` and `lede` greys for secondary text.
-- `running` for the running header and footer only. It is 3.2:1 on `paper`, so never use it for reading text.
-- `link` for DOIs and URLs.
+**Themes.** `light` is the default. `dark` re-tints every role for screens. Every text pair passes 4.5:1 in both themes.
 
-`word-heading` and `word-heading-deep` are the stock Word heading colors that the manual overrides. Keep them for documents that use plain Word styles.
+**Type.** There are two families. `serif` (Cambria, or the metric-matched Caladea) sets reading text: `body`, `lead`, `box-body`, `list-item`, `blockquote`, `glossary`, `reference`, `table-cell`, `table-title` and `note`. `sans` (Calibri, or the metric-matched Carlito) sets structure and labels: `h1`–`h3`, `chapter-kicker`, `box-title`, `tag`, `table-number`, `table-head`, `diagram-*` and `running`.
 
-**Themes.** `light` is the print source. `dark` is an added screen theme that keeps every role: navy and azure lighten to stay readable, and `table-head` deepens so white header text still holds 8.7:1.
+The scale has seven steps, about 1.2 apart: 12, 14, 16, 19, 23, 28 and 40px. Body text is 16px with 1.6 leading. Caladea and Carlito ship as woff2 files under `fonts/` (SIL Open Font License), so the layout holds where Cambria and Calibri are not installed.
 
-**Type.** There are two families and no others. `serif` (Cambria, metric-matched by Caladea) sets reading text: `body`, `list-item`, `concept-body`, `glossary`, `reference`, `table-cell` and `note`. `sans` (Calibri, metric-matched by Carlito) sets structure and labels: `h1`, `h2`, `h3`, `toc-title`, `concept-label`, `table-head`, `caption`, `running` and the cover styles. Headings are bold; captions and notes are italic. Justify body paragraphs, list items, glossary entries and concept text. Left-align table cells, headings and references.
+**Measure.** Running text (paragraphs, lists, headings) is at most `measure-text` wide: 496px, about 66 characters. Boxes, tables and figures use the full `measure` (680px), so they read as wide elements beside the text column.
 
-**Spacing.** All spacing comes from the manual's point values. Paragraphs take `space-9pt` after. H1 takes `space-16pt` before and `space-8pt` after. H2 takes `space-12pt` before and `space-6pt` after. H3 takes `space-9pt` before and `space-5pt` after. Table cells use `space-3pt` × `space-5pt`. Concept boxes use `space-6pt` × `space-8pt`. Pages have `page-margin` on all sides and a `measure` text block. Lists and references hang by `indent-hang`.
+**Spacing.** The scale runs from `space-1` (4px) to `space-8` (48px). Boxes, tables and figures take `space-5` above and below.
 
-**Borders, radii and shadows.** Everything is square (`radius-none`). There are no shadows. Separation comes from three strokes:
+**Shape.** Tables and rules are square (`radius-none`), as in the print source. Boxes take `radius-box` and diagram nodes take `radius-node`. Tags are pills. The page sheet carries `shadow-page` on screen only.
 
-- `stroke-hair` in `rule` for table grids and the header underline.
-- `stroke-box` in `concept-border` for concept boxes.
-- `stroke-ribbon` in `navy` above and below the cover ribbon.
+**Tables.** The header is navy text on `band` over a 2px `rule-strong` line. Use the `filled` variant (a solid navy bar) only for slides or posters.
 
-**Layout.** The page is a single column at `measure`. Tables span the full measure, and the caption sits *under* the table. The page has a right-aligned running header over a hairline and a centred «Página N» footer.
+**Diagrams.** Use them to show structure, not to decorate. Below 600px of available width, `ConceptWeb`, `CycleDiagram` and `Pyramid` switch to the same structure as a list, so labels never shrink under 12px. The list is also what screen readers get. Print always shows the drawing. `ConceptWeb` shows a concept and its relations. `CycleDiagram` shows recurring processes. `ProcessFlow` shows ordered steps. `Pyramid` shows hierarchical levels. `DataTable` with `rowHeader` builds conceptual tables. Every diagram goes inside a `Figure` with its number, title and source note. Labels are short noun phrases, and the meaning never depends on colour alone.
 
-**Motion and imagery.** None. The manual has no images, illustrations or animation. Do not add them.
+**Print.** Body text is justified, and each unit starts on a new page. Boxes and figures never split. Box frames print 1.5px in the accent, with the header band kept. Self-check answers print as a key, and shadows drop.
 
 ## Iconography
 
-There are no icons and no logo. The manual sets its name in plain type. The only glyphs are the list bullets: ● for level 1, ○ for level 2 and ■ for level 3. Never substitute icon fonts or emoji.
+Box icons come from Lucide (v0.460.0, ISC licence), copied from the official package. They are 24px line icons with a 2px stroke, drawn in `currentColor` so they take the box accent (or `paper` on an opening-family band). The `Icons` asset group holds single-ink SVG copies, each in its box's light-theme accent, for use in `<img>`. Use icons only in box headers and the legend. Never use emoji or icon fonts. List bullets are ● ○ ■ by level, in `azure`.
 
-## Components
+## Audit
 
-- `Page`: the page frame, with running header and footer.
-- `TitlePage`: the cover.
-- `TableOfContents`: the «Índice».
-- `Heading`: levels 1–3.
-- `Paragraph`: body text.
-- `ConceptBox`: the «Concepto clave» box.
-- `DataTable`: a table with its «Tabla N.» caption.
-- `BulletList`: lists with ●○■ bullets.
-- `GlossaryEntry`: one glossary term and its definition.
-- `Reference`: one APA 7 reference.
+### v3 (from the 8 October 2026 audit)
 
-Each component renders `du-*` classes from `components/bundle.css` together with the token type-style classes (`.body`, `.h2`, `.concept-label` …). Plain HTML can use the same class names without React.
+| Area | v2 | v3 | Why |
+|---|---|---|---|
+| Measure | Text at 680px, measured 82 characters per line | Text at `measure-text` 496px, measured 67 characters; wide elements stay at 680px | 45–75 characters is the comfortable range, with 66 as the ideal. |
+| Box identity | Seven colours of equal weight; all surfaces at L* 94–96 (identical in grayscale); Error Frecuente and Actividades identical under deuteranopia | Three families with different shapes; closing boxes untinted; print frames in the accent | The box type survives photocopies and colour-vision deficiency. |
+| Type scale | 11 sizes, three within 2px (14/15/16); H2 and H3 both azure | Seven steps (12–40); H3 in `ink` | Fewer, clearer steps; the heading levels differ by colour as well as size. |
+| Tables | Solid navy header bar | Navy text on `band` over a 2px rule; `filled` is opt-in | The header no longer outweighs the text and boxes. |
+| Fonts | Depended on installed fonts or a Google import | Caladea and Carlito bundled as woff2 | Line counts and page breaks hold everywhere. |
+| Boxes per unit | No limit | Density rules | Signals stay selective. |
+| Alignment | Objectives and activities unlinked | Numbered objectives, tagged activities, `AlignmentTable` | Constructive alignment is visible and checkable. |
+| Misconceptions | Belief and correction | Belief, cited correction and explanation | The refutation-text structure. |
+| Practice | Open tasks only | `SelfCheck` with answers and a review item | Retrieval practice with feedback. |
+| Application | None | `Classroom` (“En el Aula”) worked cases | Worked examples for novices. |
+
+### v3.2 (remaining audit items)
+
+| Area | Before | Now |
+|---|---|---|
+| Diagrams on phones | Scrolled sideways; labels shrank to about 11.5px | Below 600px they switch to the same structure as a list; labels stay at 12px or larger; the checker flags labels too long for their shape |
+| Antes de leer | Optional and never revisited | Expected in every unit and brought back in “Para Seguir Pensando”; the checker warns when either is missing |
+| Reference list | Typed by hand | `Bibliography` + `Cite id` + `ReferencesBox auto` generate it from the citations; the checker cross-checks hand-written lists, Word included |
+
+### v3.1 (audit phase 3)
+
+| Area | Before | Now |
+|---|---|---|
+| Rule enforcement | Rules lived only in this guide | `lint:content` checks quotes, citations, Bloom verbs, box order and density, figure mentions and alignment in React, HTML and Word files |
+| Word authoring | No template | `.dotx` with styles mirroring the tokens, the nine boxes and a model unit |
+| Figure numbers | Typed by hand | `Numbering` and `FigRef`: numbers follow order of first mention, references can't drift |
+| Glossary | Static list | `Term` links the first use to `Glossary`, which sorts entries itself |
+
+### v2 (from the print source)
+
+| Area | Source (v1) | v2 | Why |
+|---|---|---|---|
+| Body text | 15.3px, leading 1.3, justified | 16px, leading 1.6, left-aligned on screen and justified in print | WCAG 1.4.12 asks for leading of at least 1.5. Justified text leaves rivers on narrow screens. |
+| Small text | Tables 12.7px, captions 12px | Tables 14px, notes 14px | Below 14px, Cambria is hard to read on screen. |
+| Running head | `#8090A8`, 3.2:1 | `running` `#5C6A82`, 5.6:1 | It failed the 4.5:1 minimum for text. |
+| Ink | Pure black `#000` | `ink` `#1B1F27` | Less glare against white, still above 16:1. |
+| Quotes | «…» (angle quotes) | “…” | House rule. |
