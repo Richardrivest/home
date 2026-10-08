@@ -108,6 +108,8 @@ lint/                       content-checker rules (text, HTML, DOCX)
 templates/                  Word template (.dotx) and a preview copy (.docx)
 tests/                      node:test suites
 scripts/build-word-template.mjs, scripts/lint-content.mjs
+scripts/build-previews.py   component READMEs and previews for the design-system page
+scripts/check-diagrams.mjs  diagram screenshots and label-overlap check
 db/schema.sql, db/seed.sql  SQLite: tokens, type, components + props, box types + icons, Bloom levels
 server/index.mjs            read-only JSON API + demos (node:sqlite, no runtime dependencies)
 html/index.html             plain HTML/CSS demo (generated, no JavaScript)
@@ -154,4 +156,6 @@ import { KeyPoints, Objectives, Important, Cite } from '@didactica/design-system
 
 **Page numbers:** in the examples, "p. xx" marks a page that hasn't been checked against the book. Only Vygotsky (1978, p. 86), Ausubel's epigraph (1968, p. vi), Sweller's article range and Miller (1990, p. S63) are real pages.
 
-To update the design-system page, run `npm run build && npm run export:artifact`, then republish `artifact/project/`.
+To update the design-system page, run `npm run build && npm run export:artifact && npm run build:previews`, then republish `artifact/project/`. `build:previews` (Python 3) writes each component's README and live preview from `src/components.meta.json` plus the guidance and examples in `scripts/build-previews.py`; add an entry there when you add a component.
+
+**Checking diagrams:** `npm run check:diagrams` screenshots every diagram in the demo (light and dark, 1100px and 390px) into `screenshots/` and reports labels that overlap or leave the drawing; it exits with code 1 if it finds any. It needs Playwright, which is not a dependency: `npm i -D playwright && npx playwright install chromium`.
