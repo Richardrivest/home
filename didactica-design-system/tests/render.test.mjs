@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { build } from 'esbuild';
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { lintHtml } from '../lint/html.mjs';
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -15,7 +15,7 @@ async function render(jsx) {
     stdin: { contents: `import React from 'react'; import { renderToStaticMarkup } from 'react-dom/server'; import * as D from './src/index.js'; const h = React.createElement; export default renderToStaticMarkup(${jsx});`, resolveDir: root, loader: 'jsx' },
     bundle: true, platform: 'node', format: 'esm', jsx: 'transform', loader: { '.jsx': 'jsx' }, packages: 'external', outfile: out, logLevel: 'error',
   });
-  try { return (await import(out)).default; } finally { fs.rmSync(out, { force: true }); }
+  try { return (await import(pathToFileURL(out).href)).default; } finally { fs.rmSync(out, { force: true }); }
 }
 
 const WORKS = `[
