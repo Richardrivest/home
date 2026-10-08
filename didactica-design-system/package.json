@@ -17,7 +17,9 @@
     "export:artifact": "node scripts/export-artifact.mjs",
     "lint:content": "node scripts/lint-content.mjs",
     "build:word": "node scripts/build-word-template.mjs",
-    "test": "node --test tests/*.test.mjs"
+    "test": "node --test tests/*.test.mjs",
+    "build:previews": "python3 scripts/build-previews.py",
+    "check:diagrams": "node scripts/check-diagrams.mjs"
   },
   "peerDependencies": {
     "react": ">=18"
