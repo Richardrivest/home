@@ -45,6 +45,7 @@ const html = `<!doctype html>
     body { margin: 0; background: var(--surface); padding: var(--space-5) var(--space-3); }
     .du-page + .du-page { margin-top: var(--space-5); }
     .theme-toggle { position: fixed; top: 12px; right: 12px; font: inherit; }
+    @media print { body { padding: 0; } .du-page + .du-page { margin-top: 0; } .theme-toggle { display: none; } }
   </style>
 </head>
 <body>

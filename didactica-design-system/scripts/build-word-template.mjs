@@ -22,7 +22,9 @@ const C = Object.fromEntries(T.color.tokens.map((t) => [t.name, (typeof t.value 
 const SERIF = 'Cambria';
 const SANS = 'Calibri';
 const pt = (n) => Math.round(n * 2); // half-points
-const W = 9360; // text block, 6.5in in DXA
+// Text block: A4 width (11906) minus two 1in margins, 6.27in. It also fits Letter (6.5in),
+// so boxes and tables stay inside the margins whichever paper the document is set to.
+const W = 9026;
 const icon = (kind, white = false) => fs.readFileSync(path.join(root, `icons/png/${kind}${white ? '-white' : ''}.png`));
 
 // ---------- inline markup: **bold**, _italic_, {accent:text} ----------

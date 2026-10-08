@@ -1306,11 +1306,57 @@ ul.du-diagram-list__nested li {
 
 /* ---------- Print: the manual's own page ---------- */
 
+/* A4 or Letter portrait, whichever the printer uses: no size is forced. The margins match
+   the Word template (2.54cm), which leaves a 15.9cm (A4) or 16.5cm (Letter) text block, so
+   600px diagrams print at full size. Printed pages are numbered in the bottom margin;
+   the cover page has no number. */
+
+@page {
+  margin: 2.54cm;
+
+  @bottom-center {
+    content: counter(page);
+
+    font-family: var(--font-sans);
+
+    font-size: 9pt;
+
+    color: var(--ink-muted);
+  }
+}
+
+@page :first {
+  @bottom-center {
+    content: none;
+  }
+}
+
 @media print {
+  html, body {
+    background: var(--paper) !important;
+  }
+
   .du-page {
     box-shadow: none;
     max-width: none;
     padding: 0;
+  }
+
+  /* Every screen sheet starts a new sheet of paper; its screen-only "Página N" footer
+     would not match the printed page numbers, so the margin number replaces it. */
+
+  .du-page + .du-page {
+    -moz-column-break-before: page;
+         break-before: page;
+  }
+
+  .du-page-footer {
+    display: none;
+  }
+
+  .du-body, .du-list__item {
+    orphans: 3;
+    widows: 3;
   }
 
   .du-box, .du-legend__item {
@@ -1363,6 +1409,18 @@ ul.du-diagram-list__nested li {
   .du-chapter {
     -moz-column-break-before: page;
          break-before: page;
+  }
+
+  /* A chapter that opens a sheet already starts a new page with it (and its running header). */
+
+  .du-running-header + .du-chapter, .du-page > .du-chapter:first-child {
+    -moz-column-break-before: auto;
+         break-before: auto;
+  }
+
+  .du-running-header {
+    -moz-column-break-after: avoid;
+         break-after: avoid;
   }
 
   .du-h2, .du-h3 {

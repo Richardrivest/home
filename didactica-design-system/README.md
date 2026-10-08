@@ -8,6 +8,9 @@ The design-system page has the brand book, the tokens, live previews and the ico
 
 - **The drawing always shows.** Until v3.3 every diagram turned into a bulleted list below 600px of available width, so phones, narrow columns and the cards on the design-system page showed text instead of a picture. Now the drawing stays. Below 600px it keeps a 600px width (14px labels stay above 12px) inside a frame that scrolls sideways, with a “Deslizá para ver el diagrama completo →” hint. The frame takes keyboard focus so it can be scrolled without a mouse.
 - **Text version on demand.** The same structure as a list now sits under every drawing, collapsed behind “Ver como texto”, at every width. Lists use the sans face throughout. Print shows the drawing without the text version or the hint.
+- **A4 and Letter portrait.** Print takes whichever paper the printer uses, with 2.54cm margins like the Word template. Diagrams print at the full text width (14px labels at 12.4px on A4, 12.8px on Letter). Each screen sheet starts a new sheet of paper; a chapter that opens a sheet stays with its running header; printed pages are numbered in the bottom margin, except the cover; the screen-only “Página N” footers are left out. The demo's theme button and grey background no longer print.
+- **Word template on A4 or Letter.** The text block for boxes and tables is now 6.27in (A4 minus two 1in margins), so a document switched from Letter to A4 keeps every box and table inside the margins.
+- **Playwright** 1.61.0 is a dev dependency, pinned to Chromium build 1228.
 - **Tests:** the two diagram tests now check the scroll frame and the “Ver como texto” text version.
 
 ## v3.3: tables and twelve more diagrams
@@ -164,4 +167,4 @@ import { KeyPoints, Objectives, Important, Cite } from '@didactica/design-system
 
 To update the design-system page, run `npm run build && npm run export:artifact && npm run build:previews`, then republish `artifact/project/`. `build:previews` (Python 3) writes each component's README and live preview from `src/components.meta.json` plus the guidance and examples in `scripts/build-previews.py`; add an entry there when you add a component.
 
-**Checking diagrams:** `npm run check:diagrams` screenshots every diagram in the demo (light and dark, 1100px and 390px) into `screenshots/` and reports labels that overlap or leave the drawing; it exits with code 1 if it finds any. It needs Playwright, which is not a dependency: `npm i -D playwright && npx playwright install chromium`.
+**Checking diagrams:** `npm run check:diagrams` screenshots every diagram in the demo (light and dark, 1100px and 390px) into `screenshots/` and reports labels that overlap or leave the drawing; it exits with code 1 if it finds any. Playwright 1.61.0 is a dev dependency, pinned to match Chromium build 1228; after `npm install`, run `npx playwright install chromium` once if that browser is missing.

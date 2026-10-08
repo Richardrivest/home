@@ -2,7 +2,7 @@
 // themes at 1100px and 390px, and reports text that overlaps other text or leaves the
 // drawing. Exits with code 1 when it finds any. Run after `npm run build`:
 //   npm run check:diagrams [-- <output folder>]      (default: screenshots/)
-// Needs Playwright with Chromium: `npm i -D playwright && npx playwright install chromium`.
+// Playwright 1.61.0 is a dev dependency; it needs its Chromium (build 1228): `npx playwright install chromium`.
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -13,7 +13,7 @@ const page = path.join(root, 'html', 'index.html');
 
 let chromium;
 try { ({ chromium } = await import('playwright')); } catch {
-  console.error('Playwright is not installed. Run: npm i -D playwright && npx playwright install chromium');
+  console.error('Playwright is not installed. Run: npm install && npx playwright install chromium');
   process.exit(2);
 }
 if (!fs.existsSync(page)) { console.error('html/index.html is missing. Run: npm run build'); process.exit(2); }
