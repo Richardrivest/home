@@ -2,7 +2,6 @@
 // plain HTML/CSS version of the system (no JavaScript at all).
 import { build } from 'esbuild';
 import { writeFileSync, rmSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
 
 const tmp = new URL('../dist/.render-demo.mjs', import.meta.url);
 await build({
@@ -24,11 +23,11 @@ await build({
       export const glossary = renderToStaticMarkup(h(Page, { header: 'Didáctica de la Educación Superior', page: 13 }, h(GlossaryExample)));
       export const diagrams = renderToStaticMarkup(h(Page, { header: 'Didáctica de la Educación Superior', page: 14 }, h(DiagramsExample)));
     `,
-    resolveDir: fileURLToPath(new URL('../src', import.meta.url)),
+    resolveDir: new URL('../src', import.meta.url).pathname,
     loader: 'jsx',
   },
   bundle: true, platform: 'node', format: 'esm', jsx: 'transform', loader: { '.jsx': 'jsx' }, packages: 'external',
-  outfile: fileURLToPath(tmp), logLevel: 'warning',
+  outfile: tmp.pathname, logLevel: 'warning',
 });
 const { cover, legend, chapter, glossary, diagrams } = await import(`${tmp.href}?t=${Date.now()}`);
 rmSync(tmp);

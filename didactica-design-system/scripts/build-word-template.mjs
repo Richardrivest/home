@@ -5,7 +5,7 @@
 // in their three family shapes (open: filled header band; text: heavy top rule; close: frame).
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath, pathToFileURL } from 'node:url';
+import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
 import {
   Document, Packer, Paragraph, TextRun, ImageRun, Table, TableRow, TableCell, Header, Footer,
@@ -16,7 +16,7 @@ import {
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const T = JSON.parse(fs.readFileSync(path.join(root, 'tokens/tokens.json'), 'utf8'));
 const BOXES = JSON.parse(fs.readFileSync(path.join(root, 'src/boxes.config.json'), 'utf8'));
-const { BLOOM } = await import(pathToFileURL(path.join(root, 'src/bloom.js')).href);
+const { BLOOM } = await import(path.join(root, 'src/bloom.js'));
 
 const C = Object.fromEntries(T.color.tokens.map((t) => [t.name, (typeof t.value === 'string' ? t.value : t.value.light).replace('#', '').toUpperCase()]));
 const SERIF = 'Cambria';

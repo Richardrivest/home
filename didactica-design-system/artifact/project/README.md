@@ -91,7 +91,7 @@ Pass the same two arrays to `Objectives`, `Activities` and `AlignmentTable`.
 
 ## Citations: APA 7
 
-Every citation names the author(s), the year and the page. In the examples, “p. xx” stands for any page: it shows where the page number goes and how it is written, not a particular passage. Put the page of the passage you cite in its place. The examples that give a number, such as p. 86 or pp. 257–285, are real pages.
+Every citation names the author(s), the year and the page. Where an example shows “p. xx”, the page has not been checked against the source; the format is what matters.
 
 | Case | Parenthetical | Narrative (in the sentence) |
 |---|---|---|
