@@ -1,11 +1,11 @@
-<!-- @dsCard group="Text" height=190 -->
+<!-- @dsCard group="Text" height=170 -->
 <div id="root" style="padding:16px;background:var(--paper)"></div>
 <script>
   const h = React.createElement;
-  const { Page, TitlePage, TableOfContents, Heading, Paragraph, ConceptBox, DataTable, BulletList, GlossaryEntry, Reference } = window.Didactica;
+  const D = window.Didactica;
+  const { Page, TitlePage, TableOfContents, ChapterOpener, Heading, Paragraph, BulletList, Cite, Quote, BlockQuote, KeyPoints, Objectives, Important, CommonMistake, ThinkFurther, Activities, ReferencesBox, Box, Icon, DataTable, Figure, ConceptWeb, CycleDiagram, Pyramid, ProcessFlow, GlossaryEntry, Reference } = D;
+  const A={authors:["Ambrose","Bridges","DiPietro","Lovett","Norman"],year:2010,page:"xx"}, B={authors:["Biggs","Tang"],year:2011,page:"xx"}, VY={authors:["Vygotsky"],year:1978,page:86}, AU={authors:["Ausubel"],year:1968,page:"vi"};
   ReactDOM.createRoot(document.getElementById('root')).render(
-    h(BulletList, { items: [
-  'Reconstruya una clase memorable de su propia trayectoria como estudiante e identifique qué «configuración didáctica» (Litwin, 1997) puede reconocerse en ella.',
-  { text: '¿Qué supuestos sobre la enseñanza operaban en su carrera de grado?', items: ['¿Predominaba el paradigma de la enseñanza o el del aprendizaje?'] } ] })
+    h(BulletList,{items:['La práctica de recuperación consolida el aprendizaje más que la relectura.',{text:'La práctica distribuida produce retención más duradera.',items:['Espaciar el estudio en el tiempo.']}]})
   );
 </script>

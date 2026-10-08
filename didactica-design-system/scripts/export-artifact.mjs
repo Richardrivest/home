@@ -1,5 +1,5 @@
 // Copies the built system into artifact/project/ — the file layout of the
-// «Didáctica Universitaria» design-system artifact on claude.ai.
+// “Didáctica Universitaria” design-system artifact on claude.ai.
 // Hand-written there: README.md, components/<Comp>/README.md + preview.html, Cover.
 import { copyFileSync, mkdirSync } from 'node:fs';
 

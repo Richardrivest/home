@@ -1,7 +1,10 @@
 # GlossaryEntry
 
-GlossaryEntry is one entry of the «Glosario de términos clave». The term is bold and upright in `navy` and followed by a colon. The definition follows in `glossary`, justified, with `space-6pt` after.
+Glossary entry: the term in bold navy, a colon, then the definition.
 
-**Consumer provides:** `term` (without the colon) and the definition as children.
+**Consumer provides:** `term` (without the colon) and the definition, ending with its citation. Sort entries alphabetically.
 
-**Do** list entries alphabetically and end each definition with its source in parentheses. **Don't** italicise the term or put it on its own line.
+| Prop | Type | Required | Notes |
+|---|---|---|---|
+| `term` | `string` | yes | Term, without the colon. |
+| `children` | `ReactNode` | yes | Definition. |

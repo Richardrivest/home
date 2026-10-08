@@ -1,18 +1,19 @@
 <!-- @dsCard height=320 -->
 <div class="cover">
   <!--
-    blocks: navy 432×112, azure 240×112, concept-border 144×112, rule 144×112 (widths in indent-hang 48px steps; height 7 × space-12pt)
-    arrangement: top-band skeleton (the name is too wide for the 440px zone), a flush strip of unequal bands bleeding off the top and right edges
-    pattern: editorial row ("serif reading text, borders not shadows"): the cover ribbon's two stroke-ribbon rules plus one stroke-hair rule, cut in paper across every block
-    scales: indent-hang 48px, space-12pt 16px, space-16pt 21.33px, stroke-ribbon 1.33px, stroke-hair 0.67px, radius-none 0
+    blocks: navy 384×112, azure 192×112, objectives-accent 144×112, important-accent 96×112, keypoints-border 144×112 (widths in indent-hang 48px steps; height 7 × space-4)
+    arrangement: top-band skeleton (the name is too wide for the 440px zone), a flush strip of unequal bands bleeding off the top and right edges; the two brand inks lead, two box accents follow, one tint for relief
+    pattern: editorial row ("serif reading text, rules that carry meaning"): the cover ribbon's two stroke-ribbon rules plus one stroke-hair rule, cut in paper across every block
+    scales: indent-hang 48px, space-4 16px, space-5 24px, stroke-ribbon 1.33px, stroke-hair 1px, radius-none 0
   -->
   <svg class="band" viewBox="0 0 960 112" width="960" height="112" aria-hidden="true">
-    <rect class="b-navy" x="0" y="0" width="432" height="112"/>
-    <rect class="b-azure" x="432" y="0" width="240" height="112"/>
-    <rect class="b-tint" x="672" y="0" width="144" height="112"/>
-    <rect class="b-rule" x="816" y="0" width="144" height="112"/>
+    <rect class="b-navy" x="0" y="0" width="384" height="112"/>
+    <rect class="b-azure" x="384" y="0" width="192" height="112"/>
+    <rect class="b-teal" x="576" y="0" width="144" height="112"/>
+    <rect class="b-amber" x="720" y="0" width="96" height="112"/>
+    <rect class="b-tint" x="816" y="0" width="144" height="112"/>
     <line class="r-ribbon" x1="0" y1="48" x2="960" y2="48"/>
-    <line class="r-ribbon" x1="0" y1="69.33" x2="960" y2="69.33"/>
+    <line class="r-ribbon" x1="0" y1="72" x2="960" y2="72"/>
     <line class="r-hair" x1="0" y1="96" x2="960" y2="96"/>
   </svg>
   <div class="text">
@@ -24,13 +25,14 @@
   html, body { margin: 0; background: var(--paper); }
   .cover { position: relative; width: 960px; height: 320px; background: var(--paper); overflow: hidden; }
   .band { position: absolute; left: 0; top: 0; display: block; }
-  .b-navy { fill: var(--navy); rx: var(--radius-none); }
-  .b-azure { fill: var(--azure); rx: var(--radius-none); }
-  .b-tint { fill: var(--concept-border); rx: var(--radius-none); }
-  .b-rule { fill: var(--rule); rx: var(--radius-none); }
+  .b-navy { fill: var(--navy); }
+  .b-azure { fill: var(--azure); }
+  .b-teal { fill: var(--objectives-accent); }
+  .b-amber { fill: var(--important-accent); }
+  .b-tint { fill: var(--keypoints-border); }
   .r-ribbon { stroke: var(--paper); stroke-width: var(--stroke-ribbon); }
   .r-hair { stroke: var(--paper); stroke-width: var(--stroke-hair); }
   .text { position: absolute; left: 48px; right: 48px; bottom: 32px; }
   .name { margin: 0; font-family: var(--font-sans); font-weight: 700; font-size: 62px; line-height: .95; color: var(--navy); white-space: nowrap; }
-  .tagline { margin: 16px 0 0; max-width: 440px; font-family: var(--font-serif); font-style: italic; font-size: 14px; line-height: 1.4; color: var(--caption); }
+  .tagline { margin: 16px 0 0; max-width: 440px; font-family: var(--font-serif); font-style: italic; font-size: 14px; line-height: 1.4; color: var(--ink-muted); }
 </style>

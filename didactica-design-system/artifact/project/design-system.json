@@ -1,22 +1,93 @@
 {
   "v": 3,
   "layout": "files",
-  "createdOnFiles": { "v": 1, "at": "2026-10-08T06:46:28Z" },
+  "createdOnFiles": {
+    "v": 1,
+    "at": "2026-10-08T06:46:28Z"
+  },
   "title": "Didáctica Universitaria",
   "namespace": "Didactica",
   "libraries": [
-    { "name": "react", "version": "18" },
-    { "name": "react-dom", "version": "18" }
+    {
+      "name": "react",
+      "version": "18"
+    },
+    {
+      "name": "react-dom",
+      "version": "18"
+    }
   ],
   "sections": {},
-  "groups": [],
-  "assetGroups": {},
+  "groups": [
+    "Icons"
+  ],
+  "assetGroups": {
+    "Icons": {
+      "name": "Icons",
+      "tile": "s",
+      "order": [
+        "keypoints-key-round.svg",
+        "objectives-target.svg",
+        "important-star.svg",
+        "mistake-triangle-alert.svg",
+        "thinking-message-circle-question.svg",
+        "activities-pencil-line.svg",
+        "references-book-open-text.svg"
+      ],
+      "files": {
+        "keypoints-key-round.svg": {
+          "name": "keypoints-key-round.svg",
+          "blob": "67337a7e0f41db1fedf6719dd412367f",
+          "size": 440,
+          "type": "image/svg+xml"
+        },
+        "objectives-target.svg": {
+          "name": "objectives-target.svg",
+          "blob": "d4fc3d837d0f754234bfcd684cf7a8c6",
+          "size": 310,
+          "type": "image/svg+xml"
+        },
+        "important-star.svg": {
+          "name": "important-star.svg",
+          "blob": "377741accb3f2819deae2e693ff403fb",
+          "size": 568,
+          "type": "image/svg+xml"
+        },
+        "mistake-triangle-alert.svg": {
+          "name": "mistake-triangle-alert.svg",
+          "blob": "27e335001438fca431b5364a80c9f7f0",
+          "size": 335,
+          "type": "image/svg+xml"
+        },
+        "thinking-message-circle-question.svg": {
+          "name": "thinking-message-circle-question.svg",
+          "blob": "59fd971cd3c6f7fa85a838cbe5a88722",
+          "size": 322,
+          "type": "image/svg+xml"
+        },
+        "activities-pencil-line.svg": {
+          "name": "activities-pencil-line.svg",
+          "blob": "ee1856c55dc2b5d5ba06e734975ef8cc",
+          "size": 392,
+          "type": "image/svg+xml"
+        },
+        "references-book-open-text.svg": {
+          "name": "references-book-open-text.svg",
+          "blob": "0181e0272f1ce5a3ea46eb2775b47386",
+          "size": 475,
+          "type": "image/svg+xml"
+        }
+      }
+    }
+  },
   "blobs": {},
-  "docs": { "sections": [] },
+  "docs": {
+    "sections": []
+  },
   "lastChange": {
     "by": "Ricardo",
-    "at": "2026-10-08T06:52:00Z",
+    "at": "2026-10-08T07:21:13Z",
     "via": "Claude Code",
-    "note": "Created from Manual_Didactica_Universitaria.docx: tokens, 10 components, cover."
+    "note": "v2: seven didactic boxes with icons, APA 7 citations, Bloom objectives, diagrams, typography and contrast audit."
   }
 }

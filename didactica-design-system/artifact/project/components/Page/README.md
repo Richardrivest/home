@@ -1,9 +1,15 @@
 # Page
 
-Page is the frame for one page of the manual: a `paper` ground, `page-margin` padding, a right-aligned running header over a `stroke-hair` `rule`, and a centred «Página N» footer, both in `running`.
+A manual page: paper sheet, margins, running header and “Página N” footer.
 
-**Consumer provides:** `header` (the book's short title), `page` (a number), and the page content as children.
+**Consumer provides:** `header` (the book's short title), `page`, and the content.
 
-**Use** it to wrap every on-screen page or print view. Put headings, paragraphs, boxes and tables inside it.
+Wrap each screen page or print page in it. On screen it is a `paper` sheet with `shadow-page` on the `surface` backdrop. In print the shadow drops and margins come from the printer.
 
-**Do** keep one column at `measure`. **Don't** put chapter titles in the running header (the manual repeats the book title on every page), and don't use `running` for anything else readers must read.
+**Don't** put chapter titles in the running header, and don't use `running` for text that readers must read.
+
+| Prop | Type | Required | Notes |
+|---|---|---|---|
+| `header` | `string` | no | Running-header text. |
+| `page` | `number` | no | Footer page number. |
+| `children` | `ReactNode` | yes | Page content. |

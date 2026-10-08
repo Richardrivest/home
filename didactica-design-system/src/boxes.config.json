@@ -1,0 +1,9 @@
+[
+  { "kind": "keypoints",  "title": "Puntos Clave",          "icon": "key-round",               "component": "KeyPoints",     "placement": "Start of each unit, right after the unit title and lead." },
+  { "kind": "objectives", "title": "Objetivos",             "icon": "target",                  "component": "Objectives",    "placement": "Right after “Puntos Clave”." },
+  { "kind": "important",  "title": "Importante",            "icon": "star",                    "component": "Important",     "placement": "Anywhere in the text, for a key concept or definition." },
+  { "kind": "mistake",    "title": "Error Frecuente",       "icon": "triangle-alert",          "component": "CommonMistake", "placement": "Anywhere in the text, next to the idea it corrects." },
+  { "kind": "thinking",   "title": "Para Seguir Pensando",  "icon": "message-circle-question", "component": "ThinkFurther",  "placement": "End of each unit, after the last section." },
+  { "kind": "activities", "title": "Actividades",           "icon": "pencil-line",             "component": "Activities",    "placement": "Right after “Para Seguir Pensando”." },
+  { "kind": "references", "title": "Referencias",           "icon": "book-open-text",          "component": "ReferencesBox", "placement": "Closes each unit, after “Actividades”." }
+]

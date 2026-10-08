@@ -5,6 +5,9 @@
 //   GET /api/type                   families + type styles
 //   GET /api/dimensions?family=…    spacing | radius | stroke
 //   GET /api/components[/:name]     component catalogue with props
+//   GET /api/boxes[/:kind]          the seven box types with title, icon and placement
+//   GET /api/icons/:kind.svg        a box icon as SVG
+//   GET /api/bloom                  Bloom's revised taxonomy with verbs
 //   GET /tokens.css                 CSS custom properties (dist/tokens.css)
 //   GET /                           → /html/index.html (plain HTML demo); /html/react.html (React demo)
 import { createServer } from 'node:http';
@@ -78,7 +81,9 @@ const tokensDoc = () => {
   const sys = api.system();
   const doc = { name: sys.name, version: Number(sys.version), color: api.colors(), type: api.type() };
   for (const { family } of all('SELECT DISTINCT family FROM dimension_token'))
-    doc[family] = { tokens: api.dimensions(family) };
+    doc[family] = {
+      tokens: api.dimensions(family).map((t) => ({ ...t, value: t.value.startsWith('{') ? JSON.parse(t.value) : t.value })),
+    };
   return doc;
 };
 
@@ -103,6 +108,18 @@ createServer(async (req, res) => {
         case 'type': out = api.type(); break;
         case 'dimensions': out = api.dimensions(url.searchParams.get('family')); break;
         case 'components': out = api.components(parts[2] && decodeURIComponent(parts[2])); break;
+        case 'boxes':
+          out = parts[2]
+            ? one('SELECT kind, title, component, icon, placement FROM box_type WHERE kind = ?', parts[2]) ?? null
+            : all('SELECT kind, title, component, icon, placement FROM box_type ORDER BY position');
+          break;
+        case 'icons': {
+          const row = parts[2] && one('SELECT icon_svg FROM box_type WHERE kind = ?', parts[2].replace(/\.svg$/, ''));
+          return row ? send(res, 200, row.icon_svg, 'image/svg+xml') : send(res, 404, { error: 'not found' });
+        }
+        case 'bloom':
+          out = all('SELECT id, level, name, verbs FROM bloom_level ORDER BY level').map((b) => ({ ...b, verbs: b.verbs.split(', ') }));
+          break;
         default: out = null;
       }
       return out == null ? send(res, 404, { error: 'not found' }) : send(res, 200, out);

@@ -1,14 +1,17 @@
 # DataTable
 
-DataTable is the manual's comparison table, used for paradigms, theories, instruments and alignment templates. It has:
+APA 7 table: “Tabla N” and italic title above, horizontal rules, navy header, optional row headers, “Nota.” below.
 
-- a header row in `table-head` text, with `on-table-head` on a `table-head` fill;
-- body cells in `table-cell`, left-aligned and top-aligned;
-- a `stroke-hair` `rule` grid;
-- the `band` fill on every even body row.
+**Consumer provides:** `columns`, `rows`, and optionally `number`, `title`, `note`, `widths` and `rowHeader`.
 
-The table spans the full measure. An italic `caption` line follows it.
+The layout follows APA 7: “Tabla N” in bold, the title in italic, then the table, then “*Nota.* …”. Use `rowHeader` for conceptual tables that compare concepts across dimensions. Keep cells to short phrases and don't colour individual cells.
 
-**Consumer provides:** `columns`, `rows` (arrays of cells), optional `widths` (the source uses ['25.6%','37.2%','37.2%'] and ['22%','39%','39%']), `number` and `caption`.
-
-**Do** keep cells to short phrases and end the caption with its source («Elaboración propia a partir de …»). **Don't** put the caption above the table, center the cells or color individual cells.
+| Prop | Type | Required | Notes |
+|---|---|---|---|
+| `columns` | `string[]` | yes | Header labels. |
+| `rows` | `ReactNode[][]` | yes | Body rows. |
+| `widths` | `string[]` | no | Column widths. |
+| `number` | `number` | no | Table number. |
+| `title` | `string` | no | Italic title. |
+| `note` | `ReactNode` | no | Note text after “Nota.”. |
+| `rowHeader` | `boolean` | no | First column as row headers (conceptual tables). |

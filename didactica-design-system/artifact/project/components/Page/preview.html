@@ -1,11 +1,11 @@
-<!-- @dsCard group="Layout" height=420 -->
+<!-- @dsCard group="Layout" height=360 -->
 <div id="root" style="padding:16px;background:var(--paper)"></div>
 <script>
   const h = React.createElement;
-  const { Page, TitlePage, TableOfContents, Heading, Paragraph, ConceptBox, DataTable, BulletList, GlossaryEntry, Reference } = window.Didactica;
+  const D = window.Didactica;
+  const { Page, TitlePage, TableOfContents, ChapterOpener, Heading, Paragraph, BulletList, Cite, Quote, BlockQuote, KeyPoints, Objectives, Important, CommonMistake, ThinkFurther, Activities, ReferencesBox, Box, Icon, DataTable, Figure, ConceptWeb, CycleDiagram, Pyramid, ProcessFlow, GlossaryEntry, Reference } = D;
+  const A={authors:["Ambrose","Bridges","DiPietro","Lovett","Norman"],year:2010,page:"xx"}, B={authors:["Biggs","Tang"],year:2011,page:"xx"}, VY={authors:["Vygotsky"],year:1978,page:86}, AU={authors:["Ausubel"],year:1968,page:"vi"};
   ReactDOM.createRoot(document.getElementById('root')).render(
-    h(Page, { header: 'Didáctica de la Educación Superior', page: 7 },
-  h(Heading, { level: 2 }, '1.4. La profesionalización de la docencia universitaria'),
-  h(Paragraph, null, 'Zabalza (2003) sistematizó un conjunto de competencias docentes del profesorado universitario que incluyen la planificación del proceso de enseñanza-aprendizaje, la selección de contenidos y la evaluación.'))
+    h(Page,{header:'Didáctica de la Educación Superior',page:12},h(Heading,{level:2},'2.2. La perspectiva sociocultural'),h(Paragraph,null,h(Cite,Object.assign({narrative:true},VY)),' desplazó el foco desde el individuo hacia la matriz social del aprendizaje.'))
   );
 </script>

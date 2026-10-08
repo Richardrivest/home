@@ -1,77 +1,91 @@
-# Didáctica Universitaria — design system
+# Didáctica Universitaria — design system (v2)
 
-The visual language of the *Manual de Didáctica Universitaria* (.docx), extracted into tokens, a database, React components, Tailwind and plain HTML/CSS. Every value comes from the document's Word styles and direct formatting, converted at 96 dpi (1pt = 1.333px, 20 twips = 1pt).
+A design system for university teacher-education materials. It started as an extraction of the *Manual de Didáctica Universitaria* (.docx) and was then revised by a typography, colour and contrast audit. It ships tokens, React components, Tailwind, plain HTML/CSS, a SQLite database and a Node.js API.
 
-Design-system page (brand book, tokens, live previews): https://claude.ai/artifact/WUriWVLzv8G4y2u9oMyFhX
+The design-system page has the brand book, the tokens, live previews and the icons: https://claude.ai/artifact/WUriWVLzv8G4y2u9oMyFhX
 
-## What was extracted
+## What's in v2
 
-| Element | Source | Token / component |
-|---|---|---|
-| Navy `#1F3864` | Unit headings, cover title, «Concepto clave» labels, table header fill, glossary terms | `navy`, `table-head` |
-| Azure `#2E5496` | Section and sub-section headings, cover kicker | `azure` |
-| Pale blue `#EFF3FA` + `#9DB3D6` frame | «Concepto clave» boxes | `concept-surface`, `concept-border` → `ConceptBox` |
-| `#F2F5FA` zebra, `#B8C4DC` hairline grid | Comparison tables | `band`, `rule` → `DataTable` |
-| Greys `#555/#444/#666`, `#8090A8` | Captions, cover, running header and footer | `caption`, `subtitle`, `lede`, `running` |
-| Cambria / Calibri | Reading text / structure | `serif` / `sans` families (Caladea and Carlito as open fallbacks) |
-| 21 type styles | Cover, H1–H3, body, lists, glossary, references, tables, captions | `tokens.json → type.groups` |
-| Twip spacing, 1in margins, 0.5in hanging indent | Paragraph spacing, cell margins, lists, references | `space-*`, `indent-*`, `page-margin`, `measure` |
-| Border sizes 4/6/8 (eighths of a pt) | Table grid, concept frame, cover ribbon | `stroke-hair`, `stroke-box`, `stroke-ribbon` |
+- **Seven didactic boxes, each with an icon and its own colour pair.** Every unit follows the same order:
+  - **Puntos Clave** (key icon) opens the unit.
+  - **Objetivos** (target icon) comes next.
+  - **Importante** (star) and **Error Frecuente** (warning triangle) appear in the text where needed.
+  - **Para Seguir Pensando** (question bubble), **Actividades** (pencil) and **Referencias** (open book) close the unit.
+- **APA 7 citations with pages.** `Cite` produces "(Biggs & Tang, 2011, p. xx)" in parentheses and "Biggs y Tang (2011, p. xx)" in running text. It also handles "et al.", page ranges ("pp."), several works in one parenthesis, `Quote` (under 40 words, in “…”) and `BlockQuote` (40 words or more).
+- **APA 7 tables and figures.** "Tabla N" / "Figura N" goes in bold with an italic title above, and "*Nota.*" below. Tables use horizontal rules only.
+- **Diagrams:** `ConceptWeb` (concept webs), `CycleDiagram`, `Pyramid` and `ProcessFlow`, plus conceptual tables via `DataTable rowHeader`.
+- **Objectives on Bloom's revised taxonomy** (Anderson & Krathwohl, 2001). Each objective is tagged "4 · ANALIZAR" and so on.
+- **English quotation marks “…”** throughout.
+- **The audit:**
+  - body text goes to 16px with 1.6 leading;
+  - headings go to a 30/22/18 scale;
+  - the running header now passes contrast;
+  - every text pair passes 4.5:1 in both the light and dark themes.
 
-The source has one theme (print). `dark` is an added screen theme. Three source pairs miss WCAG contrast and are kept exact, each flagged in its token note: `running` at 3.2:1, and the decorative `concept-border` and `rule`.
+  The README in `artifact/project/` has the full before-and-after table.
+- **Nice-to-haves:**
+  - a `ChapterOpener` for each unit;
+  - a print stylesheet that justifies text, starts each unit on a new page and keeps boxes and figures whole;
+  - focus rings on links;
+  - sideways scrolling for diagrams on phones;
+  - a static HTML demo generated from the same React code;
+  - `/api/boxes`, `/api/icons/:kind.svg` and `/api/bloom` endpoints.
 
 ## Layout
 
 ```
-tokens/tokens.json          single source of truth (design-system list format)
-tailwind/preset.cjs         Tailwind preset: colours/spacing/strokes → CSS variables, text-type-* sizes
-src/components/*.jsx        React components (Page, TitlePage, TableOfContents, Heading, Paragraph,
-                            ConceptBox, DataTable, BulletList, GlossaryEntry, Reference)
-src/styles/didactica.css    component styles written with Tailwind @apply → dist/didactica.css
-src/index.d.ts              prop types
-db/schema.sql, db/seed.sql  SQLite database of tokens and components
-server/index.mjs            Node.js read-only JSON API + static demo (no dependencies; node:sqlite)
-html/index.html             plain HTML/CSS demo (no JS)
+tokens/tokens.json          single source of truth
+tailwind/preset.cjs         Tailwind preset (colours/spacing/radii/strokes → CSS variables; text-type-* sizes)
+src/components/             React components (27)
+src/boxes.config.json       the seven box types: title, icon, component, placement
+src/cite.js, src/bloom.js   APA 7 formatter, Bloom taxonomy
+src/styles/didactica.css    component CSS written with Tailwind @apply → dist/didactica.css
+src/examples/chapter.jsx    a full example unit (Unidad 2)
+icons/                      Lucide icons (ISC), single-ink copies in each box's accent
+db/schema.sql, db/seed.sql  SQLite: tokens, type, components + props, box types + icons, Bloom levels
+server/index.mjs            read-only JSON API + demos (node:sqlite, no runtime dependencies)
+html/index.html             plain HTML/CSS demo (generated, no JavaScript)
 html/react.html             React demo (UMD React + dist/didactica.iife.js)
-artifact/project/           files of the design-system artifact (README brand book, previews, cover)
-dist/                       built tokens.css, didactica.css, index.mjs, didactica.iife.js
+artifact/project/           files of the design-system page
 ```
 
 ## Use
 
-Requires Node ≥ 22.5 (for `node:sqlite`).
+You need Node ≥ 22.5.
 
 ```bash
 npm install
-npm run build        # tokens.css, didactica.css, JS bundles, db/design-system.sqlite
-npm run serve        # http://localhost:4173
+npm run build      # tokens.css, icons, didactica.css, JS bundles, SQLite db, html/index.html
+npm run serve      # http://localhost:4173
 ```
-
-API:
 
 | Route | Returns |
 |---|---|
-| `GET /api/tokens` | Every family, in `tokens.json` shape |
-| `GET /api/colors?theme=dark` | Colours resolved for one theme |
-| `GET /api/type` | Font families and type styles |
-| `GET /api/dimensions?family=spacing` | `spacing`, `radius` or `stroke` tokens |
-| `GET /api/components` | The component catalogue with props |
-| `GET /api/components/ConceptBox` | One component with its props |
-
-**React:**
+| `GET /api/tokens` | Every token family |
+| `GET /api/colors?theme=dark` | Colours for one theme |
+| `GET /api/type` | Families and type styles |
+| `GET /api/dimensions?family=spacing` | Spacing, radius, stroke or shadow |
+| `GET /api/components[/Name]` | Components with their props |
+| `GET /api/boxes[/kind]` | The seven box types |
+| `GET /api/icons/:kind.svg` | A box icon |
+| `GET /api/bloom` | Bloom levels with their verbs |
 
 ```jsx
 import '@didactica/design-system/dist/tokens.css';
 import '@didactica/design-system/dist/didactica.css';
-import { ConceptBox } from '@didactica/design-system';
+import { KeyPoints, Objectives, Important, Cite } from '@didactica/design-system';
 
-<ConceptBox term="Didáctica">Teoría de la enseñanza que describe… (Camilloni et al., 2007).</ConceptBox>
+<Important term="Zona de desarrollo próximo">
+  <p>Franja entre el desarrollo real y el potencial <Cite authors={['Vygotsky']} year={1978} page={86} />.</p>
+</Important>
 ```
 
-**Tailwind** (in your app): `presets: [require('@didactica/design-system/tailwind/preset.cjs')]`. This gives you `text-navy`, `bg-concept-surface`, `border-hair border-rule`, `mb-9pt`, `text-type-body` and so on. Load `dist/tokens.css` so the variables exist.
+**Tailwind:** use `presets: [require('@didactica/design-system/tailwind/preset.cjs')]` and load `dist/tokens.css`.
 
-**Plain HTML:** load the two stylesheets and use the `du-*` classes together with the type-style classes. See `html/index.html`.
+**Plain HTML:** load the two stylesheets and copy the markup from `html/index.html`.
 
-**Dark theme:** set `data-theme="dark"` on `<html>`. Without the attribute, `prefers-color-scheme` decides.
+**Dark theme:** set `data-theme="dark"`, or let `prefers-color-scheme` decide.
 
-To update the design-system artifact, edit `tokens/tokens.json` or the components, then run `npm run build && npm run export:artifact` and republish `artifact/project/`.
+**Page numbers:** in the examples, "p. xx" marks a page that hasn't been checked against the book. Only Vygotsky (1978, p. 86), Ausubel's epigraph (1968, p. vi), Sweller's article range and Miller (1990, p. S63) are real pages.
+
+To update the design-system page, run `npm run build && npm run export:artifact`, then republish `artifact/project/`.

@@ -1,17 +1,15 @@
 @import url("https://fonts.googleapis.com/css2?family=Caladea:ital,wght@0,400;0,700;1,400;1,700&family=Carlito:ital,wght@0,400;0,700;1,400;1,700&display=swap");
 /*
- * Didáctica Universitaria — component styles.
- * Colours, spacing and strokes come from the token custom properties
- * (dist/tokens.css) through the Tailwind preset; type comes from the
- * token type-style classes (.body, .h1, .concept-label …) that the
- * components add next to these.
+ * Didáctica Universitaria — component styles (v2).
+ * Colours, spacing, radii and strokes come from the token custom properties
+ * (dist/tokens.css) through the Tailwind preset; type comes from the token
+ * type-style classes (.body, .h1, .box-title …) the components add.
+ * Rules sit outside @layer so Tailwind never purges them: consumers' markup
+ * is unknown at build time. Apps that want utilities build their own CSS
+ * with tailwind/preset.cjs.
  */
 
-/* Rules sit outside @layer so Tailwind never purges them: consumers' markup
- is unknown at build time. Apps that want utilities build their own CSS
- with tailwind/preset.cjs. */
-
-/* Page frame: US Letter, 1in margins, running header and footer */
+/* ---------- Page ---------- */
 
 .du-page {
   margin-left: auto;
@@ -20,29 +18,47 @@
   background-color: var(--paper);
   color: var(--ink);
   max-width: calc(var(--measure) + 2 * var(--page-margin));
-  padding: calc(var(--page-margin) / 2) var(--page-margin);
+  padding: var(--space-6) var(--page-margin);
+  box-shadow: var(--shadow-page);
+}
+
+@media (max-width: 720px) {
+  .du-page {
+    padding: var(--space-5) var(--space-4);
+  }
 }
 
 .du-running-header {
   margin: 0px;
-  margin-bottom: var(--space-16pt);
+  margin-bottom: var(--space-6);
   border-width: 0px;
   border-bottom-width: var(--stroke-hair);
   border-style: solid;
   border-color: var(--rule);
-  padding-bottom: var(--space-3pt);
+  padding-bottom: var(--space-1);
   text-align: right;
   color: var(--running);
 }
 
 .du-page-footer {
-  margin-top: var(--space-16pt);
+  margin-top: var(--space-6);
   margin-bottom: 0px;
   text-align: center;
   color: var(--running);
 }
 
-/* Title page */
+.du-page a, .du-link {
+  color: var(--link);
+  text-decoration-line: underline;
+  text-underline-offset: 2px;
+}
+
+.du-page a:focus-visible, .du-page :focus-visible {
+  outline: var(--stroke-strong) solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* ---------- Title page ---------- */
 
 .du-title-page {
   text-align: center;
@@ -50,30 +66,29 @@
 
 .du-title-page__kicker {
   margin: 0px;
-  margin-top: var(--space-16pt);
+  margin-top: var(--space-6);
   text-transform: uppercase;
   color: var(--azure);
 }
 
 .du-title-page__title {
   margin: 0px;
-  margin-top: var(--space-12pt);
-  margin-bottom: var(--space-5pt);
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-3);
   color: var(--navy);
 }
 
 .du-title-page__subtitle {
   margin: 0px;
-  margin-bottom: var(--space-3pt);
+  margin-bottom: var(--space-2);
   font-style: italic;
-  color: var(--subtitle);
+  color: var(--ink);
 }
 
 .du-title-page__lede {
   margin: 0px;
-  margin-top: var(--space-3pt);
-  margin-bottom: var(--space-16pt);
-  color: var(--lede);
+  margin-bottom: var(--space-6);
+  color: var(--ink-muted);
 }
 
 .du-ribbon {
@@ -83,82 +98,115 @@
   border-bottom-width: var(--stroke-ribbon);
   border-style: solid;
   border-color: var(--navy);
-  padding-top: var(--space-3pt);
-  padding-bottom: var(--space-3pt);
+  padding-top: var(--space-1);
+  padding-bottom: var(--space-1);
   color: var(--navy);
 }
 
 .du-title-page__meta {
+  margin-top: var(--space-6);
+  color: var(--ink-muted);
+}
+
+.du-title-page__meta p {
   margin: 0px;
-  margin-top: var(--space-3pt);
-  color: var(--caption);
+  margin-bottom: var(--space-1);
 }
 
-.du-title-page__meta:first-of-type {
-  margin-top: var(--space-16pt);
+/* ---------- Chapter opener and headings ---------- */
+
+.du-chapter {
+  margin-bottom: var(--space-5);
 }
 
-/* Headings */
+.du-chapter__kicker {
+  margin: 0px;
+  margin-bottom: var(--space-2);
+  text-transform: uppercase;
+  color: var(--azure);
+}
+
+.du-chapter__title {
+  margin: 0px;
+  margin-bottom: var(--space-4);
+  color: var(--navy);
+}
+
+.du-chapter__lead {
+  margin: 0px;
+  color: var(--ink);
+}
 
 .du-h1 {
   margin: 0px;
-  margin-top: var(--space-16pt);
-  margin-bottom: var(--space-8pt);
+  margin-top: var(--space-6);
+  margin-bottom: var(--space-4);
   color: var(--navy);
 }
 
 .du-h2 {
   margin: 0px;
-  margin-top: var(--space-12pt);
-  margin-bottom: var(--space-6pt);
+  margin-top: var(--space-6);
+  margin-bottom: var(--space-3);
   color: var(--azure);
 }
 
 .du-h3 {
   margin: 0px;
-  margin-top: var(--space-9pt);
-  margin-bottom: var(--space-5pt);
+  margin-top: var(--space-5);
+  margin-bottom: var(--space-2);
   color: var(--azure);
 }
 
 .du-toc-title {
   margin: 0px;
-  margin-bottom: var(--space-8pt);
+  margin-bottom: var(--space-3);
   color: var(--navy);
 }
 
-/* Reading text */
+/* ---------- Reading text ---------- */
 
 .du-body {
   margin: 0px;
-  margin-bottom: var(--space-9pt);
-  text-align: justify;
+  margin-bottom: var(--space-3);
   color: var(--ink);
   -webkit-hyphens: auto;
           hyphens: auto;
 }
 
-.du-body a, .du-link {
-  color: var(--link);
-  text-decoration-line: underline;
+.du-cite {
+  font-style: normal;
+}
+
+.du-quote {
+  quotes: '\201C' '\201D' '\2018' '\2019';
+}
+
+.du-blockquote {
+  margin: 0px;
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-4);
+  color: var(--ink);
+  padding-left: var(--indent-hang);
 }
 
 /* Bullet list: ● ○ ■ by level, 0.5in steps, 0.25in hanging */
 
 .du-list {
   margin: 0px;
+  margin-bottom: var(--space-3);
   list-style-type: none;
   padding: 0px;
 }
 
 .du-list .du-list {
-  margin-top: var(--space-5pt);
+  margin-top: var(--space-2);
+  margin-bottom: 0px;
 }
 
 .du-list__item {
   position: relative;
-  margin-bottom: var(--space-5pt);
-  text-align: justify;
+  margin-bottom: var(--space-2);
   color: var(--ink);
   padding-left: var(--indent-hang);
 }
@@ -166,9 +214,10 @@
 .du-list__item::before {
   content: '●';
   position: absolute;
+  color: var(--azure);
   left: var(--indent-bullet);
-  font-size: 0.7em;
-  line-height: 2;
+  font-size: 0.6em;
+  line-height: 2.7;
 }
 
 .du-list .du-list .du-list__item::before {
@@ -179,61 +228,287 @@
   content: '■';
 }
 
-/* Concepto clave */
+/* ---------- The seven didactic boxes ---------- */
 
-.du-concept {
-  margin-top: var(--space-9pt);
-  margin-bottom: var(--space-9pt);
-  border-radius: var(--radius-none);
-  border-width: var(--stroke-box);
+.du-box {
+  --box-accent: var(--keypoints-accent);
+  --box-surface: var(--keypoints-surface);
+  --box-border: var(--keypoints-border);
+  margin-top: var(--space-5);
+  margin-bottom: var(--space-5);
+  border-radius: var(--radius-box);
+  border-width: var(--stroke-hair);
   border-style: solid;
-  border-color: var(--concept-border);
-  background-color: var(--concept-surface);
   color: var(--ink);
-  padding: var(--space-6pt) var(--space-8pt);
+  background: var(--box-surface);
+  border-color: var(--box-border);
+  -moz-column-break-inside: avoid;
+       break-inside: avoid;
 }
 
-.du-concept__label {
+.du-box--keypoints  {
+  --box-accent: var(--keypoints-accent);
+  --box-surface: var(--keypoints-surface);
+  --box-border: var(--keypoints-border);
+}
+
+.du-box--objectives {
+  --box-accent: var(--objectives-accent);
+  --box-surface: var(--objectives-surface);
+  --box-border: var(--objectives-border);
+}
+
+.du-box--important  {
+  --box-accent: var(--important-accent);
+  --box-surface: var(--important-surface);
+  --box-border: var(--important-border);
+}
+
+.du-box--mistake    {
+  --box-accent: var(--mistake-accent);
+  --box-surface: var(--mistake-surface);
+  --box-border: var(--mistake-border);
+}
+
+.du-box--thinking   {
+  --box-accent: var(--thinking-accent);
+  --box-surface: var(--thinking-surface);
+  --box-border: var(--thinking-border);
+}
+
+.du-box--activities {
+  --box-accent: var(--activities-accent);
+  --box-surface: var(--activities-surface);
+  --box-border: var(--activities-border);
+}
+
+.du-box--references {
+  --box-accent: var(--references-accent);
+  --box-surface: var(--references-surface);
+  --box-border: var(--references-border);
+}
+
+.du-box__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  border-width: 0px;
+  border-bottom-width: var(--stroke-hair);
+  border-style: solid;
+  padding-left: var(--space-4);
+  padding-right: var(--space-4);
+  padding-top: var(--space-3);
+  padding-bottom: var(--space-3);
+  border-color: var(--box-border);
+  color: var(--box-accent);
+}
+
+.du-box__icon {
+  flex-shrink: 0;
+}
+
+.du-box__title {
   margin: 0px;
-  margin-bottom: var(--space-3pt);
-  color: var(--navy);
-}
-
-.du-concept__prefix {
   text-transform: uppercase;
 }
 
-.du-concept__body {
-  margin: 0px;
-  text-align: justify;
+.du-box__body {
+  padding-left: var(--space-4);
+  padding-right: var(--space-4);
+  padding-top: var(--space-4);
+  padding-bottom: var(--space-4);
 }
 
-/* Data table + caption */
+.du-box__body > :last-child {
+  margin-bottom: 0px;
+}
 
-.du-table-figure {
+.du-box__intro {
   margin: 0px;
-  margin-top: var(--space-9pt);
+  margin-bottom: var(--space-2);
+}
+
+.du-box__text > p {
+  margin: 0px;
+  margin-bottom: var(--space-2);
+}
+
+.du-box__text > :last-child {
+  margin-bottom: 0px;
+}
+
+.du-box__term {
+  margin: 0px;
+  margin-bottom: var(--space-1);
+  font-weight: 700;
+  color: var(--box-accent);
+  font-family: var(--font-sans);
+  font-size: 1.0667em;
+}
+
+.du-box__pair {
+  margin: 0px;
+  margin-bottom: var(--space-2);
+}
+
+.du-box__label {
+  font-weight: 700;
+  color: var(--box-accent);
+}
+
+.du-box__list {
+  margin: 0px;
+  list-style-type: none;
+  padding: 0px;
+}
+
+.du-box__list > li {
+  position: relative;
+  margin-bottom: var(--space-2);
+  padding-left: var(--indent-bullet);
+}
+
+.du-box__list > li:last-child {
+  margin-bottom: 0px;
+}
+
+.du-box__list > li::before {
+  content: '';
+  position: absolute;
+  left: var(--space-1);
+  top: 0.62em;
+  width: 7px;
+  height: 7px;
+  border-radius: 1px;
+  background: var(--box-accent);
+  transform: rotate(45deg);
+}
+
+.du-box__list--numbered {
+  counter-reset: du-n;
+}
+
+.du-box__list--numbered > li {
+  counter-increment: du-n;
+  padding-left: calc(var(--indent-bullet) + var(--space-2));
+}
+
+.du-box__list--numbered > li::before {
+  content: counter(du-n) '.';
+  left: 0px;
+  top: 0px;
+  font-weight: 700;
+  width: auto;
+  height: auto;
+  background: none;
+  transform: none;
+  color: var(--box-accent);
+  font-family: var(--font-sans);
+}
+
+.du-box__list--objectives > li {
+  display: grid;
+  align-items: baseline;
+  -moz-column-gap: var(--space-3);
+       column-gap: var(--space-3);
+  row-gap: var(--space-1);
+  padding-left: 0px;
+  grid-template-columns: 8.5em 1fr;
+}
+
+.du-box__list--objectives > li::before {
+  content: none;
+}
+
+.du-box__list--numbered .du-tag {
+  margin-right: var(--space-2);
+}
+
+@media (max-width: 480px) {
+  .du-box__list--objectives > li {
+    grid-template-columns: 1fr;
+  }
+
+  .du-box__list--objectives .du-tag {
+    justify-self: start;
+  }
+}
+
+.du-tag {
+  display: inline-block;
+  white-space: nowrap;
+  border-radius: var(--radius-pill);
+  border-width: var(--stroke-hair);
+  border-style: solid;
+  padding-left: var(--space-2);
+  padding-right: var(--space-2);
+  padding-top: 0.125rem;
+  padding-bottom: 0.125rem;
+  text-transform: uppercase;
+  color: var(--box-accent);
+  border-color: var(--box-accent);
+  background: var(--paper);
+}
+
+.du-box--objectives .du-tag {
+  min-width: 8.5em;
+  text-align: center;
+}
+
+.du-box__refs .du-reference:last-child {
+  margin-bottom: 0px;
+}
+
+/* ---------- Tables (APA 7: number + italic title above, horizontal rules, note below) ---------- */
+
+.du-table-figure, .du-figure {
+  margin: 0px;
+  margin-top: var(--space-5);
+  margin-bottom: var(--space-5);
+  -moz-column-break-inside: avoid;
+       break-inside: avoid;
+}
+
+.du-table-figure__number, .du-figure__number {
+  margin: 0px;
+  color: var(--ink);
+}
+
+.du-table-figure__title, .du-figure__title {
+  margin: 0px;
+  margin-bottom: var(--space-2);
+  color: var(--ink);
+}
+
+.du-table-scroll {
+  overflow-x: auto;
 }
 
 .du-table {
   width: 100%;
   border-collapse: collapse;
-  border-width: var(--stroke-hair);
+  border-width: 0px;
+  border-top-width: var(--stroke-strong);
+  border-bottom-width: var(--stroke-strong);
   border-style: solid;
-  border-color: var(--rule);
+  border-color: var(--rule-strong);
 }
 
-.du-table th,
-.du-table td {
-  border-width: var(--stroke-hair);
+.du-table th, .du-table td {
+  border-width: 0px;
+  border-bottom-width: var(--stroke-hair);
   border-style: solid;
   border-color: var(--rule);
+  padding-left: var(--space-2);
+  padding-right: var(--space-2);
+  padding-top: var(--space-1);
+  padding-bottom: var(--space-1);
   text-align: left;
   vertical-align: top;
-  padding: var(--space-3pt) var(--space-5pt);
 }
 
-.du-table th {
+.du-table thead th {
+  border-bottom-width: 0px;
   background-color: var(--table-head);
   color: var(--on-table-head);
 }
@@ -246,19 +521,187 @@
   background-color: var(--band);
 }
 
-.du-caption {
-  margin-top: var(--space-3pt);
-  margin-bottom: var(--space-8pt);
-  font-style: italic;
-  color: var(--caption);
+.du-table tbody tr:last-child > * {
+  border-bottom-width: 0px;
 }
 
-/* Glossary */
+.du-table--concept tbody th {
+  background-color: var(--band);
+  font-weight: 700;
+  color: var(--navy);
+  font-family: var(--font-sans);
+}
+
+.du-note {
+  margin: 0px;
+  margin-top: var(--space-2);
+  color: var(--ink-muted);
+}
+
+/* ---------- Diagrams ---------- */
+
+.du-figure__body {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.du-diagram {
+  display: block;
+  height: auto;
+  width: 100%;
+  min-width: 560px;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.du-dg-node {
+  fill: var(--diagram-node);
+  stroke: var(--diagram-node-border);
+  stroke-width: var(--stroke-hair);
+  rx: var(--radius-node);
+}
+
+.du-dg-node--strong {
+  fill: var(--diagram-node-strong);
+  stroke: var(--diagram-node-strong);
+}
+
+.du-dg-text {
+  fill: var(--ink);
+}
+
+.du-dg-text--on-strong {
+  fill: var(--on-table-head);
+}
+
+.du-dg-text--muted {
+  fill: var(--ink-muted);
+}
+
+.du-dg-edge {
+  stroke: var(--rule-strong);
+  stroke-width: var(--stroke-strong);
+  fill: none;
+}
+
+.du-dg-arrowhead {
+  fill: var(--rule-strong);
+}
+
+.du-dg-leader {
+  stroke: var(--rule-strong);
+  stroke-width: var(--stroke-hair);
+  stroke-dasharray: 2 3;
+}
+
+.du-dg-relation {
+  fill: var(--ink-muted);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-style: italic;
+}
+
+.du-dg-relation-bg {
+  fill: var(--paper);
+}
+
+.du-dg-ramp--1 {
+  fill: var(--ramp-1);
+}
+
+.du-dg-ramp--2 {
+  fill: var(--ramp-2);
+}
+
+.du-dg-ramp--3 {
+  fill: var(--ramp-3);
+}
+
+.du-dg-ramp--4 {
+  fill: var(--ramp-4);
+}
+
+.du-dg-on-ramp--1, .du-dg-on-ramp--2 {
+  fill: var(--on-table-head);
+}
+
+.du-dg-on-ramp--3, .du-dg-on-ramp--4 {
+  fill: var(--ink);
+}
+
+.du-flow {
+  margin: 0px;
+  display: grid;
+  list-style-type: none;
+  gap: var(--space-4);
+  padding: 0px;
+  grid-template-columns: 1fr;
+}
+
+.du-flow__step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  border-radius: var(--radius-node);
+  border-width: var(--stroke-hair);
+  border-style: solid;
+  padding: var(--space-3);
+  background: var(--diagram-node);
+  border-color: var(--diagram-node-border);
+}
+
+.du-flow__num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-pill);
+  color: var(--on-table-head);
+  width: 1.75em;
+  height: 1.75em;
+  background: var(--diagram-node-strong);
+}
+
+.du-flow__title {
+  color: var(--ink);
+}
+
+.du-flow__text {
+  color: var(--ink-muted);
+}
+
+.du-flow__step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: calc(-1 * var(--space-4));
+  height: var(--space-4);
+  border-left: var(--stroke-strong) solid var(--rule-strong);
+}
+
+@media (min-width: 640px) {
+  .du-flow {
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    grid-template-columns: none;
+  }
+
+  .du-flow__step:not(:last-child)::after {
+    left: 100%;
+    top: 50%;
+    bottom: auto;
+    width: var(--space-4);
+    height: 0;
+    border-left: 0;
+    border-top: var(--stroke-strong) solid var(--rule-strong);
+  }
+}
+
+/* ---------- Glossary and references ---------- */
 
 .du-glossary {
   margin: 0px;
-  margin-bottom: var(--space-6pt);
-  text-align: justify;
+  margin-bottom: var(--space-3);
   color: var(--ink);
 }
 
@@ -268,24 +711,16 @@
   color: var(--navy);
 }
 
-/* References (APA 7, hanging indent) */
-
 .du-reference {
   margin: 0px;
-  margin-bottom: var(--space-6pt);
+  margin-bottom: var(--space-2);
   color: var(--ink);
   padding-left: var(--indent-hang);
   text-indent: calc(-1 * var(--indent-hang));
+  overflow-wrap: anywhere;
 }
 
-.du-references-note {
-  margin: 0px;
-  margin-bottom: var(--space-9pt);
-  text-align: justify;
-  color: var(--ink);
-}
-
-/* Table of contents (Word TOC, levels 1–3, dotted leader) */
+/* ---------- Table of contents ---------- */
 
 .du-toc {
   margin: 0px;
@@ -294,10 +729,10 @@
 }
 
 .du-toc__entry {
-  margin-bottom: var(--space-3pt);
+  margin-bottom: var(--space-1);
   display: flex;
   align-items: baseline;
-  gap: var(--space-5pt);
+  gap: var(--space-2);
   color: var(--ink);
 }
 
@@ -310,7 +745,6 @@
 }
 
 .du-toc__title {
-  flex-shrink: 0;
   max-width: 85%;
 }
 
@@ -319,11 +753,35 @@
   border-width: 0px;
   border-bottom-width: var(--stroke-hair);
   border-style: dotted;
-  border-color: var(--caption);
+  border-color: var(--rule-strong);
   transform: translateY(-0.25em);
 }
 
 .du-toc__page {
   flex-shrink: 0;
   font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Print: the manual's own page ---------- */
+
+@media print {
+  .du-page {
+    box-shadow: none;
+    max-width: none;
+    padding: 0;
+  }
+
+  .du-body, .du-list__item, .du-glossary, .du-box__text {
+    text-align: justify;
+  }
+
+  .du-chapter {
+    -moz-column-break-before: page;
+         break-before: page;
+  }
+
+  .du-h2, .du-h3 {
+    -moz-column-break-after: avoid;
+         break-after: avoid;
+  }
 }

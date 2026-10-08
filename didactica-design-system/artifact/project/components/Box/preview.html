@@ -1,0 +1,11 @@
+<!-- @dsCard group="Boxes" height=560 -->
+<div id="root" style="padding:16px;background:var(--paper)"></div>
+<script>
+  const h = React.createElement;
+  const D = window.Didactica;
+  const { Page, TitlePage, TableOfContents, ChapterOpener, Heading, Paragraph, BulletList, Cite, Quote, BlockQuote, KeyPoints, Objectives, Important, CommonMistake, ThinkFurther, Activities, ReferencesBox, Box, Icon, DataTable, Figure, ConceptWeb, CycleDiagram, Pyramid, ProcessFlow, GlossaryEntry, Reference } = D;
+  const A={authors:["Ambrose","Bridges","DiPietro","Lovett","Norman"],year:2010,page:"xx"}, B={authors:["Biggs","Tang"],year:2011,page:"xx"}, VY={authors:["Vygotsky"],year:1978,page:86}, AU={authors:["Ausubel"],year:1968,page:"vi"};
+  ReactDOM.createRoot(document.getElementById('root')).render(
+    h('div',null,['keypoints','objectives','important','mistake','thinking','activities','references'].map(function(k){return h(Box,{key:k,kind:k},h('p',{style:{margin:0}},'Contenido del recuadro.'))}))
+  );
+</script>
