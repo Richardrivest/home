@@ -17,6 +17,7 @@ export function CycleDiagram({ steps, center, label }) {
     return `M ${x1} ${y1} A ${R} ${R} 0 0 1 ${x2} ${y2}`;
   };
   return (
+    <div className="du-diagram-wrap">
     <svg className="du-diagram" viewBox={`0 0 ${W} ${H}`} role="img" aria-label={label || `Ciclo: ${steps.map((s) => s.title).join(', ')}`}>
       <defs>
         <marker id={`a${id}`} viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
@@ -41,5 +42,15 @@ export function CycleDiagram({ steps, center, label }) {
         );
       })}
     </svg>
+    <div className="du-diagram-list">
+      {center ? <p className="du-diagram-list__center diagram-title">{center}</p> : null}
+      <ol className="du-diagram-list__cycle">
+        {steps.map((s, i) => (
+          <li key={i} className="diagram-label"><strong>{s.title}</strong>{s.text ? <span className="du-diagram-list__detail"> · {s.text}</span> : null}</li>
+        ))}
+      </ol>
+      <p className="du-diagram-list__note diagram-label">↻ Después del paso {steps.length}, el ciclo vuelve al paso 1.</p>
+    </div>
+    </div>
   );
 }

@@ -100,8 +100,8 @@
   },
   "lastChange": {
     "by": "Ricardo",
-    "at": "2026-10-08T10:04:38Z",
+    "at": "2026-10-08T12:27:40Z",
     "via": "Claude Code",
-    "note": "v3.1: audit phase 3 — content checker, Word template, figure/table numbering with cross-references, glossary links."
+    "note": "v3.2: diagram list fallbacks on narrow screens, “Antes de leer” revisited at the close, automatic APA reference lists from cited works."
   }
 }

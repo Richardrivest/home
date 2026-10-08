@@ -3,6 +3,9 @@ import { Icon } from './Icon.jsx';
 import { bloomLevel } from '../bloom.js';
 import { objectiveId, checkAlignment } from '../alignment.js';
 import BOXES from '../boxes.config.json';
+import { Reference } from './Reference.jsx';
+import { useBibliography } from './Bibliography.jsx';
+import { referenceSegments, orderWorks } from '../references.js';
 
 const CONFIG = Object.fromEntries(BOXES.map((b) => [b.kind, b]));
 
@@ -111,13 +114,26 @@ export function Classroom({ discipline, situation, decision, rationale, title })
   );
 }
 
-/** “Para Seguir Pensando”: open questions with no single answer; not assessed. */
-export function ThinkFurther({ questions, title }) {
+/**
+ * “Para Seguir Pensando”: open questions with no single answer; not assessed.
+ * revisit: the “Antes de leer” questions from KeyPoints, brought back so readers
+ * compare their first answer with what they think now.
+ */
+export function ThinkFurther({ questions, revisit, title }) {
   return (
     <Box kind="thinking" title={title}>
       <ol className="du-box__list du-box__list--numbered">
         {questions.map((q, i) => <li key={i}>{q}</li>)}
       </ol>
+      {revisit && revisit.length ? (
+        <div className="du-box__before du-box__revisit">
+          <p className="du-box__label">Vuelva a las preguntas del comienzo:</p>
+          <ul className="du-box__list du-box__list--questions">
+            {revisit.map((q, i) => <li key={i}>{q}</li>)}
+          </ul>
+          <p className="du-box__hint">¿Respondería hoy lo mismo que antes de leer la unidad? ¿Qué cambió y por qué?</p>
+        </div>
+      ) : null}
     </Box>
   );
 }
@@ -182,11 +198,25 @@ export function Activities({ items, title }) {
   );
 }
 
-/** “Referencias”: the unit's APA 7 reference list, French (hanging) indent. Children: <Reference> items. */
-export function ReferencesBox({ children, title }) {
+/**
+ * “Referencias”: the unit's APA 7 reference list, French (hanging) indent.
+ * Children: <Reference> items — or `auto` inside <Bibliography>: the works cited so far,
+ * in APA order (`all` lists every declared work, for a manual-wide list).
+ */
+export function ReferencesBox({ children, title, auto = false, all = false }) {
+  const bib = useBibliography();
+  let content = children;
+  if ((auto || all) && bib) {
+    const works = orderWorks(all ? bib.works : bib.works.filter((w) => bib.cited.has(w.id)));
+    content = works.map((w) => (
+      <Reference key={w.id}>
+        {referenceSegments(w, bib.labels[w.id]).map((sg, i) => (sg.italic ? <i key={i}>{sg.text}</i> : <React.Fragment key={i}>{sg.text}</React.Fragment>))}
+      </Reference>
+    ));
+  }
   return (
     <Box kind="references" title={title}>
-      <div className="du-box__refs">{children}</div>
+      <div className="du-box__refs">{content}</div>
     </Box>
   );
 }

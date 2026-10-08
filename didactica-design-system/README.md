@@ -4,6 +4,14 @@ A design system for university teacher-education materials. It started as an ext
 
 The design-system page has the brand book, the tokens, live previews and the icons: https://claude.ai/artifact/WUriWVLzv8G4y2u9oMyFhX
 
+## v3.2: the remaining audit items
+
+- **Diagrams on phones.** Below 600px of available width (a container query), `ConceptWeb`, `CycleDiagram` and `Pyramid` switch to the same structure as a list, so labels never shrink under 12px. Screen readers also get the list. Print always shows the drawing.
+- **Antes de leer.** `ThinkFurther` takes `revisit` and brings the opening questions back under “Vuelva a las preguntas del comienzo”. The checker warns when a unit has no “Antes de leer” questions, or never returns to them. The Word template includes both blocks.
+- **Automatic references.** Declare each unit's works once in `Bibliography`. The supported types are book, article, chapter and web, with author suffixes and group authors. `<Cite id page />` reads authors and year from the record. `<ReferencesBox auto />` lists exactly the works cited, in APA 7 format and order, with a/b suffixes. `referenceText()` formats the same entries outside React.
+- **Citation ↔ reference check.** The checker now reports a work cited but missing from “Referencias” as an error, and a reference never cited as a warning. This also works on Word manuscripts made from the template.
+- **Tests:** 24 in total, including the formatter (book, article, chapter, web, 21+ authors, suffixes), `Bibliography` rendering and the new checker rules.
+
 ## Authoring tools (v3.1, audit phase 3)
 
 - **Word template:** `templates/Didactica-Universitaria.dotx`, with a preview copy in `templates/Didactica-Universitaria-muestra.docx`. It contains:

@@ -175,10 +175,35 @@
     ]
   },
   {
+    "name": "Bibliography",
+    "group": "Citations",
+    "summary": "Declares the works a unit can cite; <Cite id> and <ReferencesBox auto> read from it, so citations and references can’t disagree.",
+    "props": [
+      [
+        "works",
+        "Work[]",
+        true,
+        "Structured works: { id, type: 'book'|'article'|'chapter'|'web', authors: [{ family, given, suffix? } | { literal }], year, title, … }."
+      ],
+      [
+        "children",
+        "ReactNode",
+        true,
+        "The unit."
+      ]
+    ]
+  },
+  {
     "name": "Cite",
     "group": "Citations",
-    "summary": "APA 7 in-text citation with page: (Biggs & Tang, 2011, p. 45) or Biggs y Tang (2011, p. 45).",
+    "summary": "APA 7 in-text citation with page: (Biggs & Tang, 2011, p. 45) or Biggs y Tang (2011, p. 45). Inside <Bibliography>, cite by id.",
     "props": [
+      [
+        "id",
+        "string",
+        false,
+        "Work id declared in <Bibliography>; replaces authors and year and registers the work as cited."
+      ],
       [
         "authors",
         "string[]",
@@ -416,6 +441,12 @@
         "2–5 open questions."
       ],
       [
+        "revisit",
+        "ReactNode[]",
+        false,
+        "The “Antes de leer” questions from KeyPoints, brought back at the close."
+      ],
+      [
         "title",
         "string",
         false,
@@ -464,13 +495,25 @@
   {
     "name": "ReferencesBox",
     "group": "Boxes",
-    "summary": "“Referencias”: the unit's APA 7 reference list, French (hanging) indent. Children: <Reference> items.",
+    "summary": "“Referencias”: the unit’s APA 7 list, French indent — hand-written <Reference> items, or `auto`: the works cited in the unit, formatted and ordered.",
     "props": [
       [
         "children",
         "ReactNode",
-        true,
-        "<Reference> items, alphabetical."
+        false,
+        "<Reference> items (omit with auto)."
+      ],
+      [
+        "auto",
+        "boolean",
+        false,
+        "Inside <Bibliography>: list the works cited above, in APA order."
+      ],
+      [
+        "all",
+        "boolean",
+        false,
+        "List every declared work (a manual-wide bibliography)."
       ],
       [
         "title",
@@ -712,7 +755,7 @@
   {
     "name": "ConceptWeb",
     "group": "Diagrams",
-    "summary": "Concept web: a central concept linked to up to 8 related concepts, with relation labels and short details.",
+    "summary": "Concept web: a central concept linked to up to 8 related concepts, with relation labels and short details. Below 600px of width it shows the same structure as a list.",
     "props": [
       [
         "center",
@@ -737,7 +780,7 @@
   {
     "name": "CycleDiagram",
     "group": "Diagrams",
-    "summary": "Cycle: 3–8 steps around a circle joined by arrows, with an optional centre label.",
+    "summary": "Cycle: 3–8 steps around a circle joined by arrows, with an optional centre label. Below 600px of width it shows the same structure as a list.",
     "props": [
       [
         "steps",
@@ -762,7 +805,7 @@
   {
     "name": "Pyramid",
     "group": "Diagrams",
-    "summary": "Pyramid of levels, top (most advanced) first, e.g. Miller's pyramid; descriptions to the right.",
+    "summary": "Pyramid of levels, top (most advanced) first, e.g. Miller's pyramid; descriptions to the right. Below 600px of width it shows the same structure as a list.",
     "props": [
       [
         "levels",

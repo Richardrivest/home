@@ -5,14 +5,14 @@ Didáctica Universitaria is the visual language of the *Manual de Didáctica Uni
 Every unit follows the same sequence. Never reorder it.
 
 1. `ChapterOpener`: the “Unidad N” kicker, the title and a lead paragraph.
-2. `KeyPoints` (“Puntos Clave”): 3–5 one-line key points, plus optional “Antes de leer” questions.
+2. `KeyPoints` (“Puntos Clave”): 3–5 one-line key points, plus 1–3 “Antes de leer” questions.
 3. `Objectives` (“Objetivos”): 3–5 objectives, numbered O1, O2…, each tagged with its Bloom level.
 4. The body: numbered sections (`Heading` 2 and 3) and `Paragraph` with `Cite`. Add `Important`, `CommonMistake`, `Classroom`, `DataTable` and `Figure` as needed, within the density rules below.
-5. `ThinkFurther` (“Para Seguir Pensando”): 2–4 open questions, not assessed.
+5. `ThinkFurther` (“Para Seguir Pensando”): 2–4 open questions, not assessed, followed by the “Antes de leer” questions again (`revisit`).
 6. `SelfCheck` (“Autoevaluación”): 3–5 recall questions with answers, including one review item from an earlier unit.
 7. `Activities` (“Actividades”): assessable tasks, each tagged with its type, Bloom level and the objectives it practises.
 8. `AlignmentTable`: which activities practise each objective, with any gaps flagged.
-9. `ReferencesBox` (“Referencias”): the unit's APA 7 reference list.
+9. `ReferencesBox` (“Referencias”): the unit's APA 7 reference list, generated from the citations with `auto`.
 
 Introduce the system once, in the manual's opening pages, with `BoxLegend` (“Cómo usar este manual”).
 
@@ -49,6 +49,7 @@ Signals help when they are selective. If many paragraphs sit inside boxes, nothi
 
 - **`CommonMistake`** follows the structure of a refutation text: state the belief (“Creencia frecuente”), refute it with a citation (“Lo que muestra la evidencia”), then explain why it doesn't hold or why it is attractive (“Por qué no se sostiene”).
 - **`Classroom`** is a worked example. It gives a concrete situation, the didactic decision taken and its rationale with a citation, tagged Ciencias Sociales, Ciencias de la Salud or Didáctica general.
+- **Antes de leer.** `KeyPoints` opens with 1–3 questions that ask for a prediction before reading. `ThinkFurther` brings them back (`revisit`) under “Vuelva a las preguntas del comienzo”, so readers compare their first answer with what they think now.
 - **`ThinkFurther`** holds open questions with no single answer, and is never assessed. **`Activities`** holds assessable tasks tied to the objectives.
 - **`SelfCheck`** asks for recall, not opinion. On screen each answer opens on demand; in print the answers are collected in a key at the end of the box.
 
@@ -76,8 +77,8 @@ Pass the same two arrays to `Objectives`, `Activities` and `AlignmentTable`.
   - a guide page and a catalogue of the nine boxes, drawn as copyable tables in their family shapes;
   - a model unit to start from.
 - **Content checker** (`npm run lint:content -- <files>`). It checks React units, rendered HTML and Word manuscripts written with the template. Errors fail the check; warnings don't.
-  - **Errors:** angle or straight quotes; “and” or “&” in a narrative citation; “y” inside a parenthetical citation; three or more authors without “et al.”; an objective verb from the wrong Bloom level; boxes out of order; alignment problems; cross-references with no target.
-  - **Warnings:** citations without a page; box density above one per 800 words; two in-text boxes in a row; Puntos Clave outside 3–5 items; figures or tables not mentioned before they appear; glossary links whose entry is in another file.
+  - **Errors:** angle or straight quotes; “and” or “&” in a narrative citation; “y” inside a parenthetical citation; three or more authors without “et al.”; an objective verb from the wrong Bloom level; boxes out of order; alignment problems; cross-references with no target; a work cited but missing from “Referencias”.
+  - **Warnings:** citations without a page; references never cited; box density above one per 800 words; two in-text boxes in a row; Puntos Clave outside 3–5 items; no “Antes de leer” questions, or questions never revisited; figures or tables not mentioned before they appear; diagram labels too long for their shape; glossary links whose entry is in another file.
 
 ## Content fundamentals
 
@@ -104,7 +105,8 @@ Every citation names the author(s), the year and the page. Where an example show
 - **"&" inside parentheses, "y" in running text.** `Cite` applies this rule for you: `<Cite authors={['Biggs','Tang']} year={2011} page="xx" />`, and add `narrative` for the in-text form.
 - **Short quotations** (under 40 words) go in “…” followed by the citation. Use `Quote`.
 - **Block quotations** (40 words or more) have no quotation marks and are indented by `indent-hang`. The citation goes after the final period. Use `BlockQuote`.
-- **References** use a French (hanging) indent of `indent-hang` and are sorted alphabetically. Book and journal titles are italic, and page ranges take an en dash. Use `Reference` inside `ReferencesBox`.
+- **References** use a French (hanging) indent of `indent-hang` and are sorted alphabetically. Book and journal titles are italic, and page ranges take an en dash.
+- **Declare works once.** Wrap each unit in `Bibliography` with its works as data: book, article, chapter or web, with authors, year and title in sentence case. Cite them by id (`<Cite id="biggs2011" page="xx" />`) and close the unit with `<ReferencesBox auto />`. The list then holds exactly the works cited, formatted in APA 7, ordered by author and year, with a/b suffixes for the same authors in the same year. Hand-written `Reference` entries still work; the content checker compares them with the citations.
 - **Tables and figures** put “Tabla N” / “Figura N” in bold, then the title in italic on the next line, both above the table or figure. The note goes below as “*Nota.* …”.
 
 ## Learning objectives: Bloom's revised taxonomy
@@ -148,7 +150,7 @@ The scale has seven steps, about 1.2 apart: 12, 14, 16, 19, 23, 28 and 40px. Bod
 
 **Tables.** The header is navy text on `band` over a 2px `rule-strong` line. Use the `filled` variant (a solid navy bar) only for slides or posters.
 
-**Diagrams.** Use them to show structure, not to decorate. `ConceptWeb` shows a concept and its relations. `CycleDiagram` shows recurring processes. `ProcessFlow` shows ordered steps. `Pyramid` shows hierarchical levels. `DataTable` with `rowHeader` builds conceptual tables. Every diagram goes inside a `Figure` with its number, title and source note. Labels are short noun phrases, and the meaning never depends on colour alone.
+**Diagrams.** Use them to show structure, not to decorate. Below 600px of available width, `ConceptWeb`, `CycleDiagram` and `Pyramid` switch to the same structure as a list, so labels never shrink under 12px. The list is also what screen readers get. Print always shows the drawing. `ConceptWeb` shows a concept and its relations. `CycleDiagram` shows recurring processes. `ProcessFlow` shows ordered steps. `Pyramid` shows hierarchical levels. `DataTable` with `rowHeader` builds conceptual tables. Every diagram goes inside a `Figure` with its number, title and source note. Labels are short noun phrases, and the meaning never depends on colour alone.
 
 **Print.** Body text is justified, and each unit starts on a new page. Boxes and figures never split. Box frames print 1.5px in the accent, with the header band kept. Self-check answers print as a key, and shadows drop.
 
@@ -172,6 +174,14 @@ Box icons come from Lucide (v0.460.0, ISC licence), copied from the official pac
 | Misconceptions | Belief and correction | Belief, cited correction and explanation | The refutation-text structure. |
 | Practice | Open tasks only | `SelfCheck` with answers and a review item | Retrieval practice with feedback. |
 | Application | None | `Classroom` (“En el Aula”) worked cases | Worked examples for novices. |
+
+### v3.2 (remaining audit items)
+
+| Area | Before | Now |
+|---|---|---|
+| Diagrams on phones | Scrolled sideways; labels shrank to about 11.5px | Below 600px they switch to the same structure as a list; labels stay at 12px or larger; the checker flags labels too long for their shape |
+| Antes de leer | Optional and never revisited | Expected in every unit and brought back in “Para Seguir Pensando”; the checker warns when either is missing |
+| Reference list | Typed by hand | `Bibliography` + `Cite id` + `ReferencesBox auto` generate it from the citations; the checker cross-checks hand-written lists, Word included |
 
 ### v3.1 (audit phase 3)
 

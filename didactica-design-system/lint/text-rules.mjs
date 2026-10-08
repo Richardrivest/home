@@ -2,7 +2,8 @@
 // { rule, severity: 'error' | 'warning', message, excerpt }.
 import { BLOOM } from '../src/bloom.js';
 
-const NAME = "[A-ZÁÉÍÓÚÑÜ][\\p{L}'’-]+(?: [a-z]{1,3} [A-ZÁÉÍÓÚÑÜ][\\p{L}'’-]+)?"; // Apellido, also “van Gog”
+const PARTICLE = '(?:van|von|de|del|der|den|da|di|du|la|le|ter|ten)';
+const NAME = `[A-ZÁÉÍÓÚÑÜ][\\p{L}'’-]+(?: ${PARTICLE} [A-ZÁÉÍÓÚÑÜ][\\p{L}'’-]+)?`; // Apellido, also “Ruiz de Gauna”
 const YEAR = '(?:\\d{4}[a-z]?|s\\. f\\.)';
 const LOCATOR = /\b(?:p|pp|párr|cap|sec|secc)\.\s*\S/;
 
@@ -100,3 +101,38 @@ export function densityRule(proseWords, inTextBoxes) {
 }
 
 export const countWords = (s) => (s.match(/[\p{L}\d]+/gu) || []).length;
+
+const norm = (x) => String(x).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+// Key names drop leading particles, so “van Gog” in the list matches “van Gog (2014)” in the text.
+const keyName = (x) => norm(x).replace(new RegExp(`^(?:${PARTICLE} )+`), '');
+
+/** Author–year keys of every in-text citation in a text: “vygotsky|1978”. */
+export function citationKeys(text) {
+  const keys = [];
+  for (const m of text.matchAll(/\(([^()]*?\b(?:\d{4}[a-z]?|s\. f\.)[^()]*)\)/gu)) {
+    for (const work of m[1].split(/;\s*/)) {
+      const name = work.match(new RegExp(NAME, 'u'));
+      const year = work.match(new RegExp(`\\b${YEAR}`, 'u'));
+      if (name && year && work.indexOf(name[0]) < work.indexOf(year[0])) keys.push(`${keyName(name[0])}|${year[0]}`);
+    }
+  }
+  for (const m of text.matchAll(new RegExp(`(${NAME})(?: et al\\.)?(?: y ${NAME})? \\((${YEAR})`, 'gu'))) keys.push(`${keyName(m[1])}|${m[2]}`);
+  return [...new Set(keys)];
+}
+
+/** Key of a reference-list entry: first author's surname (or group author) and year. */
+export function referenceKey(text) {
+  const year = text.match(new RegExp(`\\((${YEAR})`, 'u'));
+  const first = text.split(/,|\. \(/)[0];
+  return year ? `${keyName(first)}|${year[1]}` : null;
+}
+
+/** Every citation needs its reference, and every reference a citation (APA 7). */
+export function referenceRules(cited, listed) {
+  const out = [];
+  const L = new Set(listed.filter(Boolean));
+  const C = new Set(cited);
+  for (const k of C) if (!L.has(k)) out.push({ rule: 'ref-missing', severity: 'error', message: `Se cita ${k.replace('|', ', ')} pero no figura en “Referencias”.`, excerpt: '' });
+  for (const k of L) if (!C.has(k)) out.push({ rule: 'ref-uncited', severity: 'warning', message: `“Referencias” incluye ${k.replace('|', ', ')}, que no se cita en la unidad.`, excerpt: '' });
+  return out;
+}

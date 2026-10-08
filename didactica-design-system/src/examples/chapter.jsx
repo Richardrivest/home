@@ -5,15 +5,30 @@ import React from 'react';
 import {
   ChapterOpener, Heading, Paragraph, Cite, Quote, KeyPoints, Objectives, Important, CommonMistake,
   Classroom, ThinkFurther, SelfCheck, Activities, ReferencesBox, Reference, DataTable, Figure,
-  ConceptWeb, CycleDiagram, Pyramid, ProcessFlow, AlignmentTable, BoxLegend, Numbering, FigRef, Term, Glossary,
+  ConceptWeb, CycleDiagram, Pyramid, ProcessFlow, AlignmentTable, BoxLegend, Numbering, FigRef, Term, Glossary, Bibliography,
 } from '../index.js';
 
-export const AMBROSE = { authors: ['Ambrose', 'Bridges', 'DiPietro', 'Lovett', 'Norman'], year: 2010, page: 'xx' };
-export const AUSUBEL = { authors: ['Ausubel'], year: 1968, page: 'xx' };
-export const BIGGS = { authors: ['Biggs', 'Tang'], year: 2011, page: 'xx' };
-export const SWELLER = { authors: ['Sweller'], year: 1988, page: 'xx' };
-export const VYGOTSKY = { authors: ['Vygotsky'], year: 1978, page: 86 };
-export const SWELLER2019 = { authors: ['Sweller', 'van Merriënboer', 'Paas'], year: 2019, page: 'xx' };
+// Every work the examples cite, declared once. <Cite id> takes authors and year from here;
+// <ReferencesBox auto> lists the works actually cited, in APA order.
+const A = (family, given) => ({ family, given });
+export const WORKS = [
+  { id: 'ambrose2010', type: 'book', authors: [A('Ambrose', 'S. A.'), A('Bridges', 'M. W.'), A('DiPietro', 'M.'), A('Lovett', 'M. C.'), A('Norman', 'M. K.')], year: 2010, title: 'How learning works: Seven research-based principles for smart teaching', publisher: 'Jossey-Bass' },
+  { id: 'ausubel1968', type: 'book', authors: [A('Ausubel', 'D. P.')], year: 1968, title: 'Educational psychology: A cognitive view', publisher: 'Holt, Rinehart & Winston' },
+  { id: 'biggs2011', type: 'book', authors: [A('Biggs', 'J.'), A('Tang', 'C.')], year: 2011, title: 'Teaching for quality learning at university', edition: 4, publisher: 'Open University Press' },
+  { id: 'miller1990', type: 'article', authors: [A('Miller', 'G. E.')], year: 1990, title: 'The assessment of clinical skills/competence/performance', journal: 'Academic Medicine', volume: 65, issue: '9 Suppl.', pages: 'S63-S67', doi: '10.1097/00001888-199009000-00045' },
+  { id: 'sweller1988', type: 'article', authors: [A('Sweller', 'J.')], year: 1988, title: 'Cognitive load during problem solving: Effects on learning', journal: 'Cognitive Science', volume: 12, issue: 2, pages: '257-285' },
+  { id: 'sweller2019', type: 'article', authors: [A('Sweller', 'J.'), A('van Merriënboer', 'J. J. G.'), A('Paas', 'F.')], year: 2019, title: 'Cognitive architecture and instructional design: 20 years later', journal: 'Educational Psychology Review', volume: 31, issue: 2, pages: '261-292', doi: '10.1007/s10648-019-09465-5' },
+  { id: 'vygotsky1978', type: 'book', authors: [A('Vygotsky', 'L. S.')], year: 1978, title: 'Mind in society: The development of higher psychological processes', publisher: 'Harvard University Press' },
+];
+
+export const AMBROSE = { id: 'ambrose2010', page: 'xx' };
+export const AUSUBEL = { id: 'ausubel1968', page: 'xx' };
+export const BIGGS = { id: 'biggs2011', page: 'xx' };
+export const SWELLER = { id: 'sweller1988', page: 'xx' };
+export const VYGOTSKY = { id: 'vygotsky1978', page: 86 };
+export const SWELLER2019 = { id: 'sweller2019', page: 'xx' };
+
+export const BEFORE = ['¿Qué teoría del aprendizaje, aunque no la nombre, guía hoy sus clases?'];
 
 export const OBJECTIVES = [
   { level: 'comprender', text: 'Explicar los supuestos de las perspectivas constructivista, sociocultural y cognitiva sobre el aprendizaje.' },
@@ -31,6 +46,7 @@ export const ACTIVITIES = [
 
 export function ChapterExample() {
   return (
+    <Bibliography works={WORKS}>
     <Numbering figures={['perspectivas', 'autorregulacion']} tables={['teorias']}>
       <ChapterOpener
         number={2}
@@ -44,7 +60,7 @@ export function ChapterExample() {
           'La memoria de trabajo es limitada: enseñar bien supone gestionar la carga cognitiva.',
           'El enfoque profundo o superficial lo induce, sobre todo, la evaluación.',
         ]}
-        before={['¿Qué teoría del aprendizaje, aunque no la nombre, guía hoy sus clases?']}
+        before={BEFORE}
       />
       <Objectives items={OBJECTIVES} />
 
@@ -52,7 +68,7 @@ export function ChapterExample() {
       <Paragraph>
         La premisa constructivista sostiene que el conocimiento no se transfiere de manera pasiva sino que es construido
         activamente por quien aprende a partir de sus conocimientos previos. <Cite narrative {...AUSUBEL} /> lo resumió en
-        un principio: <Quote cite={{ authors: ['Ausubel'], year: 1968, page: 'vi' }}>the most important single factor influencing learning is what the learner already knows. Ascertain this and teach him accordingly</Quote>.
+        un principio: <Quote cite={{ id: 'ausubel1968', page: 'vi' }}>the most important single factor influencing learning is what the learner already knows. Ascertain this and teach him accordingly</Quote>.
       </Paragraph>
       <Paragraph>
         El aprendizaje significativo, por oposición al meramente memorístico, ocurre cuando el nuevo material se relaciona
@@ -155,10 +171,13 @@ export function ChapterExample() {
         ]} />
       </Figure>
 
-      <ThinkFurther questions={[
-        '¿Qué supuestos sobre el aprendizaje revelan las evaluaciones de su asignatura?',
-        'Si el enfoque profundo lo induce la evaluación, ¿qué margen de responsabilidad le queda al estudiante?',
-      ]} />
+      <ThinkFurther
+        questions={[
+          '¿Qué supuestos sobre el aprendizaje revelan las evaluaciones de su asignatura?',
+          'Si el enfoque profundo lo induce la evaluación, ¿qué margen de responsabilidad le queda al estudiante?',
+        ]}
+        revisit={BEFORE}
+      />
       <SelfCheck items={[
         { question: '¿Cuál es, según Ausubel, el factor que más influye en el aprendizaje?', answer: 'Lo que el estudiante ya sabe: sus conocimientos previos.' },
         { question: '¿Qué designa la zona de desarrollo próximo?', answer: 'La distancia entre lo que una persona resuelve sola y lo que resuelve con la guía de otro más capaz.' },
@@ -167,15 +186,9 @@ export function ChapterExample() {
       ]} />
       <Activities items={ACTIVITIES} />
       <AlignmentTable objectives={OBJECTIVES} activities={ACTIVITIES} />
-      <ReferencesBox>
-        <Reference>Ambrose, S. A., Bridges, M. W., DiPietro, M., Lovett, M. C., &amp; Norman, M. K. (2010). <i>How learning works: Seven research-based principles for smart teaching</i>. Jossey-Bass.</Reference>
-        <Reference>Ausubel, D. P. (1968). <i>Educational psychology: A cognitive view</i>. Holt, Rinehart &amp; Winston.</Reference>
-        <Reference>Biggs, J., &amp; Tang, C. (2011). <i>Teaching for quality learning at university</i> (4.ª ed.). Open University Press.</Reference>
-        <Reference>Sweller, J. (1988). Cognitive load during problem solving: Effects on learning. <i>Cognitive Science, 12</i>(2), 257–285.</Reference>
-        <Reference>Sweller, J., van Merriënboer, J. J. G., &amp; Paas, F. (2019). Cognitive architecture and instructional design: 20 years later. <i>Educational Psychology Review, 31</i>(2), 261–292. https://doi.org/10.1007/s10648-019-09465-5</Reference>
-        <Reference>Vygotsky, L. S. (1978). <i>Mind in society: The development of higher psychological processes</i>. Harvard University Press.</Reference>
-      </ReferencesBox>
+      <ReferencesBox auto />
     </Numbering>
+    </Bibliography>
   );
 }
 
@@ -201,15 +214,16 @@ export const GLOSSARY = [
 
 export function GlossaryExample() {
   return (
-    <>
+    <Bibliography works={WORKS}>
       <Heading level={1}>Glosario de términos clave</Heading>
       <Glossary entries={GLOSSARY} />
-    </>
+    </Bibliography>
   );
 }
 
 export function DiagramsExample() {
   return (
+    <Bibliography works={WORKS}>
     <Numbering figures={['alineamiento', 'miller']} firstFigure={3}>
       <Heading level={1}>Galería de diagramas</Heading>
       <Paragraph>
@@ -223,7 +237,7 @@ export function DiagramsExample() {
           { title: 'Evaluación', text: 'que verifica ese mismo desempeño' },
         ]} />
       </Figure>
-      <Figure id="miller" title="Pirámide de Miller para la evaluación de la competencia clínica" note={<>Adaptado de <Cite narrative authors={['Miller']} year={1990} page="S63" />.</>}>
+      <Figure id="miller" title="Pirámide de Miller para la evaluación de la competencia clínica" note={<>Adaptado de <Cite narrative id="miller1990" page="S63" />.</>}>
         <Pyramid levels={[
           { title: 'Hace', text: 'Desempeño en la práctica real' },
           { title: 'Muestra cómo', text: 'Desempeño en entorno controlado (OSCE)' },
@@ -232,5 +246,6 @@ export function DiagramsExample() {
         ]} />
       </Figure>
     </Numbering>
+    </Bibliography>
   );
 }

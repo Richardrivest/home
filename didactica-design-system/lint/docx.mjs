@@ -1,7 +1,7 @@
 // Checks a Word manuscript (.docx/.dotx) written with the template: text rules on every
 // paragraph, box order and density from the box titles, objectives' verbs, figure mentions.
 import { inflateRawSync } from 'node:zlib';
-import { quoteRules, citationRules, bloomRule, boxOrderRules, densityRule, countWords } from './text-rules.mjs';
+import { quoteRules, citationRules, bloomRule, boxOrderRules, densityRule, countWords, citationKeys, referenceKey, referenceRules } from './text-rules.mjs';
 import BOXES from '../src/boxes.config.json' with { type: 'json' };
 
 const FAMILY = Object.fromEntries(BOXES.map((b) => [b.kind, b.family]));
@@ -86,6 +86,18 @@ function lintUnitParagraphs(paras) {
       const label = p.text.trim();
       if (!seen.some((s) => s.includes(label))) issues.push({ rule: 'figure-mention', severity: 'warning', message: `“${label}” aparece sin haber sido mencionada antes en el texto.`, excerpt: label });
     }
+  }
+  if (kinds.includes('keypoints')) {
+    const all = paras.map((p) => p.text);
+    const hasBefore = all.some((t) => /^Antes de leer:?$/i.test(t.trim()));
+    const revisits = all.some((t) => /^Vuelva a las preguntas del comienzo/i.test(t.trim()));
+    if (!hasBefore) issues.push({ rule: 'before-missing', severity: 'warning', message: 'Sin preguntas “Antes de leer” en “Puntos Clave”: agregue 1 a 3 para anticipar el contenido.', excerpt: '' });
+    else if (!revisits) issues.push({ rule: 'before-revisit', severity: 'warning', message: 'Las preguntas “Antes de leer” no se retoman en “Para Seguir Pensando”.', excerpt: '' });
+  }
+  if (kinds.includes('references')) {
+    const listed = paras.filter((p) => p.style === 'Referencia').map((p) => referenceKey(p.text));
+    const cited = paras.filter((p) => p.style !== 'Referencia').flatMap((p) => citationKeys(p.text));
+    issues.push(...referenceRules(cited, listed));
   }
   issues.push(...boxOrderRules(kinds, FAMILY));
   issues.push(...densityRule(words, kinds.filter((k) => FAMILY[k] === 'text').length));

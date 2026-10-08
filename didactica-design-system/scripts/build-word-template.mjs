@@ -70,7 +70,7 @@ const paragraphStyles = [
   ps('Lista', 'Lista con viñetas', { font: SERIF, size: pt(12), color: C.ink }, { spacing: { after: 120, line: 372 } }),
   ps('Encabezado', 'Encabezado de página', { font: SANS, size: pt(9), color: C.running }, { alignment: AlignmentType.RIGHT, spacing: { after: 0 }, border: { bottom: { style: BorderStyle.SINGLE, size: 4, color: C.rule, space: 4 } } }),
   ps('Pie', 'Pie de página', { font: SANS, size: pt(9), color: C.running }, { alignment: AlignmentType.CENTER, spacing: { after: 0 } }),
-  ps('Marcador', 'Marcador de posición (diagrama)', { font: SANS, size: pt(10.5), color: C['ink-muted'] }, { alignment: AlignmentType.CENTER, spacing: { before: 120, after: 120 }, border: { top: { style: BorderStyle.DASHED, size: 6, color: C['rule-strong'], space: 12 }, bottom: { style: BorderStyle.DASHED, size: 6, color: C['rule-strong'], space: 12 }, left: { style: BorderStyle.DASHED, size: 6, color: C['rule-strong'], space: 12 }, right: { style: BorderStyle.DASHED, size: 6, color: C['rule-strong'], space: 12 } } }),
+  ps('Marcador', 'Marcador de posición (diagrama)', { font: SANS, size: pt(10.5), color: C['ink-muted'] }, { alignment: AlignmentType.CENTER, keepNext: true, spacing: { before: 120, after: 120 }, border: { top: { style: BorderStyle.DASHED, size: 6, color: C['rule-strong'], space: 12 }, left: { style: BorderStyle.DASHED, size: 6, color: C['rule-strong'], space: 12 }, bottom: { style: BorderStyle.DASHED, size: 6, color: C['rule-strong'], space: 12 }, right: { style: BorderStyle.DASHED, size: 6, color: C['rule-strong'], space: 12 } } }),
 ];
 
 // ---------- numbering ----------
@@ -205,7 +205,7 @@ const howTo = [
   new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun('Secuencia de cada unidad')] }),
   ...[
     '**Unidad (antetítulo)**, título con **Título 1** y **Entradilla**.',
-    'Recuadro **Puntos Clave** (3 a 5 ideas de una línea) y, si lo desea, preguntas “Antes de leer”.',
+    'Recuadro **Puntos Clave** (3 a 5 ideas de una línea) con 1 a 3 preguntas “Antes de leer”, que se retoman en **Para Seguir Pensando**.',
     'Recuadro **Objetivos**, numerados O1, O2…, cada uno con su nivel de Bloom.',
     'Secciones numeradas (**Título 2** y **Título 3**) con texto, tablas, figuras y, cuando corresponda, los recuadros **Importante**, **Error Frecuente** y **En el Aula**.',
     'Cierre: **Para Seguir Pensando**, **Autoevaluación**, **Actividades**, tabla de alineamiento y **Referencias**.',
@@ -241,7 +241,7 @@ const catalogue = [
   ...box('important', ['{accent:[Término]}', '[Definición del concepto clave] (Autor, año, p. x).']),
   ...box('mistake', ['{accent:Creencia frecuente:} [La creencia, enunciada con claridad.]', '{accent:Lo que muestra la evidencia:} [La refutación explícita] (Autor, año, p. x).', '{accent:Por qué no se sostiene:} [La explicación alternativa, o por qué la creencia resulta atractiva.]']),
   ...box('example', ['{accent:Situación:} [Un momento concreto de una clase.]', '{accent:Decisión didáctica:} [Lo que hace el docente.]', '{accent:Fundamento:} [Por qué, con su cita] (Autor, año, p. x).'], { extraTitle: '[Ciencias Sociales | Ciencias de la Salud]' }),
-  ...box('thinking', [{ num: '[Pregunta abierta, sin respuesta única.]' }, { num: '[Pregunta abierta que conecte la unidad con la práctica.]' }]),
+  ...box('thinking', [{ num: '[Pregunta abierta, sin respuesta única.]' }, { num: '[Pregunta abierta que conecte la unidad con la práctica.]' }, { label: 'Vuelva a las preguntas del comienzo:' }, '[Repita aquí las preguntas “Antes de leer”.]', '_¿Respondería hoy lo mismo que antes de leer la unidad? ¿Qué cambió y por qué?_']),
   ...box('selfcheck', [{ num: '[Pregunta de recuperación sobre una idea central.]' }, { num: '[Pregunta de recuperación.]' }, { num: '[REPASO · Unidad N] [Pregunta sobre una unidad anterior.]' }, { label: 'Clave de respuestas' }, '1. [Respuesta.]  2. [Respuesta.]  3. [Respuesta.]']),
   ...box('activities', [{ num: '{accent:TAREA · 4 · ANALIZAR · O2}  [Consigna en modo imperativo de usted.]' }, { num: '{accent:PREGUNTA · 2 · COMPRENDER · O1}  [Pregunta.]' }]),
   ...box('references', [{ ref: '[Apellido, A. A.] ([año]). _[Título del libro en cursiva]_. [Editorial].' }, { ref: '[Apellido, A. A., & Apellido, B. B.] ([año]). [Título del artículo]. _[Revista, volumen]_([número]), [pp.–pp.]. https://doi.org/[…]' }]),
@@ -252,7 +252,7 @@ const unit = [
   p('Unidad [N]', 'Unidad'),
   new Paragraph({ heading: HeadingLevel.HEADING_1, children: [new TextRun('[Título de la unidad]')] }),
   p('[Entradilla: una o dos oraciones que presentan la unidad.]', 'Entradilla'),
-  ...box('keypoints', [{ bullet: '[Punto clave.]' }, { bullet: '[Punto clave.]' }, { bullet: '[Punto clave.]' }]),
+  ...box('keypoints', [{ bullet: '[Punto clave.]' }, { bullet: '[Punto clave.]' }, { bullet: '[Punto clave.]' }, { label: 'Antes de leer:' }, '[¿Pregunta para anticipar el contenido?]']),
   ...box('objectives', ['Al finalizar la unidad, usted será capaz de:', '{accent:O1}   {accent:2 · COMPRENDER}   [Explicar …]', '{accent:O2}   {accent:4 · ANALIZAR}   [Comparar …]']),
   new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun('[N.1. Título de la sección]')] }),
   p('[Texto. Cite siempre con autor, año y página: Autor (año, p. x) o (Autor, año, p. x). Anuncie las figuras y tablas antes de que aparezcan, como en la Figura 1.]'),
@@ -262,7 +262,7 @@ const unit = [
   ...apaTable(2, '[Título de la tabla en cursiva]', ['[Dimensión]', '[Concepto A]', '[Concepto B]'], [['[Fila]', '[…]', '[…]'], ['[Fila]', '[…]', '[…]'], ['[Fila]', '[…]', '[…]']], [0.22, 0.39, 0.39], 'Elaboración propia a partir de Autor (año, p. x).', { rowHeader: true }),
   p('[Texto.]'),
   p('[Cita textual de 40 palabras o más, sin comillas, con la cita después del punto final.] (Autor, año, p. x)', 'CitaBloque'),
-  ...box('thinking', [{ num: '[Pregunta abierta.]' }]),
+  ...box('thinking', [{ num: '[Pregunta abierta.]' }, { label: 'Vuelva a las preguntas del comienzo:' }, '[Preguntas “Antes de leer”.]']),
   ...box('selfcheck', [{ num: '[Pregunta.]' }, { label: 'Clave de respuestas' }, '1. [Respuesta.]']),
   ...box('activities', [{ num: '{accent:TAREA · 4 · ANALIZAR · O2}  [Consigna.]' }]),
   p('La Tabla 3 muestra qué actividades trabajan cada objetivo.'),

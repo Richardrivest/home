@@ -1,6 +1,6 @@
 // Checks a rendered unit (HTML from the React components or the static demo).
 import { parse } from 'node-html-parser';
-import { quoteRules, citationRules, bloomRule, boxOrderRules, densityRule, countWords } from './text-rules.mjs';
+import { quoteRules, citationRules, bloomRule, boxOrderRules, densityRule, countWords, citationKeys, referenceKey, referenceRules } from './text-rules.mjs';
 import BOXES from '../src/boxes.config.json' with { type: 'json' };
 
 const FAMILY = Object.fromEntries(BOXES.map((b) => [b.kind, b.family]));
@@ -33,7 +33,7 @@ export function lintHtml(html, { unit = 'unit' } = {}) {
   const pages = root.querySelectorAll('.du-chapter').length ? splitUnits(root) : [root];
   pages.forEach((page, n) => {
     const where = pages.length > 1 ? `${unit} · unidad ${n + 1}` : unit;
-    const boxes = page.querySelectorAll('.du-box');
+    const boxes = page.querySelectorAll('aside.du-box');
     const kinds = boxes.map(kindOf);
     add(boxOrderRules(kinds, FAMILY), where);
     const prose = page.querySelectorAll('.du-body').filter((p) => !p.closest('.du-box'));
@@ -46,11 +46,20 @@ export function lintHtml(html, { unit = 'unit' } = {}) {
         issues.push({ rule: 'box-adjacent', severity: 'warning', message: 'Dos recuadros seguidos dentro del texto: separe con texto.', excerpt: text(bx.querySelector('.du-box__title')), where });
       }
     }
-    const kp = page.querySelector('.du-box--keypoints .du-box__list');
+    const kp = page.querySelector('aside.du-box--keypoints .du-box__list');
     if (kp) {
       const n = kp.childNodes.filter((c) => c.tagName === 'LI').length;
       if (n < 3 || n > 5) issues.push({ rule: 'keypoints-count', severity: 'warning', message: `“Puntos Clave” tiene ${n} ítems; use de 3 a 5.`, excerpt: '', where });
     }
+    // “Antes de leer” questions at the start, revisited at the close.
+    if (page.querySelector('aside.du-box--keypoints')) {
+      const hasBefore = !!page.querySelector('aside.du-box--keypoints .du-box__before');
+      const revisits = !!page.querySelector('aside.du-box--thinking .du-box__revisit');
+      if (!hasBefore) issues.push({ rule: 'before-missing', severity: 'warning', message: 'Sin preguntas “Antes de leer” en “Puntos Clave”: agregue 1 a 3 para anticipar el contenido.', excerpt: '', where });
+      else if (!revisits) issues.push({ rule: 'before-revisit', severity: 'warning', message: 'Las preguntas “Antes de leer” no se retoman en “Para Seguir Pensando” (prop revisit).', excerpt: '', where });
+    }
+    // Diagrams whose labels are too long for their shape.
+    for (const d of page.querySelectorAll('.du-diagram[data-warn]')) issues.push({ rule: 'diagram-label', severity: 'warning', message: `Rótulo demasiado largo para el diagrama: ${d.getAttribute('data-warn').replace('label-long: ', '')}. Acórtelo a una frase nominal breve.`, excerpt: '', where });
     // Figures and tables mentioned in the text before they appear.
     const seen = [];
     walk(page, (el) => {
@@ -60,6 +69,17 @@ export function lintHtml(html, { unit = 'unit' } = {}) {
         if (!seen.some((s) => s.includes(label))) issues.push({ rule: 'figure-mention', severity: 'warning', message: `“${label}” aparece sin haber sido mencionada antes en el texto.`, excerpt: label, where });
       }
     });
+    // Citations ↔ reference list, within the unit.
+    const refBox = page.querySelector('aside.du-box--references');
+    if (refBox) {
+      const listed = refBox.querySelectorAll('.du-reference').map((r) => referenceKey(text(r)));
+      const cited = [];
+      for (const b of page.querySelectorAll('p, li, td, th, blockquote, figcaption')) {
+        if (b.closest('.du-box--references') || b.querySelector('p, li')) continue;
+        cited.push(...citationKeys(text(b)));
+      }
+      issues.push(...referenceRules(cited, listed).map((i) => ({ ...i, where })));
+    }
     for (const bad of page.querySelectorAll('.du-alignment__bad')) issues.push({ rule: 'alignment', severity: 'error', message: text(bad), excerpt: '', where });
     for (const ref of page.querySelectorAll('.du-figref')) if (/sin destino/.test(text(ref))) issues.push({ rule: 'figref-target', severity: 'error', message: `Referencia cruzada sin destino: ${text(ref)}`, excerpt: '', where });
   });

@@ -58,3 +58,15 @@ test('docx: the Word template passes without errors', () => {
   const issues = lintDocx(fs.readFileSync(new URL('../templates/Didactica-Universitaria.dotx', import.meta.url)));
   assert.deepEqual(issues.filter((i) => i.severity === 'error'), []);
 });
+
+test('docx: paragraph borders follow the OOXML schema order (top, left, bottom, right)', async () => {
+  const { readZipEntry } = await import('../lint/docx.mjs');
+  for (const f of ['Didactica-Universitaria.dotx', 'Didactica-Universitaria-muestra.docx']) {
+    const xml = readZipEntry(fs.readFileSync(new URL(`../templates/${f}`, import.meta.url)), 'word/styles.xml');
+    const ORDER = ['top', 'left', 'bottom', 'right', 'between', 'bar'];
+    for (const m of xml.matchAll(/<w:pBdr>(.*?)<\/w:pBdr>/gs)) {
+      const kids = [...m[1].matchAll(/<w:(\w+)\b/g)].map((k) => k[1]);
+      assert.deepEqual(kids, [...kids].sort((a, b) => ORDER.indexOf(a) - ORDER.indexOf(b)), `${f}: ${kids.join(',')}`);
+    }
+  }
+});

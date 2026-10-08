@@ -27,6 +27,8 @@ function Node({ x, y, lines, strong, detail = [] }) {
  * relation labels on the links and a short detail under each concept.
  */
 export function ConceptWeb({ center, nodes, label }) {
+  // Labels that wrap past 3 lines crowd the web; the content checker reports them.
+  const long = nodes.filter((nd) => wrap(nd.label, 18).length > 3).map((nd) => nd.label);
   const n = nodes.length;
   const rows = nodes.map((nd) => wrap(nd.label, 18).length + (nd.detail ? wrap(nd.detail, 22).length : 0));
   const H = Math.max(360, 260 + Math.max(...rows, 1) * LH * 2);
@@ -36,7 +38,8 @@ export function ConceptWeb({ center, nodes, label }) {
     return [cx + rx * Math.cos(a), cy + ry * Math.sin(a)];
   });
   return (
-    <svg className="du-diagram" viewBox={`0 0 ${W} ${H}`} role="img" aria-label={label || `Red conceptual: ${center}`}>
+    <div className="du-diagram-wrap">
+    <svg className="du-diagram" viewBox={`0 0 ${W} ${H}`} role="img" aria-label={label || `Red conceptual: ${center}`} data-warn={long.length ? `label-long: ${long.join(' | ')}` : undefined}>
       {pos.map(([x, y], i) => <line key={i} className="du-dg-edge" x1={cx} y1={cy} x2={x} y2={y} />)}
       <Node x={cx} y={cy} lines={wrap(center, 16)} strong />
       {nodes.map((nd, i) => (
@@ -50,5 +53,18 @@ export function ConceptWeb({ center, nodes, label }) {
         </g>
       ) : null)}
     </svg>
+    {/* Narrow containers: the same structure as a list. */}
+    <div className="du-diagram-list">
+      <p className="du-diagram-list__center diagram-title">{center}</p>
+      <ul>
+        {nodes.map((nd, i) => (
+          <li key={i} className="diagram-label">
+            {nd.relation ? <span className="du-diagram-list__rel">{nd.relation} </span> : null}
+            <strong>{nd.label}</strong>{nd.detail ? <span className="du-diagram-list__detail"> · {nd.detail}</span> : null}
+          </li>
+        ))}
+      </ul>
+    </div>
+    </div>
   );
 }

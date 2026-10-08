@@ -171,6 +171,7 @@
 .du-box__refs .du-reference:last-child { @apply mb-0; }
 .du-box__before { @apply mt-3 pt-3 border-0 border-t-hair border-solid; border-color: var(--box-border); }
 .du-box__before .du-box__label { @apply m-0 mb-2; }
+.du-box__hint { @apply m-0 mt-2 italic; }
 .du-box__list--questions > li::before { content: '?'; @apply font-bold; background: none; transform: none; width: auto; height: auto; top: 0; color: var(--box-accent); font-family: var(--font-sans); }
 .du-box__q { @apply flex flex-col gap-1; }
 .du-box__q > .du-tag { align-self: flex-start; }
@@ -230,8 +231,31 @@
 .du-note { @apply text-ink-muted m-0 mt-2; }
 
 /* ---------- Diagrams ---------- */
-.du-figure__body { @apply w-full; overflow-x: auto; }
-.du-diagram { @apply block w-full h-auto; min-width: 560px; max-width: 680px; margin: 0 auto; }
+.du-figure__body { @apply w-full; }
+.du-diagram { @apply block w-full h-auto; max-width: 680px; margin: 0 auto; }
+
+/* Below 600px of available width the SVG would shrink its labels under 12px:
+   the same structure is shown as a list instead (also the screen-reader view). */
+.du-diagram-wrap { container-type: inline-size; }
+.du-diagram-list { display: none; }
+@container (max-width: 599px) {
+  .du-diagram { display: none; }
+  .du-diagram-list { display: block; }
+}
+.du-diagram-list { @apply m-0 p-3 border-hair border-solid rounded-node; background: var(--diagram-node); border-color: var(--diagram-node-border); }
+.du-diagram-list ul, .du-diagram-list ol { @apply m-0 pl-5; }
+.du-diagram-list li { @apply text-ink mb-1; }
+.du-diagram-list__center { @apply m-0 mb-2 text-on-table-head px-2 py-1 rounded-node inline-block; background: var(--diagram-node-strong); }
+.du-diagram-list__rel { @apply text-ink-muted italic; }
+.du-diagram-list__detail { @apply text-ink-muted; }
+.du-diagram-list__note { @apply m-0 mt-2 text-ink-muted; }
+ol.du-diagram-list--pyramid { @apply list-none p-0 border-0 bg-transparent; }
+.du-diagram-list__level { @apply flex flex-col gap-1 px-3 py-2 mb-1 rounded-node; }
+.du-dg-bar--1 { background: var(--ramp-1); } .du-dg-bar--2 { background: var(--ramp-2); }
+.du-dg-bar--3 { background: var(--ramp-3); } .du-dg-bar--4 { background: var(--ramp-4); }
+.du-dg-bar--1 span, .du-dg-bar--2 span, .du-dg-on-bar--1, .du-dg-on-bar--2 { color: var(--on-table-head); }
+.du-dg-bar--3 span, .du-dg-bar--4 span, .du-dg-on-bar--3, .du-dg-on-bar--4 { color: var(--ink); }
+@media print { .du-diagram { display: block !important; } .du-diagram-list { display: none !important; } }
 .du-dg-node { fill: var(--diagram-node); stroke: var(--diagram-node-border); stroke-width: var(--stroke-hair); rx: var(--radius-node); }
 .du-dg-node--strong { fill: var(--diagram-node-strong); stroke: var(--diagram-node-strong); }
 .du-dg-text { fill: var(--ink); }

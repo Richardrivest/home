@@ -54,6 +54,8 @@ export interface Work {
 }
 /** APA 7 in-text citation with page: (Biggs & Tang, 2011, p. 45) or, narrative, Biggs y Tang (2011, p. 45). */
 export interface CiteProps extends Partial<Work> {
+  /** Work id declared in <Bibliography>: replaces authors and year, and registers the work as cited. */
+  id?: string;
   /** Narrative form: authors in the sentence, joined with “y”. */
   narrative?: boolean;
   /** Several works in one parenthesis, ordered alphabetically and joined with “;”. */
@@ -62,11 +64,11 @@ export interface CiteProps extends Partial<Work> {
 export declare function Cite(props: CiteProps): ReactElement;
 
 /** Short quotation (under 40 words) in English double quotes “…”, followed by its APA citation. */
-export interface QuoteProps { children: ReactNode; cite: Work }
+export interface QuoteProps { children: ReactNode; /** Inline work, or { id, page } inside <Bibliography>. */ cite: Work | { id: string; page?: number | string; locator?: string } }
 export declare function Quote(props: QuoteProps): ReactElement;
 
 /** APA 7 block quotation (40 words or more): indented, no quotation marks, citation after the final period. */
-export interface BlockQuoteProps { children: ReactNode; cite: Work }
+export interface BlockQuoteProps { children: ReactNode; cite: Work | { id: string; page?: number | string; locator?: string } }
 export declare function BlockQuote(props: BlockQuoteProps): ReactElement;
 
 export declare function formatCitation(work: Work, options?: { narrative?: boolean }): string;
@@ -133,7 +135,12 @@ export interface ClassroomProps {
 export declare function Classroom(props: ClassroomProps): ReactElement;
 
 /** “Para Seguir Pensando”: open, critical questions that close the unit. */
-export interface ThinkFurtherProps { questions: ReactNode[]; title?: string }
+export interface ThinkFurtherProps {
+  questions: ReactNode[];
+  /** The “Antes de leer” questions from KeyPoints, brought back at the close. */
+  revisit?: ReactNode[];
+  title?: string;
+}
 export declare function ThinkFurther(props: ThinkFurtherProps): ReactElement;
 
 export interface Activity {
@@ -150,7 +157,14 @@ export interface ActivitiesProps { items: ActivityItem[]; title?: string }
 export declare function Activities(props: ActivitiesProps): ReactElement;
 
 /** “Referencias”: the unit's APA 7 reference list, French (hanging) indent. */
-export interface ReferencesBoxProps { children: ReactNode; title?: string }
+export interface ReferencesBoxProps {
+  children?: ReactNode;
+  /** Inside <Bibliography>: the works cited above, formatted and in APA order. */
+  auto?: boolean;
+  /** Every declared work (manual-wide bibliography). */
+  all?: boolean;
+  title?: string;
+}
 export declare function ReferencesBox(props: ReferencesBoxProps): ReactElement;
 
 /** “Autoevaluación”: retrieval practice; answers open on screen and print as a key. */
@@ -256,3 +270,38 @@ export declare function Term(props: TermProps): ReactElement;
 /** Glossary sorted alphabetically (Spanish collation). */
 export interface GlossaryProps { entries: { id: string; term: string; definition: ReactNode }[] }
 export declare function Glossary(props: GlossaryProps): ReactElement;
+
+/* ---------- Bibliography (structured works, APA 7 references) ---------- */
+
+export interface Person { family: string; given?: string; suffix?: string }
+export interface StructuredWork {
+  id: string;
+  type?: 'book' | 'article' | 'chapter' | 'web';
+  authors?: (Person | { literal: string })[];
+  year?: number | string;
+  /** Sentence case, as APA requires. */
+  title: string;
+  edition?: number;
+  publisher?: string;
+  journal?: string;
+  volume?: number | string;
+  issue?: number | string;
+  pages?: string;
+  articleNumber?: string;
+  doi?: string;
+  url?: string;
+  /** Chapter: the book's editors and title. */
+  editors?: Person[];
+  container?: string;
+  /** Web: site name and full date. */
+  site?: string;
+  date?: string;
+}
+/** Declares the works a unit can cite; <Cite id> and <ReferencesBox auto> read from it. */
+export interface BibliographyProps { works: StructuredWork[]; children: ReactNode }
+export declare function Bibliography(props: BibliographyProps): ReactElement;
+export declare function referenceSegments(work: StructuredWork, yearLabel?: string): { text: string; italic?: boolean }[];
+export declare function referenceText(work: StructuredWork, yearLabel?: string): string;
+export declare function orderWorks(works: StructuredWork[]): StructuredWork[];
+export declare function yearLabels(works: StructuredWork[]): Record<string, string>;
+export declare function authorList(authors: (Person | { literal: string })[]): string;

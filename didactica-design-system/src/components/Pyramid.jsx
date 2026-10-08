@@ -9,8 +9,10 @@ export function Pyramid({ levels, label }) {
   const H = n * LEVEL_H + 8;
   const cx = PW / 2 + 4;
   const halfAt = (y) => (PW / 2) * (y / (n * LEVEL_H));
+  const longApex = levels[0] && wrap(levels[0].title, 10).length > 1;
   return (
-    <svg className="du-diagram" viewBox={`0 0 ${W} ${H}`} role="img" aria-label={label || `Pirámide: ${levels.map((l) => l.title).join(', ')}`}>
+    <div className="du-diagram-wrap">
+    <svg className="du-diagram" viewBox={`0 0 ${W} ${H}`} role="img" aria-label={label || `Pirámide: ${levels.map((l) => l.title).join(', ')}`} data-warn={longApex ? `label-long: ${levels[0].title}` : undefined}>
       {levels.map((lv, i) => {
         const y1 = i * LEVEL_H, y2 = (i + 1) * LEVEL_H - 4;
         const pts = [[cx - halfAt(y1), y1 + 4], [cx + halfAt(y1), y1 + 4], [cx + halfAt(y2 + 4), y2 + 4], [cx - halfAt(y2 + 4), y2 + 4]];
@@ -32,5 +34,17 @@ export function Pyramid({ levels, label }) {
         );
       })}
     </svg>
+    <ol className="du-diagram-list du-diagram-list--pyramid">
+      {levels.map((lv, i) => {
+        const ramp = Math.min(i + 1 + Math.max(0, 4 - n), 4);
+        return (
+          <li key={i} className={`du-diagram-list__level du-dg-bar--${ramp}`}>
+            <strong className={`diagram-title du-dg-on-bar--${ramp}`}>{lv.title}</strong>
+            {lv.text ? <span className="diagram-label">{lv.text}</span> : null}
+          </li>
+        );
+      })}
+    </ol>
+    </div>
   );
 }
