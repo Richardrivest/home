@@ -71,7 +71,7 @@ These are phases 1 and 2 of the 8 October 2026 audit (https://claude.ai/artifact
   - **Objetivos** (target icon) comes next.
   - **Importante** (star) and **Error Frecuente** (warning triangle) appear in the text where needed.
   - **Para Seguir Pensando** (question bubble), **Actividades** (pencil) and **Referencias** (open book) close the unit.
-- **APA 7 citations with pages.** `Cite` produces "(Biggs & Tang, 2011, p. xx)" in parentheses and "Biggs y Tang (2011, p. xx)" in running text. It also handles "et al.", page ranges ("pp."), several works in one parenthesis, `Quote` (under 40 words, in “…”) and `BlockQuote` (40 words or more).
+- **APA 7 citations with pages.** `Cite` produces "(Biggs & Tang, 2011, p. xx)" in parentheses and "Biggs y Tang (2011, p. xx)" in running text, where "xx" is the page you cite. It also handles "et al.", page ranges ("pp."), several works in one parenthesis, `Quote` (under 40 words, in “…”) and `BlockQuote` (40 words or more).
 - **APA 7 tables and figures.** "Tabla N" / "Figura N" goes in bold with an italic title above, and "*Nota.*" below. Tables use horizontal rules only.
 - **Diagrams:** `ConceptWeb` (concept webs), `CycleDiagram`, `Pyramid` and `ProcessFlow`, plus conceptual tables via `DataTable rowHeader` (twelve more came in v3.3).
 - **Objectives on Bloom's revised taxonomy** (Anderson & Krathwohl, 2001). Each objective is tagged "4 · ANALIZAR" and so on.
@@ -154,7 +154,7 @@ import { KeyPoints, Objectives, Important, Cite } from '@didactica/design-system
 
 **Dark theme:** set `data-theme="dark"`, or let `prefers-color-scheme` decide.
 
-**Page numbers:** in the examples, "p. xx" marks a page that hasn't been checked against the book. Only Vygotsky (1978, p. 86), Ausubel's epigraph (1968, p. vi), Sweller's article range and Miller (1990, p. S63) are real pages.
+**Page numbers:** in the examples, "p. xx" stands for any page. It shows where the page number goes and how it is written, not a particular passage, so put the page of the passage you cite in its place. The examples that give a number are real pages: Vygotsky (1978, p. 86), Ausubel's epigraph (1968, p. vi), Sweller's article range and Miller (1990, p. S63).
 
 To update the design-system page, run `npm run build && npm run export:artifact && npm run build:previews`, then republish `artifact/project/`. `build:previews` (Python 3) writes each component's README and live preview from `src/components.meta.json` plus the guidance and examples in `scripts/build-previews.py`; add an entry there when you add a component.
 
