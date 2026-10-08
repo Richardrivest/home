@@ -1,0 +1,30 @@
+{
+  "name": "@didactica/design-system",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Design system extracted from the «Manual de Didáctica Universitaria»: tokens, Tailwind preset, React components, plain HTML/CSS and a SQLite token database served by Node.js.",
+  "type": "module",
+  "main": "dist/index.mjs",
+  "style": "dist/didactica.css",
+  "scripts": {
+    "build:tokens": "node scripts/build-tokens.mjs",
+    "build:css": "tailwindcss -c tailwind.config.cjs -i src/styles/didactica.css -o dist/didactica.css && node scripts/prepend-fonts.mjs",
+    "build:js": "node scripts/build-js.mjs",
+    "build:db": "node --no-warnings scripts/build-db.mjs",
+    "build": "npm run build:tokens && npm run build:css && npm run build:js && npm run build:db",
+    "serve": "node --no-warnings server/index.mjs",
+    "export:artifact": "node scripts/export-artifact.mjs"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "devDependencies": {
+    "esbuild": "0.24.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tailwindcss": "3.4.17"
+  },
+  "engines": {
+    "node": ">=22.5"
+  }
+}

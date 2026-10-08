@@ -1,0 +1,15 @@
+<!-- @dsCard group="Layout" height=470 -->
+<div id="root" style="padding:16px;background:var(--paper)"></div>
+<script>
+  const h = React.createElement;
+  const { Page, TitlePage, TableOfContents, Heading, Paragraph, ConceptBox, DataTable, BulletList, GlossaryEntry, Reference } = window.Didactica;
+  ReactDOM.createRoot(document.getElementById('root')).render(
+    h(TitlePage, {
+  kicker: 'Manual de formación docente',
+  title: 'Didáctica de la Educación Superior',
+  subtitle: 'Fundamentos, estrategias y evaluación para la docencia universitaria',
+  lede: 'Con desarrollos de didáctica general y de las didácticas específicas de las ciencias sociales y de las ciencias de la salud',
+  ribbon: 'Material de estudio para la formación del profesorado universitario',
+  meta: ['Nivel: graduados universitarios en formación pedagógica', 'Citación: APA 7.ª edición', 'Año 2026'] })
+  );
+</script>

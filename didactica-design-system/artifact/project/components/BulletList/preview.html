@@ -1,0 +1,11 @@
+<!-- @dsCard group="Text" height=190 -->
+<div id="root" style="padding:16px;background:var(--paper)"></div>
+<script>
+  const h = React.createElement;
+  const { Page, TitlePage, TableOfContents, Heading, Paragraph, ConceptBox, DataTable, BulletList, GlossaryEntry, Reference } = window.Didactica;
+  ReactDOM.createRoot(document.getElementById('root')).render(
+    h(BulletList, { items: [
+  'Reconstruya una clase memorable de su propia trayectoria como estudiante e identifique qué «configuración didáctica» (Litwin, 1997) puede reconocerse en ella.',
+  { text: '¿Qué supuestos sobre la enseñanza operaban en su carrera de grado?', items: ['¿Predominaba el paradigma de la enseñanza o el del aprendizaje?'] } ] })
+  );
+</script>
