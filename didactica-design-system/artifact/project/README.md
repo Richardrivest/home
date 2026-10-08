@@ -63,6 +63,22 @@ Objectives, activities and assessment must aim at the same performances. The sys
 
 Pass the same two arrays to `Objectives`, `Activities` and `AlignmentTable`.
 
+## Figures, tables and glossary terms
+
+- **Numbering.** Wrap each unit in `Numbering` with the figure and table ids in order of first mention. `Figure` and `DataTable` with an `id` take their number from it, and `FigRef` prints “Figura N”, “Tabla N” or “(véase la Figura N)”. Reordering a unit means reordering one list.
+- **Mention before showing.** Announce every figure and table in the text before it appears, and place it right after that first mention.
+- **Glossary links.** Mark the first use of a glossary term in each unit with `Term`. It reads as normal text with a dotted azure underline and links to the entry. Build the glossary with `Glossary`, which sorts the entries alphabetically with Spanish collation.
+
+## Authoring tools
+
+- **Word template** (`templates/Didactica-Universitaria.dotx` in the repository). Authors write in Word with the same system. It contains:
+  - styles mirroring the tokens: headings, “Entradilla”, APA table and figure lines, “Nota”, “Cita en bloque”, “Referencia (sangría francesa)” and box text;
+  - a guide page and a catalogue of the nine boxes, drawn as copyable tables in their family shapes;
+  - a model unit to start from.
+- **Content checker** (`npm run lint:content -- <files>`). It checks React units, rendered HTML and Word manuscripts written with the template. Errors fail the check; warnings don't.
+  - **Errors:** angle or straight quotes; “and” or “&” in a narrative citation; “y” inside a parenthetical citation; three or more authors without “et al.”; an objective verb from the wrong Bloom level; boxes out of order; alignment problems; cross-references with no target.
+  - **Warnings:** citations without a page; box density above one per 800 words; two in-text boxes in a row; Puntos Clave outside 3–5 items; figures or tables not mentioned before they appear; glossary links whose entry is in another file.
+
 ## Content fundamentals
 
 - **Language.** Spanish, formal academic register. Exposition uses the impersonal third person.
@@ -156,6 +172,15 @@ Box icons come from Lucide (v0.460.0, ISC licence), copied from the official pac
 | Misconceptions | Belief and correction | Belief, cited correction and explanation | The refutation-text structure. |
 | Practice | Open tasks only | `SelfCheck` with answers and a review item | Retrieval practice with feedback. |
 | Application | None | `Classroom` (“En el Aula”) worked cases | Worked examples for novices. |
+
+### v3.1 (audit phase 3)
+
+| Area | Before | Now |
+|---|---|---|
+| Rule enforcement | Rules lived only in this guide | `lint:content` checks quotes, citations, Bloom verbs, box order and density, figure mentions and alignment in React, HTML and Word files |
+| Word authoring | No template | `.dotx` with styles mirroring the tokens, the nine boxes and a model unit |
+| Figure numbers | Typed by hand | `Numbering` and `FigRef`: numbers follow order of first mention, references can't drift |
+| Glossary | Static list | `Term` links the first use to `Glossary`, which sorts entries itself |
 
 ### v2 (from the print source)
 

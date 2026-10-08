@@ -1,4 +1,4 @@
-/* @ds-bundle: {"format":4,"namespace":"Didactica","components":[{"name":"Page"},{"name":"TitlePage"},{"name":"TableOfContents"},{"name":"ChapterOpener"},{"name":"BoxLegend"},{"name":"Heading"},{"name":"Paragraph"},{"name":"BulletList"},{"name":"Cite"},{"name":"Quote"},{"name":"BlockQuote"},{"name":"KeyPoints"},{"name":"Objectives"},{"name":"Important"},{"name":"CommonMistake"},{"name":"Classroom"},{"name":"ThinkFurther"},{"name":"SelfCheck"},{"name":"Activities"},{"name":"ReferencesBox"},{"name":"AlignmentTable"},{"name":"Box"},{"name":"Icon"},{"name":"DataTable"},{"name":"Figure"},{"name":"ConceptWeb"},{"name":"CycleDiagram"},{"name":"Pyramid"},{"name":"ProcessFlow"},{"name":"GlossaryEntry"},{"name":"Reference"}]} */
+/* @ds-bundle: {"format":4,"namespace":"Didactica","components":[{"name":"Page"},{"name":"TitlePage"},{"name":"TableOfContents"},{"name":"ChapterOpener"},{"name":"BoxLegend"},{"name":"Heading"},{"name":"Paragraph"},{"name":"BulletList"},{"name":"Cite"},{"name":"Quote"},{"name":"BlockQuote"},{"name":"KeyPoints"},{"name":"Objectives"},{"name":"Important"},{"name":"CommonMistake"},{"name":"Classroom"},{"name":"ThinkFurther"},{"name":"SelfCheck"},{"name":"Activities"},{"name":"ReferencesBox"},{"name":"AlignmentTable"},{"name":"Box"},{"name":"Icon"},{"name":"DataTable"},{"name":"Figure"},{"name":"Numbering"},{"name":"FigRef"},{"name":"ConceptWeb"},{"name":"CycleDiagram"},{"name":"Pyramid"},{"name":"ProcessFlow"},{"name":"GlossaryEntry"},{"name":"Reference"},{"name":"Term"},{"name":"Glossary"}]} */
 window.Didactica = (() => {
   var __create = Object.create;
   var __defProp = Object.defineProperty;
@@ -55,12 +55,15 @@ window.Didactica = (() => {
     ConceptWeb: () => ConceptWeb,
     CycleDiagram: () => CycleDiagram,
     DataTable: () => DataTable,
+    FigRef: () => FigRef,
     Figure: () => Figure,
+    Glossary: () => Glossary,
     GlossaryEntry: () => GlossaryEntry,
     Heading: () => Heading,
     Icon: () => Icon,
     Important: () => Important,
     KeyPoints: () => KeyPoints,
+    Numbering: () => Numbering,
     Objectives: () => Objectives,
     Page: () => Page,
     Paragraph: () => Paragraph,
@@ -71,6 +74,7 @@ window.Didactica = (() => {
     ReferencesBox: () => ReferencesBox,
     SelfCheck: () => SelfCheck,
     TableOfContents: () => TableOfContents,
+    Term: () => Term,
     ThinkFurther: () => ThinkFurther,
     TitlePage: () => TitlePage,
     bloomLevel: () => bloomLevel,
@@ -536,21 +540,47 @@ window.Didactica = (() => {
   }
 
   // src/components/DataTable.jsx
+  var import_react13 = __toESM(require_react(), 1);
+
+  // src/components/Numbering.jsx
   var import_react12 = __toESM(require_react(), 1);
-  function DataTable({ columns, rows, widths, number, title, note, rowHeader = false, filled = false }) {
-    return /* @__PURE__ */ import_react12.default.createElement("figure", { className: "du-table-figure" }, number != null ? /* @__PURE__ */ import_react12.default.createElement("p", { className: "du-table-figure__number table-number" }, "Tabla ", number) : null, title ? /* @__PURE__ */ import_react12.default.createElement("p", { className: "du-table-figure__title table-title" }, title) : null, /* @__PURE__ */ import_react12.default.createElement("div", { className: "du-table-scroll" }, /* @__PURE__ */ import_react12.default.createElement("table", { className: `du-table${rowHeader ? " du-table--concept" : ""}${filled ? " du-table--filled" : ""}` }, widths ? /* @__PURE__ */ import_react12.default.createElement("colgroup", null, widths.map((w, i) => /* @__PURE__ */ import_react12.default.createElement("col", { key: i, style: { width: w } }))) : null, /* @__PURE__ */ import_react12.default.createElement("thead", null, /* @__PURE__ */ import_react12.default.createElement("tr", null, columns.map((c, i) => /* @__PURE__ */ import_react12.default.createElement("th", { key: i, scope: "col", className: "table-head" }, c)))), /* @__PURE__ */ import_react12.default.createElement("tbody", null, rows.map((row, r) => /* @__PURE__ */ import_react12.default.createElement("tr", { key: r }, row.map(
-      (cell, c) => rowHeader && c === 0 ? /* @__PURE__ */ import_react12.default.createElement("th", { key: c, scope: "row", className: "table-cell" }, cell) : /* @__PURE__ */ import_react12.default.createElement("td", { key: c, className: "table-cell" }, cell)
-    )))))), note ? /* @__PURE__ */ import_react12.default.createElement("p", { className: "du-note note" }, /* @__PURE__ */ import_react12.default.createElement("i", null, "Nota."), " ", note) : null);
+  var NumberingContext = (0, import_react12.createContext)({ figures: {}, tables: {} });
+  function Numbering({ figures = [], tables = [], firstFigure = 1, firstTable = 1, children }) {
+    const index = (ids, first) => Object.fromEntries(ids.map((id, i) => [id, i + first]));
+    return /* @__PURE__ */ import_react12.default.createElement(NumberingContext.Provider, { value: { figures: index(figures, firstFigure), tables: index(tables, firstTable) } }, children);
+  }
+  function useNumber(kind, id) {
+    const ctx = (0, import_react12.useContext)(NumberingContext);
+    return id ? ctx[kind === "table" ? "tables" : "figures"][id] : void 0;
+  }
+  function FigRef({ to, paren = false }) {
+    const ctx = (0, import_react12.useContext)(NumberingContext);
+    const fig = ctx.figures[to];
+    const tab = ctx.tables[to];
+    const label = fig ? `Figura ${fig}` : tab ? `Tabla ${tab}` : `[referencia sin destino: ${to}]`;
+    const text = paren ? `(v\xE9ase la ${label})` : label;
+    return /* @__PURE__ */ import_react12.default.createElement("a", { className: "du-figref", href: `#${fig ? "fig" : "tab"}-${to}` }, text);
+  }
+
+  // src/components/DataTable.jsx
+  function DataTable({ columns, rows, widths, number, id, title, note, rowHeader = false, filled = false }) {
+    const auto = useNumber("table", id);
+    number = number ?? auto;
+    return /* @__PURE__ */ import_react13.default.createElement("figure", { className: "du-table-figure", id: id ? `tab-${id}` : void 0 }, number != null ? /* @__PURE__ */ import_react13.default.createElement("p", { className: "du-table-figure__number table-number" }, "Tabla ", number) : null, title ? /* @__PURE__ */ import_react13.default.createElement("p", { className: "du-table-figure__title table-title" }, title) : null, /* @__PURE__ */ import_react13.default.createElement("div", { className: "du-table-scroll" }, /* @__PURE__ */ import_react13.default.createElement("table", { className: `du-table${rowHeader ? " du-table--concept" : ""}${filled ? " du-table--filled" : ""}` }, widths ? /* @__PURE__ */ import_react13.default.createElement("colgroup", null, widths.map((w, i) => /* @__PURE__ */ import_react13.default.createElement("col", { key: i, style: { width: w } }))) : null, /* @__PURE__ */ import_react13.default.createElement("thead", null, /* @__PURE__ */ import_react13.default.createElement("tr", null, columns.map((c, i) => /* @__PURE__ */ import_react13.default.createElement("th", { key: i, scope: "col", className: "table-head" }, c)))), /* @__PURE__ */ import_react13.default.createElement("tbody", null, rows.map((row, r) => /* @__PURE__ */ import_react13.default.createElement("tr", { key: r }, row.map(
+      (cell, c) => rowHeader && c === 0 ? /* @__PURE__ */ import_react13.default.createElement("th", { key: c, scope: "row", className: "table-cell" }, cell) : /* @__PURE__ */ import_react13.default.createElement("td", { key: c, className: "table-cell" }, cell)
+    )))))), note ? /* @__PURE__ */ import_react13.default.createElement("p", { className: "du-note note" }, /* @__PURE__ */ import_react13.default.createElement("i", null, "Nota."), " ", note) : null);
   }
 
   // src/components/Figure.jsx
-  var import_react13 = __toESM(require_react(), 1);
-  function Figure({ number, title, note, children }) {
-    return /* @__PURE__ */ import_react13.default.createElement("figure", { className: "du-figure" }, number != null ? /* @__PURE__ */ import_react13.default.createElement("p", { className: "du-figure__number table-number" }, "Figura ", number) : null, title ? /* @__PURE__ */ import_react13.default.createElement("p", { className: "du-figure__title table-title" }, title) : null, /* @__PURE__ */ import_react13.default.createElement("div", { className: "du-figure__body" }, children), note ? /* @__PURE__ */ import_react13.default.createElement("p", { className: "du-note note" }, /* @__PURE__ */ import_react13.default.createElement("i", null, "Nota."), " ", note) : null);
+  var import_react14 = __toESM(require_react(), 1);
+  function Figure({ number, id, title, note, children }) {
+    const auto = useNumber("figure", id);
+    number = number ?? auto;
+    return /* @__PURE__ */ import_react14.default.createElement("figure", { className: "du-figure", id: id ? `fig-${id}` : void 0 }, number != null ? /* @__PURE__ */ import_react14.default.createElement("p", { className: "du-figure__number table-number" }, "Figura ", number) : null, title ? /* @__PURE__ */ import_react14.default.createElement("p", { className: "du-figure__title table-title" }, title) : null, /* @__PURE__ */ import_react14.default.createElement("div", { className: "du-figure__body" }, children), note ? /* @__PURE__ */ import_react14.default.createElement("p", { className: "du-note note" }, /* @__PURE__ */ import_react14.default.createElement("i", null, "Nota."), " ", note) : null);
   }
 
   // src/components/ConceptWeb.jsx
-  var import_react14 = __toESM(require_react(), 1);
+  var import_react15 = __toESM(require_react(), 1);
 
   // src/diagram-utils.js
   function wrap(text, max) {
@@ -578,7 +608,7 @@ window.Didactica = (() => {
     const w = Math.max(96, ...lines.map((l) => textWidth(l, 16)), ...detail.map((l) => textWidth(l, 14))) + 24;
     const h = all.length * LH + 16;
     const top = y - h / 2;
-    return /* @__PURE__ */ import_react14.default.createElement("g", null, /* @__PURE__ */ import_react14.default.createElement("rect", { className: strong ? "du-dg-node du-dg-node--strong" : "du-dg-node", x: x - w / 2, y: top, width: w, height: h }), lines.map((l, i) => /* @__PURE__ */ import_react14.default.createElement("text", { key: i, className: `du-dg-text diagram-title${strong ? " du-dg-text--on-strong" : ""}`, x, y: top + 8 + LH * (i + 0.75), textAnchor: "middle" }, l)), detail.map((l, i) => /* @__PURE__ */ import_react14.default.createElement("text", { key: `d${i}`, className: "du-dg-text diagram-label", x, y: top + 8 + LH * (lines.length + i + 0.75), textAnchor: "middle" }, l)));
+    return /* @__PURE__ */ import_react15.default.createElement("g", null, /* @__PURE__ */ import_react15.default.createElement("rect", { className: strong ? "du-dg-node du-dg-node--strong" : "du-dg-node", x: x - w / 2, y: top, width: w, height: h }), lines.map((l, i) => /* @__PURE__ */ import_react15.default.createElement("text", { key: i, className: `du-dg-text diagram-title${strong ? " du-dg-text--on-strong" : ""}`, x, y: top + 8 + LH * (i + 0.75), textAnchor: "middle" }, l)), detail.map((l, i) => /* @__PURE__ */ import_react15.default.createElement("text", { key: `d${i}`, className: "du-dg-text diagram-label", x, y: top + 8 + LH * (lines.length + i + 0.75), textAnchor: "middle" }, l)));
   }
   function ConceptWeb({ center, nodes, label }) {
     const n = nodes.length;
@@ -589,16 +619,16 @@ window.Didactica = (() => {
       const a = -Math.PI / 2 + 2 * Math.PI * i / n;
       return [cx + rx * Math.cos(a), cy + ry * Math.sin(a)];
     });
-    return /* @__PURE__ */ import_react14.default.createElement("svg", { className: "du-diagram", viewBox: `0 0 ${W} ${H2}`, role: "img", "aria-label": label || `Red conceptual: ${center}` }, pos.map(([x, y], i) => /* @__PURE__ */ import_react14.default.createElement("line", { key: i, className: "du-dg-edge", x1: cx, y1: cy, x2: x, y2: y })), /* @__PURE__ */ import_react14.default.createElement(Node, { x: cx, y: cy, lines: wrap(center, 16), strong: true }), nodes.map((nd, i) => /* @__PURE__ */ import_react14.default.createElement(Node, { key: i, x: pos[i][0], y: pos[i][1], lines: wrap(nd.label, 18), detail: nd.detail ? wrap(nd.detail, 22) : [] })), nodes.map((nd, i) => nd.relation ? /* @__PURE__ */ import_react14.default.createElement("g", { key: `r${i}` }, /* @__PURE__ */ import_react14.default.createElement("rect", { className: "du-dg-relation-bg", x: (cx + pos[i][0]) / 2 - textWidth(nd.relation, 14) / 2 - 4, y: (cy + pos[i][1]) / 2 - 10, width: textWidth(nd.relation, 14) + 8, height: 18 }), /* @__PURE__ */ import_react14.default.createElement("text", { className: "du-dg-relation", x: (cx + pos[i][0]) / 2, y: (cy + pos[i][1]) / 2 + 3, textAnchor: "middle" }, nd.relation)) : null));
+    return /* @__PURE__ */ import_react15.default.createElement("svg", { className: "du-diagram", viewBox: `0 0 ${W} ${H2}`, role: "img", "aria-label": label || `Red conceptual: ${center}` }, pos.map(([x, y], i) => /* @__PURE__ */ import_react15.default.createElement("line", { key: i, className: "du-dg-edge", x1: cx, y1: cy, x2: x, y2: y })), /* @__PURE__ */ import_react15.default.createElement(Node, { x: cx, y: cy, lines: wrap(center, 16), strong: true }), nodes.map((nd, i) => /* @__PURE__ */ import_react15.default.createElement(Node, { key: i, x: pos[i][0], y: pos[i][1], lines: wrap(nd.label, 18), detail: nd.detail ? wrap(nd.detail, 22) : [] })), nodes.map((nd, i) => nd.relation ? /* @__PURE__ */ import_react15.default.createElement("g", { key: `r${i}` }, /* @__PURE__ */ import_react15.default.createElement("rect", { className: "du-dg-relation-bg", x: (cx + pos[i][0]) / 2 - textWidth(nd.relation, 14) / 2 - 4, y: (cy + pos[i][1]) / 2 - 10, width: textWidth(nd.relation, 14) + 8, height: 18 }), /* @__PURE__ */ import_react15.default.createElement("text", { className: "du-dg-relation", x: (cx + pos[i][0]) / 2, y: (cy + pos[i][1]) / 2 + 3, textAnchor: "middle" }, nd.relation)) : null));
   }
 
   // src/components/CycleDiagram.jsx
-  var import_react15 = __toESM(require_react(), 1);
+  var import_react16 = __toESM(require_react(), 1);
   var W2 = 680;
   var H = 420;
   var LH2 = 18;
   function CycleDiagram({ steps, center, label }) {
-    const id = (0, import_react15.useId)().replace(/:/g, "");
+    const id = (0, import_react16.useId)().replace(/:/g, "");
     const n = steps.length;
     const cx = W2 / 2, cy = H / 2, R = 155;
     const ang = (i) => -Math.PI / 2 + 2 * Math.PI * i / n;
@@ -609,17 +639,17 @@ window.Didactica = (() => {
       const [x1, y1] = p(a1), [x2, y2] = p(a2);
       return `M ${x1} ${y1} A ${R} ${R} 0 0 1 ${x2} ${y2}`;
     };
-    return /* @__PURE__ */ import_react15.default.createElement("svg", { className: "du-diagram", viewBox: `0 0 ${W2} ${H}`, role: "img", "aria-label": label || `Ciclo: ${steps.map((s) => s.title).join(", ")}` }, /* @__PURE__ */ import_react15.default.createElement("defs", null, /* @__PURE__ */ import_react15.default.createElement("marker", { id: `a${id}`, viewBox: "0 0 10 10", refX: "8", refY: "5", markerWidth: "7", markerHeight: "7", orient: "auto-start-reverse" }, /* @__PURE__ */ import_react15.default.createElement("path", { className: "du-dg-arrowhead", d: "M 0 0 L 10 5 L 0 10 z" }))), steps.map((_, i) => /* @__PURE__ */ import_react15.default.createElement("path", { key: i, className: "du-dg-edge du-dg-edge--arc", d: arc(i), markerEnd: `url(#a${id})` })), center ? wrap(center, 16).map((l, i, arr) => /* @__PURE__ */ import_react15.default.createElement("text", { key: i, className: "du-dg-text du-dg-text--muted diagram-title", x: cx, y: cy + (i - (arr.length - 1) / 2) * LH2 + 5, textAnchor: "middle" }, l)) : null, steps.map((s, i) => {
+    return /* @__PURE__ */ import_react16.default.createElement("svg", { className: "du-diagram", viewBox: `0 0 ${W2} ${H}`, role: "img", "aria-label": label || `Ciclo: ${steps.map((s) => s.title).join(", ")}` }, /* @__PURE__ */ import_react16.default.createElement("defs", null, /* @__PURE__ */ import_react16.default.createElement("marker", { id: `a${id}`, viewBox: "0 0 10 10", refX: "8", refY: "5", markerWidth: "7", markerHeight: "7", orient: "auto-start-reverse" }, /* @__PURE__ */ import_react16.default.createElement("path", { className: "du-dg-arrowhead", d: "M 0 0 L 10 5 L 0 10 z" }))), steps.map((_, i) => /* @__PURE__ */ import_react16.default.createElement("path", { key: i, className: "du-dg-edge du-dg-edge--arc", d: arc(i), markerEnd: `url(#a${id})` })), center ? wrap(center, 16).map((l, i, arr) => /* @__PURE__ */ import_react16.default.createElement("text", { key: i, className: "du-dg-text du-dg-text--muted diagram-title", x: cx, y: cy + (i - (arr.length - 1) / 2) * LH2 + 5, textAnchor: "middle" }, l)) : null, steps.map((s, i) => {
       const x = cx + R * Math.cos(ang(i)), y = cy + R * Math.sin(ang(i));
       const t = wrap(s.title, 16), d = s.text ? wrap(s.text, 20) : [];
       const w = Math.max(...t.map((l) => textWidth(l, 16)), ...d.map((l) => textWidth(l, 14)), 80) + 24;
       const h = (t.length + d.length) * LH2 + 16, top = y - h / 2;
-      return /* @__PURE__ */ import_react15.default.createElement("g", { key: i }, /* @__PURE__ */ import_react15.default.createElement("rect", { className: "du-dg-node", x: x - w / 2, y: top, width: w, height: h }), t.map((l, j) => /* @__PURE__ */ import_react15.default.createElement("text", { key: j, className: "du-dg-text diagram-title", x, y: top + 8 + LH2 * (j + 0.75), textAnchor: "middle" }, l)), d.map((l, j) => /* @__PURE__ */ import_react15.default.createElement("text", { key: `d${j}`, className: "du-dg-text diagram-label", x, y: top + 8 + LH2 * (t.length + j + 0.75), textAnchor: "middle" }, l)));
+      return /* @__PURE__ */ import_react16.default.createElement("g", { key: i }, /* @__PURE__ */ import_react16.default.createElement("rect", { className: "du-dg-node", x: x - w / 2, y: top, width: w, height: h }), t.map((l, j) => /* @__PURE__ */ import_react16.default.createElement("text", { key: j, className: "du-dg-text diagram-title", x, y: top + 8 + LH2 * (j + 0.75), textAnchor: "middle" }, l)), d.map((l, j) => /* @__PURE__ */ import_react16.default.createElement("text", { key: `d${j}`, className: "du-dg-text diagram-label", x, y: top + 8 + LH2 * (t.length + j + 0.75), textAnchor: "middle" }, l)));
     }));
   }
 
   // src/components/Pyramid.jsx
-  var import_react16 = __toESM(require_react(), 1);
+  var import_react17 = __toESM(require_react(), 1);
   var W3 = 680;
   var LH3 = 18;
   var LEVEL_H = 72;
@@ -629,33 +659,43 @@ window.Didactica = (() => {
     const H2 = n * LEVEL_H + 8;
     const cx = PW / 2 + 4;
     const halfAt = (y) => PW / 2 * (y / (n * LEVEL_H));
-    return /* @__PURE__ */ import_react16.default.createElement("svg", { className: "du-diagram", viewBox: `0 0 ${W3} ${H2}`, role: "img", "aria-label": label || `Pir\xE1mide: ${levels.map((l) => l.title).join(", ")}` }, levels.map((lv, i) => {
+    return /* @__PURE__ */ import_react17.default.createElement("svg", { className: "du-diagram", viewBox: `0 0 ${W3} ${H2}`, role: "img", "aria-label": label || `Pir\xE1mide: ${levels.map((l) => l.title).join(", ")}` }, levels.map((lv, i) => {
       const y1 = i * LEVEL_H, y2 = (i + 1) * LEVEL_H - 4;
       const pts = [[cx - halfAt(y1), y1 + 4], [cx + halfAt(y1), y1 + 4], [cx + halfAt(y2 + 4), y2 + 4], [cx - halfAt(y2 + 4), y2 + 4]];
       const ramp = Math.min(i + 1 + Math.max(0, 4 - n), 4);
       const t = wrap(lv.title, i === 0 ? 10 : 18);
       const d = lv.text ? wrap(lv.text, 40) : [];
       const mid = (y1 + y2) / 2 + 4;
-      return /* @__PURE__ */ import_react16.default.createElement("g", { key: i }, /* @__PURE__ */ import_react16.default.createElement("polygon", { className: `du-dg-ramp du-dg-ramp--${ramp}`, points: pts.map((p) => p.join(",")).join(" ") }), t.map((l, j) => /* @__PURE__ */ import_react16.default.createElement("text", { key: j, className: `du-dg-text diagram-title du-dg-on-ramp--${ramp}`, x: cx, y: mid + (j - (t.length - 1) / 2) * LH3 + 5, textAnchor: "middle" }, l)), /* @__PURE__ */ import_react16.default.createElement("line", { className: "du-dg-leader", x1: cx + halfAt(mid) + 8, y1: mid, x2: PW + 24, y2: mid }), d.map((l, j) => /* @__PURE__ */ import_react16.default.createElement("text", { key: `d${j}`, className: "du-dg-text diagram-label", x: PW + 32, y: mid + (j - (d.length - 1) / 2) * LH3 + 5 }, l)));
+      return /* @__PURE__ */ import_react17.default.createElement("g", { key: i }, /* @__PURE__ */ import_react17.default.createElement("polygon", { className: `du-dg-ramp du-dg-ramp--${ramp}`, points: pts.map((p) => p.join(",")).join(" ") }), t.map((l, j) => /* @__PURE__ */ import_react17.default.createElement("text", { key: j, className: `du-dg-text diagram-title du-dg-on-ramp--${ramp}`, x: cx, y: mid + (j - (t.length - 1) / 2) * LH3 + 5, textAnchor: "middle" }, l)), /* @__PURE__ */ import_react17.default.createElement("line", { className: "du-dg-leader", x1: cx + halfAt(mid) + 8, y1: mid, x2: PW + 24, y2: mid }), d.map((l, j) => /* @__PURE__ */ import_react17.default.createElement("text", { key: `d${j}`, className: "du-dg-text diagram-label", x: PW + 32, y: mid + (j - (d.length - 1) / 2) * LH3 + 5 }, l)));
     }));
   }
 
   // src/components/ProcessFlow.jsx
-  var import_react17 = __toESM(require_react(), 1);
+  var import_react18 = __toESM(require_react(), 1);
   function ProcessFlow({ steps, label }) {
-    return /* @__PURE__ */ import_react17.default.createElement("ol", { className: "du-flow", "aria-label": label }, steps.map((s, i) => /* @__PURE__ */ import_react17.default.createElement("li", { key: i, className: "du-flow__step" }, /* @__PURE__ */ import_react17.default.createElement("span", { className: "du-flow__num diagram-title", "aria-hidden": "true" }, i + 1), /* @__PURE__ */ import_react17.default.createElement("span", { className: "du-flow__title diagram-title" }, s.title), s.text ? /* @__PURE__ */ import_react17.default.createElement("span", { className: "du-flow__text diagram-label" }, s.text) : null)));
+    return /* @__PURE__ */ import_react18.default.createElement("ol", { className: "du-flow", "aria-label": label }, steps.map((s, i) => /* @__PURE__ */ import_react18.default.createElement("li", { key: i, className: "du-flow__step" }, /* @__PURE__ */ import_react18.default.createElement("span", { className: "du-flow__num diagram-title", "aria-hidden": "true" }, i + 1), /* @__PURE__ */ import_react18.default.createElement("span", { className: "du-flow__title diagram-title" }, s.title), s.text ? /* @__PURE__ */ import_react18.default.createElement("span", { className: "du-flow__text diagram-label" }, s.text) : null)));
   }
 
   // src/components/GlossaryEntry.jsx
-  var import_react18 = __toESM(require_react(), 1);
-  function GlossaryEntry({ term, children }) {
-    return /* @__PURE__ */ import_react18.default.createElement("p", { className: "du-glossary glossary" }, /* @__PURE__ */ import_react18.default.createElement("dfn", { className: "du-glossary__term" }, term, ":"), " ", children);
+  var import_react19 = __toESM(require_react(), 1);
+  function GlossaryEntry({ term, id, children }) {
+    return /* @__PURE__ */ import_react19.default.createElement("p", { className: "du-glossary glossary", id: id ? `gl-${id}` : void 0 }, /* @__PURE__ */ import_react19.default.createElement("dfn", { className: "du-glossary__term" }, term, ":"), " ", children);
+  }
+
+  // src/components/Glossary.jsx
+  var import_react20 = __toESM(require_react(), 1);
+  function Glossary({ entries }) {
+    const sorted = [...entries].sort((a, b) => a.term.localeCompare(b.term, "es", { sensitivity: "base" }));
+    return /* @__PURE__ */ import_react20.default.createElement("div", { className: "du-glossary-list" }, sorted.map((e) => /* @__PURE__ */ import_react20.default.createElement(GlossaryEntry, { key: e.id, id: e.id, term: e.term }, e.definition)));
+  }
+  function Term({ to, children }) {
+    return /* @__PURE__ */ import_react20.default.createElement("a", { className: "du-term", href: `#gl-${to}` }, children);
   }
 
   // src/components/Reference.jsx
-  var import_react19 = __toESM(require_react(), 1);
+  var import_react21 = __toESM(require_react(), 1);
   function Reference({ children }) {
-    return /* @__PURE__ */ import_react19.default.createElement("p", { className: "du-reference reference" }, children);
+    return /* @__PURE__ */ import_react21.default.createElement("p", { className: "du-reference reference" }, children);
   }
   return __toCommonJS(index_exports);
 })();

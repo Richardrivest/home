@@ -16,6 +16,8 @@ export { CycleDiagram } from './components/CycleDiagram.jsx';
 export { Pyramid } from './components/Pyramid.jsx';
 export { ProcessFlow } from './components/ProcessFlow.jsx';
 export { GlossaryEntry } from './components/GlossaryEntry.jsx';
+export { Glossary, Term } from './components/Glossary.jsx';
+export { Numbering, FigRef } from './components/Numbering.jsx';
 export { Reference } from './components/Reference.jsx';
 export { formatCitation, formatCitations, formatLocator } from './cite.js';
 export { BLOOM, bloomLevel } from './bloom.js';

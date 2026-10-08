@@ -280,6 +280,13 @@
 }
 
 /* ---------- Glossary and references ---------- */
+/* A term linked to its glossary entry: reads as text, marked by a dotted azure underline. */
+.du-term { color: inherit; text-decoration: underline dotted var(--azure); text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
+.du-term:hover { text-decoration-style: solid; }
+.du-figref { color: inherit; text-decoration: none; border-bottom: 1px solid var(--rule); }
+.du-figref:hover { border-bottom-color: var(--azure); }
+.du-glossary-list { max-width: var(--measure-text); }
+.du-glossary:target, .du-figure:target, .du-table-figure:target { outline: var(--stroke-strong) solid var(--focus); outline-offset: 6px; }
 .du-glossary { @apply text-ink m-0 mb-3; }
 .du-glossary__term { @apply text-navy font-bold not-italic; }
 .du-reference {
@@ -307,6 +314,8 @@
   .du-box__key { display: block; @apply mt-3 pt-2 border-0 border-t-hair border-solid; border-color: var(--box-border); font-size: 14px; }
   .du-box__key ol { @apply m-0 pl-5; }
   .du-tag--link { color: var(--box-accent); }
+  .du-term { text-decoration: none; }
+  .du-figref { border-bottom: 0; }
   .du-body, .du-list__item, .du-glossary, .du-box__text { text-align: justify; }
   .du-chapter { break-before: page; }
   .du-h2, .du-h3 { break-after: avoid; }

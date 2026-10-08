@@ -585,6 +585,12 @@
         "Table number."
       ],
       [
+        "id",
+        "string",
+        false,
+        "Registry id inside <Numbering> (automatic number, cross-reference target)."
+      ],
+      [
         "title",
         "string",
         false,
@@ -613,13 +619,19 @@
   {
     "name": "Figure",
     "group": "Tables and figures",
-    "summary": "APA 7 figure: “Figura N” and the italic title above a diagram or image; “Nota.” below.",
+    "summary": "APA 7 figure: “Figura N” and the italic title above a diagram or image; “Nota.” below. Numbered automatically by id inside <Numbering>.",
     "props": [
       [
         "number",
         "number",
         false,
         "Figure number."
+      ],
+      [
+        "id",
+        "string",
+        false,
+        "Registry id inside <Numbering>: the number comes from it and <FigRef> can point to it."
       ],
       [
         "title",
@@ -638,6 +650,62 @@
         "ReactNode",
         true,
         "A diagram or image."
+      ]
+    ]
+  },
+  {
+    "name": "Numbering",
+    "group": "Tables and figures",
+    "summary": "Numbers figures and tables from their ids, in order of first mention, so cross-references never break.",
+    "props": [
+      [
+        "figures",
+        "string[]",
+        false,
+        "Figure ids in order of first mention."
+      ],
+      [
+        "tables",
+        "string[]",
+        false,
+        "Table ids in order of first mention."
+      ],
+      [
+        "firstFigure",
+        "number",
+        false,
+        "Start of the figure count (continue from an earlier unit)."
+      ],
+      [
+        "firstTable",
+        "number",
+        false,
+        "Start of the table count."
+      ],
+      [
+        "children",
+        "ReactNode",
+        true,
+        "The unit."
+      ]
+    ]
+  },
+  {
+    "name": "FigRef",
+    "group": "Tables and figures",
+    "summary": "Cross-reference to a figure or table by id: “Figura 2”, or with paren “(véase la Figura 2)”.",
+    "props": [
+      [
+        "to",
+        "string",
+        true,
+        "Figure or table id."
+      ],
+      [
+        "paren",
+        "boolean",
+        false,
+        "Parenthetical form “(véase la …)”."
       ]
     ]
   },
@@ -741,6 +809,12 @@
         "Term, without the colon."
       ],
       [
+        "id",
+        "string",
+        false,
+        "Link target for <Term to>."
+      ],
+      [
         "children",
         "ReactNode",
         true,
@@ -758,6 +832,38 @@
         "ReactNode",
         true,
         "The reference, italics marked with <i>."
+      ]
+    ]
+  },
+  {
+    "name": "Term",
+    "group": "Reference",
+    "summary": "A term in running text linked to its glossary entry (dotted azure underline).",
+    "props": [
+      [
+        "to",
+        "string",
+        true,
+        "Glossary entry id."
+      ],
+      [
+        "children",
+        "ReactNode",
+        true,
+        "The term as it appears in the sentence."
+      ]
+    ]
+  },
+  {
+    "name": "Glossary",
+    "group": "Reference",
+    "summary": "Glossary built from entries, sorted alphabetically (Spanish collation); each entry is a link target for <Term>.",
+    "props": [
+      [
+        "entries",
+        "{ id; term; definition }[]",
+        true,
+        "Entries in any order."
       ]
     ]
   }

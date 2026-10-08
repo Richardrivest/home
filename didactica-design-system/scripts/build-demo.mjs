@@ -10,7 +10,7 @@ await build({
       import React from 'react';
       import { renderToStaticMarkup } from 'react-dom/server';
       import { Page, TitlePage } from '../src/index.js';
-      import { ChapterExample, DiagramsExample, LegendExample } from '../src/examples/chapter.jsx';
+      import { ChapterExample, DiagramsExample, LegendExample, GlossaryExample } from '../src/examples/chapter.jsx';
       const h = React.createElement;
       export const cover = renderToStaticMarkup(h(Page, null, h(TitlePage, {
         kicker: 'Manual de formación docente', title: 'Didáctica de la Educación Superior',
@@ -20,7 +20,8 @@ await build({
         meta: ['Nivel: graduados universitarios en formación pedagógica', 'Citación: APA 7.ª edición', 'Año 2026'] })));
       export const legend = renderToStaticMarkup(h(Page, { header: 'Didáctica de la Educación Superior', page: 3 }, h(LegendExample)));
       export const chapter = renderToStaticMarkup(h(Page, { header: 'Didáctica de la Educación Superior', page: 12 }, h(ChapterExample)));
-      export const diagrams = renderToStaticMarkup(h(Page, { header: 'Didáctica de la Educación Superior', page: 13 }, h(DiagramsExample)));
+      export const glossary = renderToStaticMarkup(h(Page, { header: 'Didáctica de la Educación Superior', page: 13 }, h(GlossaryExample)));
+      export const diagrams = renderToStaticMarkup(h(Page, { header: 'Didáctica de la Educación Superior', page: 14 }, h(DiagramsExample)));
     `,
     resolveDir: new URL('../src', import.meta.url).pathname,
     loader: 'jsx',
@@ -28,7 +29,7 @@ await build({
   bundle: true, platform: 'node', format: 'esm', jsx: 'transform', loader: { '.jsx': 'jsx' }, packages: 'external',
   outfile: tmp.pathname, logLevel: 'warning',
 });
-const { cover, legend, chapter, diagrams } = await import(`${tmp.href}?t=${Date.now()}`);
+const { cover, legend, chapter, glossary, diagrams } = await import(`${tmp.href}?t=${Date.now()}`);
 rmSync(tmp);
 
 const html = `<!doctype html>
@@ -51,6 +52,7 @@ const html = `<!doctype html>
   ${cover}
   ${legend}
   ${chapter}
+  ${glossary}
   ${diagrams}
 </body>
 </html>

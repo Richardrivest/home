@@ -5,7 +5,7 @@ import React from 'react';
 import {
   ChapterOpener, Heading, Paragraph, Cite, Quote, KeyPoints, Objectives, Important, CommonMistake,
   Classroom, ThinkFurther, SelfCheck, Activities, ReferencesBox, Reference, DataTable, Figure,
-  ConceptWeb, CycleDiagram, Pyramid, ProcessFlow, AlignmentTable, BoxLegend,
+  ConceptWeb, CycleDiagram, Pyramid, ProcessFlow, AlignmentTable, BoxLegend, Numbering, FigRef, Term, Glossary,
 } from '../index.js';
 
 export const AMBROSE = { authors: ['Ambrose', 'Bridges', 'DiPietro', 'Lovett', 'Norman'], year: 2010, page: 'xx' };
@@ -31,7 +31,7 @@ export const ACTIVITIES = [
 
 export function ChapterExample() {
   return (
-    <>
+    <Numbering figures={['perspectivas', 'autorregulacion']} tables={['teorias']}>
       <ChapterOpener
         number={2}
         title="Teorías del aprendizaje en la educación superior"
@@ -65,7 +65,7 @@ export function ChapterExample() {
       <Paragraph>
         <Cite narrative {...VYGOTSKY} /> desplazó el foco desde el individuo hacia la matriz social del aprendizaje. El
         aprendizaje, en esta óptica, tira del desarrollo y se produce en la interacción mediada por instrumentos
-        culturales, entre ellos el lenguaje. De aquí derivan estrategias como el andamiaje, el trabajo colaborativo y la
+        culturales, entre ellos el lenguaje. De aquí derivan estrategias como el <Term to="andamiaje">andamiaje</Term>, el trabajo colaborativo y la
         enseñanza entre pares, de amplio uso en la universidad.
       </Paragraph>
       <Important term="Zona de desarrollo próximo (ZDP)">
@@ -77,9 +77,9 @@ export function ChapterExample() {
       </Important>
       <Paragraph>
         Las perspectivas que recorre esta unidad no compiten entre sí: describen facetas distintas de un mismo proceso,
-        como resume la Figura 1.
+        como resume la <FigRef to="perspectivas" />.
       </Paragraph>
-      <Figure number={1} title="Perspectivas complementarias sobre el aprendizaje" note={<>Elaboración propia a partir de <Cite narrative {...AUSUBEL} />, <Cite narrative {...VYGOTSKY} />, <Cite narrative {...SWELLER} />, <Cite narrative {...BIGGS} /> y <Cite narrative {...AMBROSE} />.</>}>
+      <Figure id="perspectivas" title="Perspectivas complementarias sobre el aprendizaje" note={<>Elaboración propia a partir de <Cite narrative {...AUSUBEL} />, <Cite narrative {...VYGOTSKY} />, <Cite narrative {...SWELLER} />, <Cite narrative {...BIGGS} /> y <Cite narrative {...AMBROSE} />.</>}>
         <ConceptWeb center="Aprendizaje" nodes={[
           { label: 'Conocimiento previo', relation: 'parte de', detail: 'Ausubel' },
           { label: 'Mediación social', relation: 'se produce en', detail: 'Vygotsky' },
@@ -91,7 +91,7 @@ export function ChapterExample() {
 
       <Heading level={2}>2.3. La ciencia cognitiva del aprendizaje</Heading>
       <Paragraph>
-        La teoría de la carga cognitiva parte de que la memoria de trabajo es limitada: solo puede manipular unos pocos
+        La teoría de la <Term to="carga-cognitiva">carga cognitiva</Term> parte de que la memoria de trabajo es limitada: solo puede manipular unos pocos
         elementos simultáneamente <Cite {...SWELLER} />. Cuando el material o la tarea imponen una carga excesiva, por
         ejemplo instrucciones confusas o problemas resueltos sin apoyo, el aprendizaje se resiente. La enseñanza eficaz
         gestiona esa carga: secuencia la complejidad, ofrece ejemplos resueltos y evita la sobrecarga extrínseca.
@@ -110,10 +110,10 @@ export function ChapterExample() {
         sentido <Cite {...BIGGS} />. Un hallazgo decisivo es que el enfoque no es solo un rasgo del estudiante: lo induce,
         en gran medida, el modo en que se enseña y, sobre todo, el modo en que se evalúa. Evaluaciones que premian la
         reproducción memorística empujan a enfoques superficiales; tareas que exigen aplicar, justificar y transferir
-        favorecen enfoques profundos.
+        favorecen enfoques profundos. La <FigRef to="teorias" /> resume las implicancias de cada perspectiva.
       </Paragraph>
       <DataTable
-        number={1}
+        id="teorias"
         title="Teorías del aprendizaje e implicancias didácticas"
         rowHeader
         widths={['22%', '39%', '39%']}
@@ -144,9 +144,9 @@ export function ChapterExample() {
         Los aprendices eficaces planifican, monitorean y evalúan su propio aprendizaje, y ajustan sus estrategias en
         función de los resultados <Cite works={[AMBROSE, BIGGS]} />. Estas capacidades metacognitivas pueden y deben
         enseñarse de manera explícita en la universidad, como un ciclo que el estudiante recorre una y otra vez
-        (Figura 2).
+        <FigRef to="autorregulacion" paren />.
       </Paragraph>
-      <Figure number={2} title="Ciclo de la autorregulación del aprendizaje" note={<>Elaboración propia a partir de <Cite narrative {...AMBROSE} />.</>}>
+      <Figure id="autorregulacion" title="Ciclo de la autorregulación del aprendizaje" note={<>Elaboración propia a partir de <Cite narrative {...AMBROSE} />.</>}>
         <CycleDiagram center="Aprendiz autorregulado" steps={[
           { title: 'Planificar', text: 'anticipar dificultades' },
           { title: 'Monitorear', text: 'controlar el progreso' },
@@ -175,7 +175,7 @@ export function ChapterExample() {
         <Reference>Sweller, J., van Merriënboer, J. J. G., &amp; Paas, F. (2019). Cognitive architecture and instructional design: 20 years later. <i>Educational Psychology Review, 31</i>(2), 261–292. https://doi.org/10.1007/s10648-019-09465-5</Reference>
         <Reference>Vygotsky, L. S. (1978). <i>Mind in society: The development of higher psychological processes</i>. Harvard University Press.</Reference>
       </ReferencesBox>
-    </>
+    </Numbering>
   );
 }
 
@@ -193,18 +193,37 @@ export function LegendExample() {
   );
 }
 
-export function DiagramsExample() {
+export const GLOSSARY = [
+  { id: 'zdp', term: 'Zona de desarrollo próximo', definition: <>Distancia entre lo que el estudiante resuelve solo y lo que resuelve con ayuda; ámbito privilegiado de la enseñanza <Cite {...VYGOTSKY} />.</> },
+  { id: 'andamiaje', term: 'Andamiaje', definition: <>Apoyo temporal que ofrece el docente o un par más capaz para que el estudiante resuelva una tarea que aún no domina de manera autónoma, retirándolo progresivamente (derivado de Vygotsky, 1978, p. 86).</> },
+  { id: 'carga-cognitiva', term: 'Carga cognitiva', definition: <>Demanda impuesta a la memoria de trabajo, de capacidad limitada; su gestión condiciona el aprendizaje <Cite {...SWELLER} />.</> },
+];
+
+export function GlossaryExample() {
   return (
     <>
+      <Heading level={1}>Glosario de términos clave</Heading>
+      <Glossary entries={GLOSSARY} />
+    </>
+  );
+}
+
+export function DiagramsExample() {
+  return (
+    <Numbering figures={['alineamiento', 'miller']} firstFigure={3}>
       <Heading level={1}>Galería de diagramas</Heading>
-      <Figure number={3} title="Alineamiento constructivo" note={<>Elaboración propia a partir de <Cite narrative {...BIGGS} />.</>}>
+      <Paragraph>
+        Dos esquemas más completan el repertorio: el flujo del alineamiento constructivo (<FigRef to="alineamiento" />) y
+        la pirámide de Miller para evaluar la competencia clínica (<FigRef to="miller" />).
+      </Paragraph>
+      <Figure id="alineamiento" title="Alineamiento constructivo" note={<>Elaboración propia a partir de <Cite narrative {...BIGGS} />.</>}>
         <ProcessFlow label="Alineamiento constructivo" steps={[
           { title: 'Resultados de aprendizaje', text: 'qué deberá poder hacer el estudiante' },
           { title: 'Actividades', text: 'que ponen en práctica ese desempeño' },
           { title: 'Evaluación', text: 'que verifica ese mismo desempeño' },
         ]} />
       </Figure>
-      <Figure number={4} title="Pirámide de Miller para la evaluación de la competencia clínica" note={<>Adaptado de <Cite narrative authors={['Miller']} year={1990} page="S63" />.</>}>
+      <Figure id="miller" title="Pirámide de Miller para la evaluación de la competencia clínica" note={<>Adaptado de <Cite narrative authors={['Miller']} year={1990} page="S63" />.</>}>
         <Pyramid levels={[
           { title: 'Hace', text: 'Desempeño en la práctica real' },
           { title: 'Muestra cómo', text: 'Desempeño en entorno controlado (OSCE)' },
@@ -212,6 +231,6 @@ export function DiagramsExample() {
           { title: 'Sabe', text: 'Conocimiento factual' },
         ]} />
       </Figure>
-    </>
+    </Numbering>
   );
 }

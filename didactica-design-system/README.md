@@ -4,6 +4,24 @@ A design system for university teacher-education materials. It started as an ext
 
 The design-system page has the brand book, the tokens, live previews and the icons: https://claude.ai/artifact/WUriWVLzv8G4y2u9oMyFhX
 
+## Authoring tools (v3.1, audit phase 3)
+
+- **Word template:** `templates/Didactica-Universitaria.dotx`, with a preview copy in `templates/Didactica-Universitaria-muestra.docx`. It contains:
+  - styles that mirror the tokens: headings, “Entradilla”, APA table and figure lines, notes, block quote, reference with hanging indent, box text;
+  - a guide page with the Bloom verb table;
+  - a catalogue of the nine boxes as copyable tables in their family shapes;
+  - a model unit.
+
+  Rebuild it with `npm run build:word`.
+- **Content checker:** `npm run lint:content -- <unidad.jsx | pagina.html | manuscrito.docx | texto.md> [--json]`. It exits with code 1 on errors.
+  - **Errors:** angle or straight quotes; “and” or “&” in a narrative citation; “y” inside a parenthetical citation; three or more authors without “et al.”; an objective verb from the wrong Bloom level; boxes out of order; alignment problems; cross-references with no target.
+  - **Warnings:** citations without a page; box density; adjacent in-text boxes; Puntos Clave outside 3–5 items; figures or tables not mentioned before they appear; glossary links to another file.
+- **Figure and table numbering:** `Numbering` + `FigRef`. Figures and tables are numbered by id in order of first mention, and references print “Figura N” or “(véase la Figura N)”.
+- **Glossary links:** `Term` links the first use of a term to its entry in `Glossary`, which sorts the entries with Spanish collation.
+- **Tests:** `npm test` (node:test) covers the citation formatter, the alignment check, every checker rule, and checks that the Word template has no errors.
+
+The example unit deliberately shows every box type in a short text, so the checker gives it a density warning. That warning is the rule working as intended.
+
 ## What's in v3
 
 These are phases 1 and 2 of the 8 October 2026 audit (https://claude.ai/artifact/FAkByz1msBDLkPL4QsdFn3).
@@ -66,7 +84,11 @@ fonts/                      Caladea and Carlito woff2 (SIL OFL 1.1) + licences
 src/cite.js, src/bloom.js   APA 7 formatter, Bloom taxonomy
 src/styles/didactica.css    component CSS written with Tailwind @apply → dist/didactica.css
 src/examples/chapter.jsx    a full example unit (Unidad 2)
-icons/                      Lucide icons (ISC), single-ink copies in each box's accent
+icons/                      Lucide icons (ISC), single-ink copies in each box's accent; png/ for Word
+lint/                       content-checker rules (text, HTML, DOCX)
+templates/                  Word template (.dotx) and a preview copy (.docx)
+tests/                      node:test suites
+scripts/build-word-template.mjs, scripts/lint-content.mjs
 db/schema.sql, db/seed.sql  SQLite: tokens, type, components + props, box types + icons, Bloom levels
 server/index.mjs            read-only JSON API + demos (node:sqlite, no runtime dependencies)
 html/index.html             plain HTML/CSS demo (generated, no JavaScript)

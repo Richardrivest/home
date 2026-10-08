@@ -1,13 +1,16 @@
 import React from 'react';
+import { useNumber } from './Numbering.jsx';
 
 /**
  * APA 7 table: “Tabla N” (bold) and the italic title above; horizontal rules only;
  * header in navy on `band` over a 2px rule (`filled` for a solid navy bar); optional
  * row-header column for conceptual tables; “Nota.” below.
  */
-export function DataTable({ columns, rows, widths, number, title, note, rowHeader = false, filled = false }) {
+export function DataTable({ columns, rows, widths, number, id, title, note, rowHeader = false, filled = false }) {
+  const auto = useNumber('table', id);
+  number = number ?? auto;
   return (
-    <figure className="du-table-figure">
+    <figure className="du-table-figure" id={id ? `tab-${id}` : undefined}>
       {number != null ? <p className="du-table-figure__number table-number">Tabla {number}</p> : null}
       {title ? <p className="du-table-figure__title table-title">{title}</p> : null}
       <div className="du-table-scroll">

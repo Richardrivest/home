@@ -12,6 +12,7 @@ The layout follows APA 7: “Tabla N” in bold, the title in italic, then the t
 | `rows` | `ReactNode[][]` | yes | Body rows. |
 | `widths` | `string[]` | no | Column widths. |
 | `number` | `number` | no | Table number. |
+| `id` | `string` | no | Registry id inside <Numbering> (automatic number, cross-reference target). |
 | `title` | `string` | no | Italic title. |
 | `note` | `ReactNode` | no | Note text after “Nota.”. |
 | `rowHeader` | `boolean` | no | First column as row headers (conceptual tables). |

@@ -185,6 +185,8 @@ export interface DataTableProps {
   rows: ReactNode[][];
   widths?: string[];
   number?: number;
+  /** Registry id inside <Numbering> (automatic number, cross-reference target). */
+  id?: string;
   title?: string;
   note?: ReactNode;
   /** First column as row headers: conceptual (comparison) tables. */
@@ -195,7 +197,14 @@ export interface DataTableProps {
 export declare function DataTable(props: DataTableProps): ReactElement;
 
 /** APA 7 figure: “Figura N” and the italic title above a diagram or image; “Nota.” below. */
-export interface FigureProps { number?: number; title?: string; note?: ReactNode; children: ReactNode }
+export interface FigureProps {
+  number?: number;
+  /** Registry id inside <Numbering>: the number comes from it and <FigRef> can point to it. */
+  id?: string;
+  title?: string;
+  note?: ReactNode;
+  children: ReactNode;
+}
 export declare function Figure(props: FigureProps): ReactElement;
 
 /* ---------- Diagrams ---------- */
@@ -220,7 +229,7 @@ export declare function ProcessFlow(props: ProcessFlowProps): ReactElement;
 /* ---------- Reference matter ---------- */
 
 /** Glossary entry: the term in bold navy, a colon, then the definition. */
-export interface GlossaryEntryProps { term: string; children: ReactNode }
+export interface GlossaryEntryProps { term: string; /** Link target for <Term to>. */ id?: string; children: ReactNode }
 export declare function GlossaryEntry(props: GlossaryEntryProps): ReactElement;
 
 /** One APA 7 reference with a French (hanging) indent; pass the title in <i>. */
@@ -229,3 +238,21 @@ export declare function Reference(props: ReferenceProps): ReactElement;
 
 export declare const BLOOM: { id: BloomId; level: number; name: string; verbs: string[] }[];
 export declare function bloomLevel(id: string): (typeof BLOOM)[number] | null;
+
+/* ---------- Numbering, cross-references and glossary links ---------- */
+
+/** Numbers figures and tables from their ids, in order of first mention. */
+export interface NumberingProps { figures?: string[]; tables?: string[]; firstFigure?: number; firstTable?: number; children: ReactNode }
+export declare function Numbering(props: NumberingProps): ReactElement;
+
+/** Cross-reference: “Figura 2”, or with paren “(véase la Figura 2)”. */
+export interface FigRefProps { to: string; paren?: boolean }
+export declare function FigRef(props: FigRefProps): ReactElement;
+
+/** A term in running text linked to its glossary entry. */
+export interface TermProps { to: string; children: ReactNode }
+export declare function Term(props: TermProps): ReactElement;
+
+/** Glossary sorted alphabetically (Spanish collation). */
+export interface GlossaryProps { entries: { id: string; term: string; definition: ReactNode }[] }
+export declare function Glossary(props: GlossaryProps): ReactElement;

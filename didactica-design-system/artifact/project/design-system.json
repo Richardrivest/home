@@ -100,8 +100,8 @@
   },
   "lastChange": {
     "by": "Ricardo",
-    "at": "2026-10-08T09:52:49Z",
+    "at": "2026-10-08T10:04:38Z",
     "via": "Claude Code",
-    "note": "v3: audit phases 1–2 — box families, 66-character measure, 7-step type scale, bundled fonts, alignment, self-check, classroom cases."
+    "note": "v3.1: audit phase 3 — content checker, Word template, figure/table numbering with cross-references, glossary links."
   }
 }
