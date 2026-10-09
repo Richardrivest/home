@@ -1,7 +1,7 @@
 // Checks a Word manuscript (.docx/.dotx) written with the template: text rules on every
 // paragraph, box order and density from the box titles, objectives' verbs, figure mentions.
 import { inflateRawSync } from 'node:zlib';
-import { quoteRules, citationRules, bloomRule, boxOrderRules, densityRule, countWords, citationKeys, referenceKey, referenceRules } from './text-rules.mjs';
+import { quoteRules, citationRules, bloomRule, bloomVerbRule, boxOrderRules, densityRule, countWords, citationKeys, referenceKey, referenceRules } from './text-rules.mjs';
 import BOXES from '../src/boxes.config.json' with { type: 'json' };
 
 const FAMILY = Object.fromEntries(BOXES.map((b) => [b.kind, b.family]));
@@ -78,8 +78,11 @@ function lintUnitParagraphs(paras) {
     if (p.inTable && p.style === 'RecuadroTitulo' && BY_TITLE[title]) { kinds.push(BY_TITLE[title]); inObjectives = BY_TITLE[title] === 'objectives'; continue; }
     if (!p.inTable) inObjectives = false;
     if (inObjectives) {
+      // “O1  Explicar …”; an older “O1  2 · COMPRENDER  Explicar …” also names the level.
       const m = p.text.match(/^O\d+\s+\d\s*·\s*(\p{L}+)\s+(.+)$/u);
+      const plain = !m && p.text.match(/^O\d+\s+(.+)$/u);
       if (m) issues.push(...bloomRule(m[1], m[2]));
+      else if (plain && !plain[1].startsWith('[')) issues.push(...bloomVerbRule(plain[1]));
     }
     if (!p.inTable && PROSE_STYLES.has(p.style)) { words += countWords(p.text); seen.push(p.text); }
     if (p.style === 'TablaNumero') {

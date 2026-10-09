@@ -6,7 +6,7 @@ Every unit follows the same sequence. Never reorder it.
 
 1. `ChapterOpener`: the “Unidad N” kicker, the title and a lead paragraph.
 2. `KeyPoints` (“Puntos Clave”): 3–5 one-line key points, plus 1–3 “Antes de leer” questions.
-3. `Objectives` (“Objetivos”): 3–5 objectives, numbered O1, O2…, each tagged with its Bloom level.
+3. `Objectives` (“Objetivos”): 3–5 objectives, numbered O1, O2…, each written for one Bloom level (kept as data for the alignment check, not shown).
 4. The body: numbered sections (`Heading` 2 and 3) and `Paragraph` with `Cite`. Add `Important`, `CommonMistake`, `Classroom`, `DataTable` and `Figure` as needed, within the density rules below.
 5. `ThinkFurther` (“Para Seguir Pensando”): 2–4 open questions, not assessed, followed by the “Antes de leer” questions again (`revisit`).
 6. `SelfCheck` (“Autoevaluación”): 3–5 recall questions with answers, including one review item from an earlier unit.

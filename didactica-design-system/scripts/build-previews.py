@@ -69,7 +69,7 @@ It is the first box of every unit, right after `ChapterOpener`, in the opening f
 
 c('Objectives',260,"""**Consumer provides:** `items`, each `{ level, text }`, where `level` is one of recordar, comprender, aplicar, analizar, evaluar or crear (Bloom revised, Anderson & Krathwohl, 2001).
 
-It comes right after `KeyPoints`, in the opening family. Objectives are numbered O1, O2… (or give an `id`), so activities can point to them. Start each objective with a verb of its level, order them from low to high, and include at least one at level 4 or above. Pass the same array to `AlignmentTable`. The default intro reads “Al finalizar la unidad, usted será capaz de:”.""",
+It comes right after `KeyPoints`, in the opening family. Objectives are numbered O1, O2… (or give an `id`), so activities can point to them. The level is not shown on the page: it stays in the markup (`data-level`) for `AlignmentTable` and the content checker. Start each objective with a verb of its level, order them from low to high, and include at least one at level 4 or above. Pass the same array to `AlignmentTable`. The default intro reads “Al finalizar la unidad, usted será capaz de:”.""",
 """h(Objectives,{items:[{level:'comprender',text:'Explicar los supuestos de las perspectivas constructivista, sociocultural y cognitiva.'},{level:'analizar',text:'Comparar las implicancias didácticas de cada perspectiva.'},{level:'evaluar',text:'Valorar críticamente afirmaciones pedagógicas de origen “neuro”.'},{level:'crear',text:'Diseñar una actividad que gestione la carga cognitiva.'}]})""")
 
 c('Important',200,"""**Consumer provides:** an optional `term` and the definition as children, with its citation.

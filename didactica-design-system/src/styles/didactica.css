@@ -187,16 +187,11 @@
 }
 .du-box__list--objectives > li {
   @apply grid items-baseline gap-x-3 gap-y-1 pl-0;
-  grid-template-columns: 2em 8.5em 1fr;
+  grid-template-columns: 2em 1fr;
 }
 .du-box__oid { @apply font-bold; color: var(--box-accent); font-family: var(--font-sans); }
 .du-box__list--objectives > li::before { content: none; }
 .du-box__list--numbered .du-tag { @apply mr-2; }
-@media (max-width: 480px) {
-  .du-box__list--objectives > li { grid-template-columns: 2em 1fr; }
-  .du-box__list--objectives .du-box__otext { grid-column: 2; }
-  .du-box__list--objectives .du-tag { justify-self: start; }
-}
 
 .du-tag {
   @apply inline-block border-hair border-solid rounded-pill px-2 py-0.5 uppercase whitespace-nowrap;
@@ -204,7 +199,6 @@
   border-color: var(--box-accent);
   background: var(--paper);
 }
-.du-box--objectives .du-tag { min-width: 8.5em; text-align: center; }
 
 .du-box__refs .du-reference:last-child { @apply mb-0; }
 .du-box__before { @apply mt-3 pt-3 border-0 border-t-hair border-solid; border-color: var(--box-border); }

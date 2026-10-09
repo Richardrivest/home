@@ -262,7 +262,7 @@ INSERT INTO component (name, comp_group, summary, position) VALUES ('KeyPoints',
 INSERT INTO component_prop (component, name, type, required, description) VALUES ('KeyPoints', 'items', 'ReactNode[]', 1, '3–6 key points, one sentence each.');
 INSERT INTO component_prop (component, name, type, required, description) VALUES ('KeyPoints', 'before', 'ReactNode[]', 0, '1–3 “Antes de leer” questions, revisited in “Para Seguir Pensando”.');
 INSERT INTO component_prop (component, name, type, required, description) VALUES ('KeyPoints', 'title', 'string', 0, 'Overrides “Puntos Clave”.');
-INSERT INTO component (name, comp_group, summary, position) VALUES ('Objectives', 'Boxes', '“Objetivos”: numbered learning objectives (O1, O2…), each tagged with its Bloom (revised) level.', 13);
+INSERT INTO component (name, comp_group, summary, position) VALUES ('Objectives', 'Boxes', '“Objetivos”: numbered learning objectives (O1, O2…), each written for one Bloom (revised) level; the level is kept as data, not shown.', 13);
 INSERT INTO component_prop (component, name, type, required, description) VALUES ('Objectives', 'items', '{ id?: string; level: BloomId; text }[]', 1, 'Objectives starting with a verb of their level; ids default to O1, O2…');
 INSERT INTO component_prop (component, name, type, required, description) VALUES ('Objectives', 'intro', 'string', 0, 'Lead-in line.');
 INSERT INTO component_prop (component, name, type, required, description) VALUES ('Objectives', 'title', 'string', 0, 'Overrides “Objetivos”.');

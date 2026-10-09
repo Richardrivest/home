@@ -107,7 +107,7 @@ export declare function KeyPoints(props: KeyPointsProps): ReactElement;
 
 export type BloomId = 'recordar' | 'comprender' | 'aplicar' | 'analizar' | 'evaluar' | 'crear';
 export interface Objective { id?: string; level: BloomId; text: ReactNode }
-/** “Objetivos”: learning objectives, each tagged with its Bloom (revised) level. */
+/** “Objetivos”: numbered learning objectives; each is written for one Bloom (revised) level, kept as data (not shown). */
 export interface ObjectivesProps {
   /** Each objective starts with a verb of its level (see BLOOM); ids default to O1, O2… */
   items: Objective[];

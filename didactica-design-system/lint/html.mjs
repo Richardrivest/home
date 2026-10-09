@@ -22,11 +22,12 @@ export function lintHtml(html, { unit = 'unit' } = {}) {
     if (!b.closest('.du-reference') && !b.classList.contains('du-reference')) add(citationRules(t), unit);
   }
 
-  // Objectives: verb of the tagged level.
+  // Objectives: verb of the level kept in data-level (or of an older visible tag).
   for (const li of root.querySelectorAll('.du-box__list--objectives > li')) {
     const tag = li.querySelector('.du-tag');
+    const level = li.getAttribute('data-level') || (tag ? text(tag).split('·').pop().trim() : '');
     const body = li.querySelector('.du-box__otext');
-    if (tag && body) add(bloomRule(text(tag).split('·').pop().trim(), text(body)), unit);
+    if (level && body) add(bloomRule(level, text(body)), unit);
   }
 
   // Each unit: from a ChapterOpener to the next one (or the whole document).

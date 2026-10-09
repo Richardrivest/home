@@ -68,6 +68,13 @@ export function bloomRule(levelName, objectiveText) {
   return [issue('bloom-verb', 'warning', `“${verb}” no está en la lista de verbos de ${level.name}: ${level.verbs.join(', ')}.`, objectiveText, 0)];
 }
 
+/** An objective with no level shown (Word): its first word must be a verb of some Bloom level. */
+export function bloomVerbRule(objectiveText) {
+  const verb = objectiveText.trim().split(/\s+/)[0].toLowerCase().replace(/[^\p{L}]/gu, '');
+  if (VERB_LEVEL.has(verb)) return [];
+  return [issue('bloom-verb', 'warning', `“${verb}” no es un verbo de la taxonomía de Bloom revisada: empiece el objetivo con uno.`, objectiveText, 0)];
+}
+
 export const BOX_ORDER = {
   open: ['keypoints', 'objectives'],
   close: ['thinking', 'selfcheck', 'activities', 'references'],

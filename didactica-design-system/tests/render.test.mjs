@@ -39,6 +39,16 @@ test('Cite with an unknown id says so', async () => {
   assert.match(html, /obra sin registrar: zz/);
 });
 
+test('objectives: no visible Bloom label; the level stays in data-level and the checker still reads it', async () => {
+  const html = await render(`h(D.Objectives, { items: [{ level: 'crear', text: 'Explicar algo.' }, { level: 'analizar', text: 'Comparar dos perspectivas.' }] })`);
+  assert.doesNotMatch(html, /du-tag/);
+  assert.doesNotMatch(html, /CREAR|Crear/);
+  assert.match(html, /data-level="crear"/);
+  const issues = lintHtml(html).filter((i) => i.rule === 'bloom-verb');
+  assert.equal(issues.length, 1);
+  assert.match(issues[0].message, /explicar/);
+});
+
 test('cover: mosaic by default with the nine box colours; variants; “[…]” lines as placeholders', async () => {
   const html = await render(`h(D.TitlePage, { title: 'T', credits: ['[Autoría]', 'Ana Pérez'], meta: ['Año 2026'] })`);
   assert.match(html, /du-title-page--mosaic/);

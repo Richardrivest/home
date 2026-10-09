@@ -57,16 +57,18 @@ const LevelTag = ({ level }) => {
   );
 };
 
-/** “Objetivos”: numbered learning objectives (O1, O2…), each tagged with its Bloom (revised) level. */
+/**
+ * “Objetivos”: numbered learning objectives (O1, O2…). Each is written for one Bloom (revised)
+ * level; the level is not shown, but stays in `data-level` for the alignment check and the checker.
+ */
 export function Objectives({ items, intro = 'Al finalizar la unidad, usted será capaz de:', title }) {
   return (
     <Box kind="objectives" title={title}>
       {intro ? <p className="du-box__intro">{intro}</p> : null}
       <ol className="du-box__list du-box__list--objectives">
         {items.map((it, i) => (
-          <li key={i} id={`obj-${objectiveId(it, i)}`}>
+          <li key={i} id={`obj-${objectiveId(it, i)}`} data-level={it.level}>
             <span className="du-box__oid">{objectiveId(it, i)}</span>
-            <LevelTag level={it.level} />
             <span className="du-box__otext">{it.text}</span>
           </li>
         ))}

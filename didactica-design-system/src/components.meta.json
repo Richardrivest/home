@@ -332,7 +332,7 @@
   {
     "name": "Objectives",
     "group": "Boxes",
-    "summary": "“Objetivos”: numbered learning objectives (O1, O2…), each tagged with its Bloom (revised) level.",
+    "summary": "“Objetivos”: numbered learning objectives (O1, O2…), each written for one Bloom (revised) level; the level is kept as data, not shown.",
     "props": [
       [
         "items",

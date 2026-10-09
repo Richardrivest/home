@@ -616,7 +616,7 @@
        column-gap: var(--space-3);
   row-gap: var(--space-1);
   padding-left: 0px;
-  grid-template-columns: 2em 8.5em 1fr;
+  grid-template-columns: 2em 1fr;
 }
 
 .du-box__oid {
@@ -633,20 +633,6 @@
   margin-right: var(--space-2);
 }
 
-@media (max-width: 480px) {
-  .du-box__list--objectives > li {
-    grid-template-columns: 2em 1fr;
-  }
-
-  .du-box__list--objectives .du-box__otext {
-    grid-column: 2;
-  }
-
-  .du-box__list--objectives .du-tag {
-    justify-self: start;
-  }
-}
-
 .du-tag {
   display: inline-block;
   white-space: nowrap;
@@ -661,11 +647,6 @@
   color: var(--box-accent);
   border-color: var(--box-accent);
   background: var(--paper);
-}
-
-.du-box--objectives .du-tag {
-  min-width: 8.5em;
-  text-align: center;
 }
 
 .du-box__refs .du-reference:last-child {
