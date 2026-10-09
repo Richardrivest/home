@@ -1,6 +1,6 @@
 # Activities
 
-“Actividades”: assessable questions and tasks, tagged with type, Bloom level and the objectives they practise.
+“Actividades”: assessable questions and tasks, tagged with their type and the objectives they practise; the Bloom level is kept as data, not shown.
 
 **Consumer provides:** `items`, as strings or `{ type, level, objectives, text }`: type is pregunta, tarea, caso or debate; `level` is the Bloom level the activity demands; `objectives` lists the objectives it practises (`['O2']`), shown as links.
 

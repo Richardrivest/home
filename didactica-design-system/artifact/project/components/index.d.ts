@@ -6,7 +6,7 @@ import type { ReactNode, ReactElement } from 'react';
 export interface PageProps { header?: string; page?: number; children: ReactNode; className?: string }
 export declare function Page(props: PageProps): ReactElement;
 
-/** The manual's cover: kicker, title, italic subtitle, lede, ribbon and metadata lines, all centred. */
+/** The manual's cover, one A4 page: title block at the top; ribbon, credits and details at the foot. */
 export interface TitlePageProps {
   /** 'mosaic' (default): the nine box colours as plain squares; 'band': navy band; 'motif': nested circles; 'editorial': left rule and volume number. */
   variant?: 'mosaic' | 'band' | 'motif' | 'editorial';

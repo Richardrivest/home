@@ -100,8 +100,8 @@
   },
   "lastChange": {
     "by": "Ricardo",
-    "at": "2026-10-09T01:44:35Z",
+    "at": "2026-10-09T01:53:46Z",
     "via": "Claude Code",
-    "note": "v3.4: diagrams stay drawings on narrow screens (sideways scroll, “Ver como texto”); print on A4/Letter portrait; Word template on A4; new A4 cover with a mosaic of the nine box colours, plus band, motif and editorial variants."
+    "note": "v3.4: Objectives and Activities no longer show Bloom level labels (the level stays as data for the alignment check); the alignment table drops its Nivel column."
   }
 }

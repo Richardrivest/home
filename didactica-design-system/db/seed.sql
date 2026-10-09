@@ -289,7 +289,7 @@ INSERT INTO component_prop (component, name, type, required, description) VALUES
 INSERT INTO component (name, comp_group, summary, position) VALUES ('SelfCheck', 'Boxes', '“Autoevaluación”: retrieval practice with feedback; answers open on screen and print as a key.', 18);
 INSERT INTO component_prop (component, name, type, required, description) VALUES ('SelfCheck', 'items', '{ question; answer; review?: string }[]', 1, '3–5 short recall questions; review names an earlier unit.');
 INSERT INTO component_prop (component, name, type, required, description) VALUES ('SelfCheck', 'title', 'string', 0, 'Overrides “Autoevaluación”.');
-INSERT INTO component (name, comp_group, summary, position) VALUES ('Activities', 'Boxes', '“Actividades”: assessable questions and tasks, tagged with type, Bloom level and the objectives they practise.', 19);
+INSERT INTO component (name, comp_group, summary, position) VALUES ('Activities', 'Boxes', '“Actividades”: assessable questions and tasks, tagged with their type and the objectives they practise; the Bloom level is kept as data, not shown.', 19);
 INSERT INTO component_prop (component, name, type, required, description) VALUES ('Activities', 'items', '(string | { type?; level?: BloomId; objectives?: string[]; text })[]', 1, 'Numbered activities; objectives link to O1, O2…');
 INSERT INTO component_prop (component, name, type, required, description) VALUES ('Activities', 'title', 'string', 0, 'Overrides “Actividades”.');
 INSERT INTO component (name, comp_group, summary, position) VALUES ('ReferencesBox', 'Boxes', '“Referencias”: the unit’s APA 7 list, French indent — hand-written <Reference> items, or `auto`: the works cited in the unit, formatted and ordered.', 20);
