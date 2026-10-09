@@ -297,7 +297,7 @@ const unit = [
   ...box('selfcheck', [{ num: '[Pregunta.]' }, { label: 'Clave de respuestas' }, '1. [Respuesta.]']),
   ...box('activities', [{ num: '{accent:TAREA · O2}  [Consigna.]' }]),
   p('La Tabla 3 muestra qué actividades trabajan cada objetivo.'),
-  ...apaTable(3, 'Alineamiento de la unidad', ['Objetivo', 'Nivel', 'Actividades', 'Estado'], [['O1', 'Comprender', '[n.º]', '[Alineado]'], ['O2', 'Analizar', '[n.º]', '[Alineado]']], [0.14, 0.22, 0.24, 0.4], 'Cada objetivo necesita al menos una actividad de su mismo nivel o superior.', { rowHeader: true }),
+  ...apaTable(3, 'Alineamiento de la unidad', ['Objetivo', 'Actividades', 'Estado'], [['O1', '[n.º]', '[Alineado]'], ['O2', '[n.º]', '[Alineado]']], [0.16, 0.28, 0.56], 'Cada objetivo necesita al menos una actividad de su mismo nivel o superior.', { rowHeader: true }),
   ...box('references', [{ ref: '[Referencias de la unidad en APA 7, en orden alfabético.]' }]),
 ];
 

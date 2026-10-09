@@ -224,12 +224,11 @@ export function AlignmentTable({ objectives, activities, title = 'Alineamiento d
       <p className="du-table-figure__title table-title">{title}</p>
       <div className="du-table-scroll">
         <table className="du-table du-table--concept">
-          <thead><tr><th scope="col" className="table-head">Objetivo</th><th scope="col" className="table-head">Nivel</th><th scope="col" className="table-head">Actividades</th><th scope="col" className="table-head">Estado</th></tr></thead>
+          <thead><tr><th scope="col" className="table-head">Objetivo</th><th scope="col" className="table-head">Actividades</th><th scope="col" className="table-head">Estado</th></tr></thead>
           <tbody>
             {rows.map((r) => (
               <tr key={r.id}>
                 <th scope="row" className="table-cell">{r.id}</th>
-                <td className="table-cell">{r.level ? r.level.name : '—'}</td>
                 <td className="table-cell">{r.activities.length ? r.activities.join(', ') : '—'}</td>
                 <td className={`table-cell ${r.problems.length ? 'du-alignment__bad' : 'du-alignment__ok'}`}>
                   {r.problems.length ? r.problems.join(' ') : 'Alineado'}

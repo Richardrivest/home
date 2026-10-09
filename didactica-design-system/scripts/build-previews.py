@@ -213,7 +213,7 @@ It is retrieval practice with feedback, placed after `ThinkFurther` in the closi
 
 c('AlignmentTable',230,"""**Consumer provides:** the same `objectives` and `activities` arrays passed to `Objectives` and `Activities`.
 
-It goes right after `Activities` and makes constructive alignment visible: for each objective, its level, the activities that practise it, and its status. It flags an objective without activities and an activity pitched below its objective's level. `checkAlignment()` returns the same problems as data, for authoring checks.""",
+It goes right after `Activities` and makes constructive alignment visible: for each objective, the activities that practise it and its status (levels are not shown; the status names them when an activity is pitched too low). It flags an objective without activities and an activity pitched below its objective's level. `checkAlignment()` returns the same problems as data, for authoring checks.""",
 """(function(){var O=[{level:'comprender',text:'Explicar…'},{level:'analizar',text:'Comparar…'},{level:'crear',text:'Diseñar…'}];var Ac=[{level:'comprender',objectives:['O1'],text:'…'},{level:'aplicar',objectives:['O3'],text:'…'}];return h(AlignmentTable,{objectives:O,activities:Ac})})()""")
 
 c('BoxLegend',220,"""It renders the “Cómo usar este manual” legend: every box type with its icon and title, grouped into the three families (opening, in the text, closing).
