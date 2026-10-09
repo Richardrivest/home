@@ -100,8 +100,8 @@
   },
   "lastChange": {
     "by": "Ricardo",
-    "at": "2026-10-09T01:56:08Z",
+    "at": "2026-10-09T01:58:20Z",
     "via": "Claude Code",
-    "note": "v3.4: the alignment table keeps its Nivel column (restored). Objectives and Activities no longer show Bloom level labels."
+    "note": "v3.4: Activities show only their type tag (no Bloom level, no objective tags); the alignment table keeps its Nivel column."
   }
 }
