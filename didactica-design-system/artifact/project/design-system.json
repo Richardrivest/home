@@ -100,8 +100,8 @@
   },
   "lastChange": {
     "by": "Ricardo",
-    "at": "2026-10-08T15:00:00Z",
+    "at": "2026-10-09T01:58:20Z",
     "via": "Claude Code",
-    "note": "v3.3: table header row in its own colour with one colour per body row; twelve new diagram types (tree, concept map, mind map, Venn, 2×2 matrix, timeline, fishbone, spectrum, funnel, staircase, nested circles, iceberg)."
+    "note": "v3.4: Activities show only their type tag (no Bloom level, no objective tags); the alignment table keeps its Nivel column."
   }
 }

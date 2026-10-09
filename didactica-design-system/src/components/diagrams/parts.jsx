@@ -5,17 +5,40 @@ export const LH = 18; // line height in diagram units
 export { wrap, textWidth };
 
 /**
- * Every diagram: the SVG drawing plus the same structure as a list, shown instead of
- * the drawing below 600px of container width (and read by screen readers).
+ * Every diagram: the SVG drawing plus the same structure as a list. The drawing always
+ * shows; below 600px of container width it keeps a 600px width and scrolls sideways, so
+ * labels never shrink under 12px. The list sits under it behind “Ver como texto”.
  */
 export function DiagramFrame({ width, height, label, warn, list, children }) {
   return (
     <div className="du-diagram-wrap">
-      <svg className="du-diagram" viewBox={`0 0 ${width} ${height}`} role="img" aria-label={label} data-warn={warn || undefined}>
-        {children}
-      </svg>
-      <div className="du-diagram-list">{list}</div>
+      <DiagramScroll label={label}>
+        <svg className="du-diagram" viewBox={`0 0 ${width} ${height}`} role="img" aria-label={label} data-warn={warn || undefined}>
+          {children}
+        </svg>
+      </DiagramScroll>
+      <DiagramText><div className="du-diagram-list">{list}</div></DiagramText>
     </div>
+  );
+}
+
+/** Scroll frame for the drawing; focusable so keyboard users can scroll it when narrow. */
+export function DiagramScroll({ label, children }) {
+  return (
+    <>
+      <div className="du-diagram-scroll" tabIndex={0} role="group" aria-label={label}>{children}</div>
+      <p className="du-diagram-hint" aria-hidden="true">Deslizá para ver el diagrama completo →</p>
+    </>
+  );
+}
+
+/** The text version of a diagram, collapsed under the drawing. */
+export function DiagramText({ children }) {
+  return (
+    <details className="du-diagram-text">
+      <summary className="diagram-label">Ver como texto</summary>
+      {children}
+    </details>
   );
 }
 

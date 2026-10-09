@@ -5,7 +5,7 @@
 // in their three family shapes (open: filled header band; text: heavy top rule; close: frame).
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { execFileSync } from 'node:child_process';
 import {
   Document, Packer, Paragraph, TextRun, ImageRun, Table, TableRow, TableCell, Header, Footer,
@@ -16,13 +16,15 @@ import {
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const T = JSON.parse(fs.readFileSync(path.join(root, 'tokens/tokens.json'), 'utf8'));
 const BOXES = JSON.parse(fs.readFileSync(path.join(root, 'src/boxes.config.json'), 'utf8'));
-const { BLOOM } = await import(path.join(root, 'src/bloom.js'));
+const { BLOOM } = await import(pathToFileURL(path.join(root, 'src/bloom.js')).href);
 
 const C = Object.fromEntries(T.color.tokens.map((t) => [t.name, (typeof t.value === 'string' ? t.value : t.value.light).replace('#', '').toUpperCase()]));
 const SERIF = 'Cambria';
 const SANS = 'Calibri';
 const pt = (n) => Math.round(n * 2); // half-points
-const W = 9360; // text block, 6.5in in DXA
+// Text block: A4 width (11906) minus two 1in margins, 6.27in. It also fits Letter (6.5in),
+// so boxes and tables stay inside the margins if a document is switched to Letter.
+const W = 9026;
 const icon = (kind, white = false) => fs.readFileSync(path.join(root, `icons/png/${kind}${white ? '-white' : ''}.png`));
 
 // ---------- inline markup: **bold**, _italic_, {accent:text} ----------
@@ -51,12 +53,14 @@ const paragraphStyles = [
   ps('Heading3', 'Heading 3', { font: SANS, size: pt(14), bold: true, color: C.ink }, { spacing: { before: 360, after: 120, line: 312 }, keepNext: true, keepLines: true, outlineLevel: 2, alignment: AlignmentType.LEFT }),
   ps('Unidad', 'Unidad (antetítulo)', { font: SANS, size: pt(10.5), bold: true, color: C.azure, allCaps: true, characterSpacing: 17 }, { spacing: { before: 0, after: 120 }, keepNext: true, alignment: AlignmentType.LEFT }),
   ps('Entradilla', 'Entradilla', { font: SERIF, size: pt(14), color: C.ink }, { spacing: { after: 360, line: 372 }, alignment: AlignmentType.LEFT }),
-  ps('PortadaAntetitulo', 'Portada – antetítulo', { font: SANS, size: pt(10.5), bold: true, color: C.azure, allCaps: true, characterSpacing: 17 }, { alignment: AlignmentType.CENTER, spacing: { before: 2400, after: 240 } }),
-  ps('PortadaTitulo', 'Portada – título', { font: SANS, size: pt(30), bold: true, color: C.navy }, { alignment: AlignmentType.CENTER, spacing: { after: 240, line: 264 } }),
-  ps('PortadaSubtitulo', 'Portada – subtítulo', { font: SERIF, size: pt(14), italics: true, color: C.ink }, { alignment: AlignmentType.CENTER, spacing: { after: 120 } }),
-  ps('PortadaLema', 'Portada – descripción', { font: SERIF, size: pt(12), color: C['ink-muted'] }, { alignment: AlignmentType.CENTER, spacing: { after: 600 } }),
-  ps('Cinta', 'Portada – cinta', { font: SANS, size: pt(10.5), color: C.navy }, { alignment: AlignmentType.CENTER, spacing: { before: 0, after: 600, line: 276 }, border: { top: { style: BorderStyle.SINGLE, size: 8, color: C.navy, space: 6 }, bottom: { style: BorderStyle.SINGLE, size: 8, color: C.navy, space: 6 } } }),
-  ps('PortadaDatos', 'Portada – datos', { font: SERIF, size: pt(10.5), color: C['ink-muted'] }, { alignment: AlignmentType.CENTER, spacing: { after: 60 } }),
+  ps('PortadaAntetitulo', 'Portada – antetítulo', { font: SANS, size: pt(10.5), bold: true, color: C.azure, allCaps: true, characterSpacing: 17 }, { alignment: AlignmentType.LEFT, spacing: { before: 720, after: 160 } }),
+  ps('PortadaTitulo', 'Portada – título', { font: SANS, size: pt(30), bold: true, color: C.navy }, { alignment: AlignmentType.LEFT, spacing: { after: 360, line: 264 }, indent: { right: 2880 } }),
+  ps('PortadaSubtitulo', 'Portada – subtítulo', { font: SERIF, size: pt(14), italics: true, color: C.ink }, { alignment: AlignmentType.LEFT, spacing: { after: 120 } }),
+  ps('PortadaRaya', 'Portada – raya bajo el título', { font: SANS, size: pt(4) }, { alignment: AlignmentType.LEFT, spacing: { before: 0, after: 300 }, indent: { right: W - 800 }, border: { top: { style: BorderStyle.SINGLE, size: 24, color: C.azure, space: 0 } } }),
+  ps('PortadaLema', 'Portada – descripción', { font: SERIF, size: pt(12), color: C['ink-muted'] }, { alignment: AlignmentType.LEFT, spacing: { after: 0 } }),
+  ps('Cinta', 'Portada – cinta', { font: SANS, size: pt(10.5), color: C.navy }, { alignment: AlignmentType.LEFT, spacing: { before: 0, after: 360, line: 276 }, border: { top: { style: BorderStyle.SINGLE, size: 8, color: C.navy, space: 6 }, bottom: { style: BorderStyle.SINGLE, size: 8, color: C.navy, space: 6 } } }),
+  ps('PortadaCreditos', 'Portada – créditos', { font: SANS, size: pt(11), color: C.ink }, { alignment: AlignmentType.LEFT, spacing: { after: 60 } }),
+  ps('PortadaDatos', 'Portada – datos', { font: SERIF, size: pt(10.5), color: C['ink-muted'] }, { alignment: AlignmentType.LEFT, spacing: { after: 60 } }),
   ps('TablaNumero', 'Tabla o figura – número', { font: SANS, size: pt(12), bold: true, color: C.ink }, { spacing: { before: 360, after: 0 }, keepNext: true, alignment: AlignmentType.LEFT }),
   ps('TablaTitulo', 'Tabla o figura – título', { font: SERIF, size: pt(12), italics: true, color: C.ink }, { spacing: { after: 120 }, keepNext: true, alignment: AlignmentType.LEFT }),
   ps('Nota', 'Nota de tabla o figura', { font: SERIF, size: pt(10.5), color: C['ink-muted'] }, { spacing: { before: 120, after: 360, line: 300 }, alignment: AlignmentType.LEFT }),
@@ -181,15 +185,41 @@ const bullet = (t, level = 0) => new Paragraph({ style: 'Lista', numbering: { re
 const pageBreak = () => new Paragraph({ children: [new PageBreak()] });
 
 // ---------- content ----------
+// Cover, "mosaic" variant (the HTML default): the nine box colours as plain squares,
+// title block at the top, ribbon, credits and details towards the foot of the page.
+const mosaic = () => {
+  const cw = Math.floor(W / BOXES.length);
+  const gap = { style: BorderStyle.SINGLE, size: 24, color: 'FFFFFF' }; // 3pt white gaps between cells
+  return new Table({
+    width: { size: cw * BOXES.length, type: WidthType.DXA }, columnWidths: BOXES.map(() => cw), layout: TableLayoutType.FIXED,
+    borders: { top: NONE, bottom: NONE, left: NONE, right: NONE, insideHorizontal: NONE, insideVertical: NONE },
+    rows: [new TableRow({ height: { value: cw, rule: 'exact' }, cantSplit: true, children: BOXES.map((b, i) => new TableCell({
+      width: { size: cw, type: WidthType.DXA }, verticalAlign: VerticalAlign.CENTER,
+      shading: { fill: C[`${b.kind}-accent`], type: ShadingType.CLEAR, color: 'auto' },
+      margins: { top: 0, bottom: 0, left: 0, right: 0 },
+      borders: { top: NONE, bottom: NONE, left: i ? gap : NONE, right: i < BOXES.length - 1 ? gap : NONE },
+      children: [new Paragraph({ spacing: { before: 0, after: 0 }, children: [] })],
+    })) })],
+  });
+};
+// "[…]" lines are placeholders to replace, drawn in italics in a dashed frame.
+const slot = (text, style) => new Paragraph({ style, children: [new TextRun({ text, italics: true })],
+  border: { top: { style: BorderStyle.DASHED, size: 4, color: C['rule-strong'], space: 1 }, bottom: { style: BorderStyle.DASHED, size: 4, color: C['rule-strong'], space: 1 }, left: { style: BorderStyle.DASHED, size: 4, color: C['rule-strong'], space: 4 }, right: { style: BorderStyle.DASHED, size: 4, color: C['rule-strong'], space: 4 } } });
 const cover = [
+  mosaic(),
   p('Manual de formación docente', 'PortadaAntetitulo'),
   p('[Título del manual]', 'PortadaTitulo'),
+  p('', 'PortadaRaya'),
   p('[Subtítulo: alcance del manual]', 'PortadaSubtitulo'),
   p('[Descripción en una línea: disciplinas y destinatarios]', 'PortadaLema'),
+  // Pushes the ribbon, credits and details to the foot of an A4 page.
+  new Paragraph({ spacing: { before: 4300, after: 0 }, children: [] }),
   p('[Cinta: tipo de material]', 'Cinta'),
+  slot('[Autoría: nombre y apellido de cada autor]', 'PortadaCreditos'),
+  slot('[Institución o unidad académica]', 'PortadaCreditos'),
   p('Nivel: [destinatarios]', 'PortadaDatos'),
   p('Citación: APA 7.ª edición', 'PortadaDatos'),
-  p('Año [aaaa]', 'PortadaDatos'),
+  p('[Edición] · [Ciudad] · [aaaa]', 'PortadaDatos'),
   pageBreak(),
 ];
 
@@ -238,13 +268,13 @@ const catalogue = [
   new Paragraph({ heading: HeadingLevel.HEADING_1, children: [new TextRun('Catálogo de recuadros')] }),
   p('Copie el recuadro completo (seleccione la tabla) y péguelo donde corresponda. La forma indica la familia: franja de color al abrir la unidad, línea gruesa superior dentro del texto y solo marco al cerrar.'),
   ...box('keypoints', [{ bullet: '[Punto clave en una sola línea.]' }, { bullet: '[Punto clave en una sola línea.]' }, { bullet: '[Punto clave en una sola línea.]' }, { label: 'Antes de leer:' }, '[¿Pregunta para anticipar el contenido?]']),
-  ...box('objectives', ['Al finalizar la unidad, usted será capaz de:', '{accent:O1}   {accent:2 · COMPRENDER}   [Explicar …]', '{accent:O2}   {accent:4 · ANALIZAR}   [Comparar …]', '{accent:O3}   {accent:6 · CREAR}   [Diseñar …]']),
+  ...box('objectives', ['Al finalizar la unidad, usted será capaz de:', '{accent:O1}   [Explicar …]', '{accent:O2}   [Comparar …]', '{accent:O3}   [Diseñar …]']),
   ...box('important', ['{accent:[Término]}', '[Definición del concepto clave] (Autor, año, p. x).']),
   ...box('mistake', ['{accent:Creencia frecuente:} [La creencia, enunciada con claridad.]', '{accent:Lo que muestra la evidencia:} [La refutación explícita] (Autor, año, p. x).', '{accent:Por qué no se sostiene:} [La explicación alternativa, o por qué la creencia resulta atractiva.]']),
   ...box('example', ['{accent:Situación:} [Un momento concreto de una clase.]', '{accent:Decisión didáctica:} [Lo que hace el docente.]', '{accent:Fundamento:} [Por qué, con su cita] (Autor, año, p. x).'], { extraTitle: '[Ciencias Sociales | Ciencias de la Salud]' }),
   ...box('thinking', [{ num: '[Pregunta abierta, sin respuesta única.]' }, { num: '[Pregunta abierta que conecte la unidad con la práctica.]' }, { label: 'Vuelva a las preguntas del comienzo:' }, '[Repita aquí las preguntas “Antes de leer”.]', '_¿Respondería hoy lo mismo que antes de leer la unidad? ¿Qué cambió y por qué?_']),
   ...box('selfcheck', [{ num: '[Pregunta de recuperación sobre una idea central.]' }, { num: '[Pregunta de recuperación.]' }, { num: '[REPASO · Unidad N] [Pregunta sobre una unidad anterior.]' }, { label: 'Clave de respuestas' }, '1. [Respuesta.]  2. [Respuesta.]  3. [Respuesta.]']),
-  ...box('activities', [{ num: '{accent:TAREA · 4 · ANALIZAR · O2}  [Consigna en modo imperativo de usted.]' }, { num: '{accent:PREGUNTA · 2 · COMPRENDER · O1}  [Pregunta.]' }]),
+  ...box('activities', [{ num: '{accent:TAREA}  [Consigna en modo imperativo de usted.]' }, { num: '{accent:PREGUNTA}  [Pregunta.]' }]),
   ...box('references', [{ ref: '[Apellido, A. A.] ([año]). _[Título del libro en cursiva]_. [Editorial].' }, { ref: '[Apellido, A. A., & Apellido, B. B.] ([año]). [Título del artículo]. _[Revista, volumen]_([número]), [pp.–pp.]. https://doi.org/[…]' }]),
   pageBreak(),
 ];
@@ -254,7 +284,7 @@ const unit = [
   new Paragraph({ heading: HeadingLevel.HEADING_1, children: [new TextRun('[Título de la unidad]')] }),
   p('[Entradilla: una o dos oraciones que presentan la unidad.]', 'Entradilla'),
   ...box('keypoints', [{ bullet: '[Punto clave.]' }, { bullet: '[Punto clave.]' }, { bullet: '[Punto clave.]' }, { label: 'Antes de leer:' }, '[¿Pregunta para anticipar el contenido?]']),
-  ...box('objectives', ['Al finalizar la unidad, usted será capaz de:', '{accent:O1}   {accent:2 · COMPRENDER}   [Explicar …]', '{accent:O2}   {accent:4 · ANALIZAR}   [Comparar …]']),
+  ...box('objectives', ['Al finalizar la unidad, usted será capaz de:', '{accent:O1}   [Explicar …]', '{accent:O2}   [Comparar …]']),
   new Paragraph({ heading: HeadingLevel.HEADING_2, children: [new TextRun('[N.1. Título de la sección]')] }),
   p('[Texto. Cite siempre con autor, año y página: Autor (año, p. x) o (Autor, año, p. x). Anuncie las figuras y tablas antes de que aparezcan, como en la Figura 1.]'),
   ...figure(1, '[Título de la figura en cursiva]', '[Inserte aquí el diagrama: red conceptual, ciclo, pirámide o flujo]', 'Elaboración propia a partir de Autor (año, p. x).'),
@@ -265,7 +295,7 @@ const unit = [
   p('[Cita textual de 40 palabras o más, sin comillas, con la cita después del punto final.] (Autor, año, p. x)', 'CitaBloque'),
   ...box('thinking', [{ num: '[Pregunta abierta.]' }, { label: 'Vuelva a las preguntas del comienzo:' }, '[Preguntas “Antes de leer”.]']),
   ...box('selfcheck', [{ num: '[Pregunta.]' }, { label: 'Clave de respuestas' }, '1. [Respuesta.]']),
-  ...box('activities', [{ num: '{accent:TAREA · 4 · ANALIZAR · O2}  [Consigna.]' }]),
+  ...box('activities', [{ num: '{accent:TAREA}  [Consigna.]' }]),
   p('La Tabla 3 muestra qué actividades trabajan cada objetivo.'),
   ...apaTable(3, 'Alineamiento de la unidad', ['Objetivo', 'Nivel', 'Actividades', 'Estado'], [['O1', 'Comprender', '[n.º]', '[Alineado]'], ['O2', 'Analizar', '[n.º]', '[Alineado]']], [0.14, 0.22, 0.24, 0.4], 'Cada objetivo necesita al menos una actividad de su mismo nivel o superior.', { rowHeader: true }),
   ...box('references', [{ ref: '[Referencias de la unidad en APA 7, en orden alfabético.]' }]),
@@ -279,7 +309,8 @@ const doc = new Document({
   styles: { default: { document: { run: { font: SERIF, size: pt(12) } } }, paragraphStyles },
   numbering: { config: numbering },
   sections: [{
-    properties: { titlePage: true, page: { size: { width: 12240, height: 15840 }, margin: { top: 1440, right: 1440, bottom: 1440, left: 1440, header: 708, footer: 708 } } },
+    properties: { titlePage: true, page: { size: { width: 11906, height: 16838 }, // A4 portrait
+      margin: { top: 1440, right: 1440, bottom: 1440, left: 1440, header: 708, footer: 708 } } },
     headers: { default: new Header({ children: [p('[Título breve del manual]', 'Encabezado')] }), first: new Header({ children: [] }) },
     footers: { default: new Footer({ children: [new Paragraph({ style: 'Pie', children: [new TextRun({ children: ['Página ', PageNumber.CURRENT] })] })] }), first: new Footer({ children: [] }) },
     children: [...cover, ...toc, ...howTo, ...catalogue, ...unit],

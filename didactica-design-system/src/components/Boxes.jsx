@@ -1,6 +1,5 @@
 import React, { useId } from 'react';
 import { Icon } from './Icon.jsx';
-import { bloomLevel } from '../bloom.js';
 import { objectiveId, checkAlignment } from '../alignment.js';
 import BOXES from '../boxes.config.json';
 import { Reference } from './Reference.jsx';
@@ -48,25 +47,18 @@ export function KeyPoints({ items, before, title }) {
   );
 }
 
-const LevelTag = ({ level }) => {
-  const lvl = bloomLevel(level);
-  return (
-    <span className="du-tag tag" title={lvl ? `Nivel ${lvl.level} de Bloom` : undefined}>
-      {lvl ? `${lvl.level} · ${lvl.name}` : level}
-    </span>
-  );
-};
-
-/** “Objetivos”: numbered learning objectives (O1, O2…), each tagged with its Bloom (revised) level. */
+/**
+ * “Objetivos”: numbered learning objectives (O1, O2…). Each is written for one Bloom (revised)
+ * level; the level is not shown, but stays in `data-level` for the alignment check and the checker.
+ */
 export function Objectives({ items, intro = 'Al finalizar la unidad, usted será capaz de:', title }) {
   return (
     <Box kind="objectives" title={title}>
       {intro ? <p className="du-box__intro">{intro}</p> : null}
       <ol className="du-box__list du-box__list--objectives">
         {items.map((it, i) => (
-          <li key={i} id={`obj-${objectiveId(it, i)}`}>
+          <li key={i} id={`obj-${objectiveId(it, i)}`} data-level={it.level}>
             <span className="du-box__oid">{objectiveId(it, i)}</span>
-            <LevelTag level={it.level} />
             <span className="du-box__otext">{it.text}</span>
           </li>
         ))}
@@ -172,7 +164,8 @@ const ACTIVITY_TYPES = { pregunta: 'Pregunta', tarea: 'Tarea', caso: 'Caso', deb
 
 /**
  * “Actividades”: assessable questions and tasks. Item: string or
- * { type, text, level, objectives: ['O1'] } — level and objectives make the alignment visible.
+ * { type, text, level, objectives: ['O1'] }. Only the type is shown as a tag; the level and the
+ * objectives stay in data-level and data-objectives, and feed AlignmentTable.
  */
 export function Activities({ items, title }) {
   return (
@@ -181,12 +174,10 @@ export function Activities({ items, title }) {
         {items.map((it, i) => {
           const obj = typeof it === 'string' ? { text: it } : it;
           return (
-            <li key={i}>
+            <li key={i} data-level={obj.level || undefined} data-objectives={(obj.objectives || []).join(' ') || undefined}>
               <div className="du-box__q">
                 <span className="du-box__tags">
                   {obj.type ? <span className="du-tag tag">{ACTIVITY_TYPES[obj.type] || obj.type}</span> : null}
-                  {obj.level ? <LevelTag level={obj.level} /> : null}
-                  {(obj.objectives || []).map((o) => <a key={o} className="du-tag du-tag--link tag" href={`#obj-${o}`}>{o}</a>)}
                 </span>
                 <span>{obj.text}</span>
               </div>

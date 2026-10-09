@@ -2,6 +2,7 @@
 // plain HTML/CSS version of the system (no JavaScript at all).
 import { build } from 'esbuild';
 import { writeFileSync, rmSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 
 const tmp = new URL('../dist/.render-demo.mjs', import.meta.url);
 await build({
@@ -17,17 +18,18 @@ await build({
         subtitle: 'Fundamentos, estrategias y evaluación para la docencia universitaria',
         lede: 'Con desarrollos de didáctica general y de las didácticas específicas de las ciencias sociales y de las ciencias de la salud',
         ribbon: 'Material de estudio para la formación del profesorado universitario',
-        meta: ['Nivel: graduados universitarios en formación pedagógica', 'Citación: APA 7.ª edición', 'Año 2026'] })));
+        credits: ['[Autoría: nombre y apellido de cada autor]', '[Institución o unidad académica]'],
+        meta: ['Nivel: graduados universitarios en formación pedagógica', 'Citación: APA 7.ª edición', '[Edición] · [Ciudad] · 2026'] })));
       export const legend = renderToStaticMarkup(h(Page, { header: 'Didáctica de la Educación Superior', page: 3 }, h(LegendExample)));
       export const chapter = renderToStaticMarkup(h(Page, { header: 'Didáctica de la Educación Superior', page: 12 }, h(ChapterExample)));
       export const glossary = renderToStaticMarkup(h(Page, { header: 'Didáctica de la Educación Superior', page: 13 }, h(GlossaryExample)));
       export const diagrams = renderToStaticMarkup(h(Page, { header: 'Didáctica de la Educación Superior', page: 14 }, h(DiagramsExample)));
     `,
-    resolveDir: new URL('../src', import.meta.url).pathname,
+    resolveDir: fileURLToPath(new URL('../src', import.meta.url)),
     loader: 'jsx',
   },
   bundle: true, platform: 'node', format: 'esm', jsx: 'transform', loader: { '.jsx': 'jsx' }, packages: 'external',
-  outfile: tmp.pathname, logLevel: 'warning',
+  outfile: fileURLToPath(tmp), logLevel: 'warning',
 });
 const { cover, legend, chapter, glossary, diagrams } = await import(`${tmp.href}?t=${Date.now()}`);
 rmSync(tmp);
@@ -44,6 +46,7 @@ const html = `<!doctype html>
     body { margin: 0; background: var(--surface); padding: var(--space-5) var(--space-3); }
     .du-page + .du-page { margin-top: var(--space-5); }
     .theme-toggle { position: fixed; top: 12px; right: 12px; font: inherit; }
+    @media print { body { padding: 0; } .du-page + .du-page { margin-top: 0; } .theme-toggle { display: none; } }
   </style>
 </head>
 <body>

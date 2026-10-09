@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { build } from 'esbuild';
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { lintHtml } from '../lint/html.mjs';
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -15,7 +15,7 @@ async function render(jsx) {
     stdin: { contents: `import React from 'react'; import { renderToStaticMarkup } from 'react-dom/server'; import * as D from './src/index.js'; const h = React.createElement; export default renderToStaticMarkup(${jsx});`, resolveDir: root, loader: 'jsx' },
     bundle: true, platform: 'node', format: 'esm', jsx: 'transform', loader: { '.jsx': 'jsx' }, packages: 'external', outfile: out, logLevel: 'error',
   });
-  try { return (await import(out)).default; } finally { fs.rmSync(out, { force: true }); }
+  try { return (await import(pathToFileURL(out).href)).default; } finally { fs.rmSync(out, { force: true }); }
 }
 
 const WORKS = `[
@@ -39,17 +39,53 @@ test('Cite with an unknown id says so', async () => {
   assert.match(html, /obra sin registrar: zz/);
 });
 
-test('diagrams render a list fallback for narrow containers', async () => {
+test('objectives: no visible Bloom label; the level stays in data-level and the checker still reads it', async () => {
+  const html = await render(`h(D.Objectives, { items: [{ level: 'crear', text: 'Explicar algo.' }, { level: 'analizar', text: 'Comparar dos perspectivas.' }] })`);
+  assert.doesNotMatch(html, /du-tag/);
+  assert.doesNotMatch(html, /CREAR|Crear/);
+  assert.match(html, /data-level="crear"/);
+  const issues = lintHtml(html).filter((i) => i.rule === 'bloom-verb');
+  assert.equal(issues.length, 1);
+  assert.match(issues[0].message, /explicar/);
+});
+
+test('activities: type tag only; the level and objectives stay as data', async () => {
+  const html = await render(`h(D.Activities, { items: [{ type: 'tarea', level: 'analizar', objectives: ['O2'], text: 'Compare.' }, 'Sin etiquetas.'] })`);
+  assert.doesNotMatch(html, /ANALIZAR|Analizar|4 ·/);
+  assert.match(html, /data-level="analizar"/);
+  assert.doesNotMatch(html, />O2</);
+  assert.match(html, /data-objectives="O2"/);
+  assert.equal((html.match(/data-level=/g) || []).length, 1);
+});
+
+test('cover: mosaic by default with the nine box colours; variants; “[…]” lines as placeholders', async () => {
+  const html = await render(`h(D.TitlePage, { title: 'T', credits: ['[Autoría]', 'Ana Pérez'], meta: ['Año 2026'] })`);
+  assert.match(html, /du-title-page--mosaic/);
+  assert.equal((html.match(/du-cover-mosaic__cell/g) || []).length, 9);
+  assert.match(html, /var\(--keypoints-accent\)[\s\S]*var\(--references-accent\)/);
+  assert.equal((html.match(/du-placeholder/g) || []).length, 1);
+  for (const v of ['band', 'motif', 'editorial']) {
+    const out = await render(`h(D.TitlePage, { title: 'T', variant: '${v}', volume: 2, bleed: true })`);
+    assert.match(out, new RegExp(`du-title-page--${v} du-title-page--bleed`));
+    assert.doesNotMatch(out, /du-cover-mosaic/);
+  }
+  assert.match(await render(`h(D.TitlePage, { title: 'T', variant: 'editorial', volume: 2 })`), />02</);
+  assert.match(await render(`h(D.TitlePage, { title: 'T', variant: 'nope' })`), /du-title-page--mosaic/);
+});
+
+test('diagrams keep the drawing in a scroll frame and the list under “Ver como texto”', async () => {
   const html = await render(`h('div', null,
     h(D.ConceptWeb, { center: 'Aprendizaje', nodes: [{ label: 'Mediación social', relation: 'se produce en' }, { label: 'Carga cognitiva' }, { label: 'Motivación' }] }),
     h(D.CycleDiagram, { steps: [{ title: 'Planificar' }, { title: 'Evaluar' }, { title: 'Ajustar' }] }),
     h(D.Pyramid, { levels: [{ title: 'Hace' }, { title: 'Sabe' }] }))`);
   assert.equal((html.match(/class="du-diagram-list[" ]/g) || []).length, 3);
+  assert.equal((html.match(/<div class="du-diagram-scroll"[^>]*><svg class="du-diagram"/g) || []).length, 3);
+  assert.equal((html.match(/<details class="du-diagram-text"><summary[^>]*>Ver como texto<\/summary>/g) || []).length, 3);
   assert.match(html, /se produce en/);
   assert.match(html, /el ciclo vuelve al paso 1/);
 });
 
-test('the twelve v3.3 diagrams each render a list fallback with their content', async () => {
+test('the twelve v3.3 diagrams each render the drawing and a text version with their content', async () => {
   const html = await render(`h('div', null,
     h(D.TreeDiagram, { root: { label: 'Evaluación', children: [{ label: 'Formativa' }, { label: 'Sumativa' }] } }),
     h(D.TreeDiagram, { direction: 'right', root: { label: 'Raíz', children: [{ label: 'Hoja' }] } }),
@@ -66,6 +102,8 @@ test('the twelve v3.3 diagrams each render a list fallback with their content', 
     h(D.Iceberg, { visible: ['Plan de estudios'], hidden: ['Expectativas tácitas'] }))`);
   assert.equal((html.match(/<div class="du-diagram-list">/g) || []).length, 13);
   assert.equal((html.match(/<svg class="du-diagram"/g) || []).length, 13);
+  assert.equal((html.match(/<div class="du-diagram-scroll"[^>]*><svg class="du-diagram"/g) || []).length, 13);
+  assert.equal((html.match(/>Ver como texto<\/summary>/g) || []).length, 13);
   for (const s of ['parte de', 'Verbo', 'común', 'ZDP', '1978', 'Estudio memorístico', 'más cerca de Estudiante', 'Expectativas tácitas']) assert.ok(html.includes(s), s);
 });
 

@@ -57,37 +57,59 @@
   outline-offset: 2px;
 }
 
-/* ---------- Title page ---------- */
+/* ---------- Title page (cover) ---------- */
+
+/* One A4 page: on screen it keeps the A4 proportion; in print it fills the page area.
+   Title block at the top, ribbon, credits and details pinned to the bottom. */
 
 .du-title-page {
-  text-align: center;
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  text-align: left;
+  aspect-ratio: 210 / 297;
+  min-height: 30rem;
+}
+
+.du-title-page__top {
+  position: relative;
+}
+
+.du-title-page__bottom {
+  position: relative;
+  margin-top: auto;
+  padding-top: var(--space-6);
 }
 
 .du-title-page__kicker {
   margin: 0px;
-  margin-top: var(--space-6);
   text-transform: uppercase;
   color: var(--azure);
 }
 
 .du-title-page__title {
   margin: 0px;
-  margin-top: var(--space-4);
-  margin-bottom: var(--space-3);
+  margin-top: var(--space-3);
+  margin-bottom: var(--space-4);
   color: var(--navy);
+  max-width: 18ch;
 }
 
 .du-title-page__subtitle {
   margin: 0px;
+  margin-top: var(--space-4);
   margin-bottom: var(--space-2);
   font-style: italic;
   color: var(--ink);
+  max-width: 34em;
 }
 
 .du-title-page__lede {
   margin: 0px;
-  margin-bottom: var(--space-6);
   color: var(--ink-muted);
+  max-width: 34em;
 }
 
 .du-ribbon {
@@ -102,14 +124,149 @@
   color: var(--navy);
 }
 
+.du-title-page__credits {
+  margin-top: var(--space-5);
+}
+
+.du-title-page__credits p {
+  margin: 0px;
+  margin-bottom: var(--space-1);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.du-title-page__credits p:first-child {
+  font-weight: 700;
+  color: var(--navy);
+}
+
 .du-title-page__meta {
-  margin-top: var(--space-6);
+  margin-top: var(--space-4);
   color: var(--ink-muted);
 }
 
 .du-title-page__meta p {
   margin: 0px;
   margin-bottom: var(--space-1);
+}
+
+/* “[…]” placeholders: dashed frame so they are not mistaken for final text. */
+
+.du-placeholder {
+  border-radius: var(--radius-node);
+  padding-left: var(--space-2);
+  padding-right: var(--space-2);
+  font-style: italic;
+  color: var(--ink-muted);
+  width: -moz-fit-content;
+  width: fit-content;
+  border: var(--stroke-hair) dashed var(--rule-strong);
+}
+
+.du-cover-rule {
+  margin-top: var(--space-1);
+  display: block;
+  width: 3.5rem;
+  height: 4px;
+  background: var(--azure);
+}
+
+/* mosaic (default): the nine box colours as plain squares, the cover's signature strip */
+
+.du-cover-mosaic {
+  margin-bottom: 2.5rem;
+  display: grid;
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+  gap: 4px;
+}
+
+.du-cover-mosaic__cell {
+  display: block;
+  aspect-ratio: 1;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.du-title-page--mosaic .du-title-page__top {
+  margin-top: var(--space-2);
+}
+
+/* band: navy band with the title reversed out */
+
+.du-cover-band {
+  margin-bottom: var(--space-2);
+  padding-left: var(--space-6);
+  padding-right: var(--space-6);
+  padding-top: 2.5rem;
+  padding-bottom: var(--space-8);
+  background: var(--navy);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.du-cover-band .du-title-page__kicker {
+  color: var(--table-head-surface);
+}
+
+.du-cover-band .du-title-page__title {
+  color: var(--paper);
+}
+
+/* motif: nested circles in the diagram ramp, off the bottom-right corner */
+
+.du-cover-motif {
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 56%;
+  height: auto;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+/* the details stay in the free 42% at the left, clear of the circles */
+
+.du-title-page--motif .du-title-page__bottom {
+  max-width: 42%;
+}
+
+/* editorial: left rule and a large volume number */
+
+.du-title-page--editorial {
+  padding-left: var(--space-8);
+  border-left: 12px solid var(--navy);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.du-cover-volume {
+  margin: 0px;
+  margin-top: var(--space-6);
+  margin-bottom: var(--space-2);
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 96px;
+  line-height: 1;
+  color: var(--ramp-4);
+}
+
+@media (max-width: 480px) {
+  .du-title-page {
+    aspect-ratio: auto;
+    min-height: 36rem;
+  }
+
+  .du-cover-mosaic {
+    gap: 2px;
+    margin-bottom: var(--space-6);
+  }
+
+  .du-cover-volume {
+    font-size: 64px;
+  }
 }
 
 /* ---------- Chapter opener and headings ---------- */
@@ -459,7 +616,7 @@
        column-gap: var(--space-3);
   row-gap: var(--space-1);
   padding-left: 0px;
-  grid-template-columns: 2em 8.5em 1fr;
+  grid-template-columns: 2em 1fr;
 }
 
 .du-box__oid {
@@ -476,20 +633,6 @@
   margin-right: var(--space-2);
 }
 
-@media (max-width: 480px) {
-  .du-box__list--objectives > li {
-    grid-template-columns: 2em 1fr;
-  }
-
-  .du-box__list--objectives .du-box__otext {
-    grid-column: 2;
-  }
-
-  .du-box__list--objectives .du-tag {
-    justify-self: start;
-  }
-}
-
 .du-tag {
   display: inline-block;
   white-space: nowrap;
@@ -504,11 +647,6 @@
   color: var(--box-accent);
   border-color: var(--box-accent);
   background: var(--paper);
-}
-
-.du-box--objectives .du-tag {
-  min-width: 8.5em;
-  text-align: center;
 }
 
 .du-box__refs .du-reference:last-child {
@@ -561,14 +699,6 @@
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-1);
-}
-
-.du-tag--link {
-  text-decoration: none;
-}
-
-.du-tag--link:hover {
-  text-decoration: underline;
 }
 
 .du-box__discipline {
@@ -775,25 +905,69 @@
   margin: 0 auto;
 }
 
-/* Below 600px of available width the SVG would shrink its labels under 12px:
-   the same structure is shown as a list instead (also the screen-reader view). */
+/* The drawing always shows. Below 600px of available width it keeps 600px (14px labels
+   stay above 12px) and its frame scrolls sideways. The same structure as a list sits
+   under it, collapsed behind “Ver como texto”. */
 
 .du-diagram-wrap {
   container-type: inline-size;
 }
 
-.du-diagram-list {
+.du-diagram-scroll {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  border-radius: var(--radius-node);
+}
+
+.du-diagram-scroll:focus-visible {
+  outline: var(--stroke-strong) solid var(--focus);
+  outline-offset: 2px;
+}
+
+.du-diagram-hint {
   display: none;
+  margin: 0px;
+  margin-top: var(--space-1);
+  color: var(--ink-muted);
+  font-family: var(--font-sans);
+  font-size: 14px;
 }
 
 @container (max-width: 599px) {
   .du-diagram {
-    display: none;
+    min-width: 600px;
   }
 
-  .du-diagram-list {
+  .du-diagram-scroll {
+    padding-bottom: 4px;
+  }
+
+  .du-diagram-hint {
     display: block;
   }
+}
+
+.du-diagram-text {
+  margin-top: var(--space-2);
+}
+
+.du-diagram-text > summary {
+  cursor: pointer;
+  color: var(--ink-muted);
+  font-family: var(--font-sans);
+  font-size: 14px;
+}
+
+.du-diagram-text > summary:hover {
+  color: var(--navy);
+}
+
+.du-diagram-text[open] > summary {
+  margin-bottom: var(--space-2);
+}
+
+.du-diagram-list, .du-diagram-list li {
+  font-family: var(--font-sans);
 }
 
 .du-diagram-list {
@@ -889,10 +1063,14 @@ ol.du-diagram-list--pyramid {
 
 @media print {
   .du-diagram {
-    display: block !important;
+    min-width: 0 !important;
   }
 
-  .du-diagram-list {
+  .du-diagram-scroll {
+    overflow: visible;
+  }
+
+  .du-diagram-text, .du-diagram-hint {
     display: none !important;
   }
 }
@@ -1258,11 +1436,103 @@ ul.du-diagram-list__nested li {
 
 /* ---------- Print: the manual's own page ---------- */
 
+/* A4 or Letter portrait, whichever the printer uses: no size is forced. The margins match
+   the Word template (2.54cm), which leaves a 15.9cm (A4) or 16.5cm (Letter) text block, so
+   600px diagrams print at full size. Printed pages are numbered in the bottom margin;
+   the cover page has no number. */
+
+@page {
+  margin: 2.54cm;
+
+  @bottom-center {
+    content: counter(page);
+
+    font-family: var(--font-sans);
+
+    font-size: 9pt;
+
+    color: var(--ink-muted);
+  }
+}
+
+@page :first {
+  @bottom-center {
+    content: none;
+  }
+}
+
+/* bleed covers: no paper margin, the cover pads itself to the same 2.54cm */
+
+@page du-cover {
+  margin: 0;
+
+  @bottom-center {
+    content: none;
+  }
+}
+
 @media print {
+  html, body {
+    background: var(--paper) !important;
+  }
+
   .du-page {
     box-shadow: none;
     max-width: none;
     padding: 0;
+  }
+
+  /* Every screen sheet starts a new sheet of paper; its screen-only "Página N" footer
+     would not match the printed page numbers, so the margin number replaces it. */
+
+  .du-page + .du-page {
+    -moz-column-break-before: page;
+         break-before: page;
+  }
+
+  .du-page-footer {
+    display: none;
+  }
+
+  /* The cover fills the page area (100vh is the page box in print) and ends the page. */
+
+  .du-title-page {
+    aspect-ratio: auto;
+    min-height: 0;
+    height: 100vh;
+    -moz-column-break-after: page;
+         break-after: page;
+    -moz-column-break-inside: avoid;
+         break-inside: avoid;
+  }
+
+  .du-title-page--bleed {
+    page: du-cover;
+    padding: 2.54cm;
+  }
+
+  .du-title-page--bleed.du-title-page--mosaic .du-cover-mosaic {
+    margin: -2.54cm -2.54cm 2.5rem;
+    gap: 0;
+  }
+
+  .du-title-page--bleed .du-cover-band {
+    margin: -2.54cm -2.54cm 0.5rem;
+    padding: 3.5cm 2.54cm 1.5cm;
+  }
+
+  .du-title-page--bleed.du-title-page--editorial {
+    border-left-width: 1.2cm;
+    padding-left: 2.54cm;
+  }
+
+  .du-placeholder {
+    border-style: dashed;
+  }
+
+  .du-body, .du-list__item {
+    orphans: 3;
+    widows: 3;
   }
 
   .du-box, .du-legend__item {
@@ -1296,10 +1566,6 @@ ul.du-diagram-list__nested li {
     padding-left: var(--space-5);
   }
 
-  .du-tag--link {
-    color: var(--box-accent);
-  }
-
   .du-term {
     text-decoration: none;
   }
@@ -1315,6 +1581,18 @@ ul.du-diagram-list__nested li {
   .du-chapter {
     -moz-column-break-before: page;
          break-before: page;
+  }
+
+  /* A chapter that opens a sheet already starts a new page with it (and its running header). */
+
+  .du-running-header + .du-chapter, .du-page > .du-chapter:first-child {
+    -moz-column-break-before: auto;
+         break-before: auto;
+  }
+
+  .du-running-header {
+    -moz-column-break-after: avoid;
+         break-after: avoid;
   }
 
   .du-h2, .du-h3 {

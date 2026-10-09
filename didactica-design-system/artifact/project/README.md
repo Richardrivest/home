@@ -6,11 +6,11 @@ Every unit follows the same sequence. Never reorder it.
 
 1. `ChapterOpener`: the “Unidad N” kicker, the title and a lead paragraph.
 2. `KeyPoints` (“Puntos Clave”): 3–5 one-line key points, plus 1–3 “Antes de leer” questions.
-3. `Objectives` (“Objetivos”): 3–5 objectives, numbered O1, O2…, each tagged with its Bloom level.
+3. `Objectives` (“Objetivos”): 3–5 objectives, numbered O1, O2…, each written for one Bloom level (kept as data for the alignment check, not shown).
 4. The body: numbered sections (`Heading` 2 and 3) and `Paragraph` with `Cite`. Add `Important`, `CommonMistake`, `Classroom`, `DataTable` and `Figure` as needed, within the density rules below.
 5. `ThinkFurther` (“Para Seguir Pensando”): 2–4 open questions, not assessed, followed by the “Antes de leer” questions again (`revisit`).
 6. `SelfCheck` (“Autoevaluación”): 3–5 recall questions with answers, including one review item from an earlier unit.
-7. `Activities` (“Actividades”): assessable tasks, each tagged with its type, Bloom level and the objectives it practises.
+7. `Activities` (“Actividades”): assessable tasks, each tagged with its type; the objectives it practises and its Bloom level are kept as data for the alignment table, not shown.
 8. `AlignmentTable`: which activities practise each objective, with any gaps flagged.
 9. `ReferencesBox` (“Referencias”): the unit's APA 7 reference list, generated from the citations with `auto`.
 
@@ -111,7 +111,7 @@ Every citation names the author(s), the year and the page. Where an example show
 
 ## Learning objectives: Bloom's revised taxonomy
 
-Every `Objectives` box uses Anderson and Krathwohl's revised taxonomy (2001). Tag each objective with its level, and start it with a verb from that level. Tag each activity with the level it demands.
+Every `Objectives` box uses Anderson and Krathwohl's revised taxonomy (2001). Give each objective its level (`level`) and start it with a verb from that level; give each activity the level it demands. Neither box shows the level: it stays in the markup (`data-level`) for `AlignmentTable` and the content checker.
 
 | Level | Name | Verbs |
 |---|---|---|
@@ -170,7 +170,7 @@ The scale has seven steps, about 1.2 apart: 12, 14, 16, 19, 23, 28 and 40px. Bod
 | Ordered steps | `ProcessFlow` |
 | Comparisons by criteria | `DataTable` with `rowHeader` |
 
-Every SVG diagram draws in the same vocabulary: `diagram-node` boxes with `diagram-node-border`, one `diagram-node-strong` focus, `rule-strong` connectors, `ramp-1`…`ramp-4` for ordered levels, and light translucent accents (Venn) or `water`/`ice` (Iceberg) where regions overlap text, so ink labels keep 4.5:1. Below 600px of available width every one of them switches to the same structure as a list, so labels never shrink under 12px; the list is also what screen readers get. Print always shows the drawing. Every diagram goes inside a `Figure` with its number, title and source note. Labels are short noun phrases, and the meaning never depends on colour alone.
+Every SVG diagram draws in the same vocabulary: `diagram-node` boxes with `diagram-node-border`, one `diagram-node-strong` focus, `rule-strong` connectors, `ramp-1`…`ramp-4` for ordered levels, and light translucent accents (Venn) or `water`/`ice` (Iceberg) where regions overlap text, so ink labels keep 4.5:1. The drawing always shows. Below 600px of available width it keeps a 600px width inside a frame that scrolls sideways, under a “Deslizá para ver el diagrama completo →” hint, so labels never shrink under 12px. “Ver como texto” under every drawing opens the same structure as a list, for phones and screen readers. Print shows the drawing without the text version. Every diagram goes inside a `Figure` with its number, title and source note. Labels are short noun phrases, and the meaning never depends on colour alone.
 
 **Print.** Body text is justified, and each unit starts on a new page. Boxes and figures never split. Box frames print 1.5px in the accent, with the header band kept. Self-check answers print as a key, and shadows drop.
 
@@ -194,6 +194,16 @@ Box icons come from Lucide (v0.460.0, ISC licence), copied from the official pac
 | Misconceptions | Belief and correction | Belief, cited correction and explanation | The refutation-text structure. |
 | Practice | Open tasks only | `SelfCheck` with answers and a review item | Retrieval practice with feedback. |
 | Application | None | `Classroom` (“En el Aula”) worked cases | Worked examples for novices. |
+
+### v3.4 (diagrams on narrow screens)
+
+| Area | Before | Now |
+|---|---|---|
+| Diagrams below 600px | Replaced by a bulleted list, so phones, narrow columns and the cards on this page showed text instead of a picture | The drawing stays at 600px in a frame that scrolls sideways, with a “Deslizá para ver el diagrama completo →” hint; labels stay at 12px or larger |
+| Text version | Shown only below 600px | Under every drawing at every width, collapsed behind “Ver como texto”; sans face throughout; left out of print |
+| Print on A4 / Letter | Screen sheets ran into one another across paper pages; “Página N” footers landed mid-page | Any portrait paper with 2.54cm margins; each sheet starts a new page; pages numbered in the margin, cover excepted; diagrams at full text width |
+| Cover | Centred text in the top half of the page | One A4 page; `mosaic` variant by default (the nine box colours as plain squares), plus `band`, `motif` and `editorial`; full page in print, optional `bleed`; `credits`; “[…]” placeholders in a dashed frame; the Word cover matches |
+| Word template page | Letter; boxes and tables 6.5in, wider than an A4 text block | A4 portrait; boxes and tables 6.27in, inside the margins on A4 and Letter |
 
 ### v3.3 (tables and diagrams)
 

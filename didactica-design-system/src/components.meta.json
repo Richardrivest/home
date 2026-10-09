@@ -27,8 +27,26 @@
   {
     "name": "TitlePage",
     "group": "Layout",
-    "summary": "The manual's cover: kicker, title, italic subtitle, lede, ribbon and metadata lines, all centred.",
+    "summary": "The manual's cover, one A4 page: title block at the top, ribbon, credits and details at the foot. Four variants (mosaic by default, band, motif, editorial); “[…]” lines show as placeholders.",
     "props": [
+      [
+        "variant",
+        "'mosaic' | 'band' | 'motif' | 'editorial'",
+        false,
+        "Cover design. Default 'mosaic': the nine box colours as a strip of plain squares."
+      ],
+      [
+        "bleed",
+        "boolean",
+        false,
+        "In print, colour runs to the paper edge."
+      ],
+      [
+        "volume",
+        "number | string",
+        false,
+        "Volume or unit number, shown large by 'editorial'."
+      ],
       [
         "kicker",
         "string",
@@ -58,6 +76,12 @@
         "string",
         false,
         "Text between the two navy rules."
+      ],
+      [
+        "credits",
+        "string[]",
+        false,
+        "Authors and institution; the first line is bold. “[…]” marks a placeholder."
       ],
       [
         "meta",
@@ -308,7 +332,7 @@
   {
     "name": "Objectives",
     "group": "Boxes",
-    "summary": "“Objetivos”: numbered learning objectives (O1, O2…), each tagged with its Bloom (revised) level.",
+    "summary": "“Objetivos”: numbered learning objectives (O1, O2…), each written for one Bloom (revised) level; the level is kept as data, not shown.",
     "props": [
       [
         "items",
@@ -476,13 +500,13 @@
   {
     "name": "Activities",
     "group": "Boxes",
-    "summary": "“Actividades”: assessable questions and tasks, tagged with type, Bloom level and the objectives they practise.",
+    "summary": "“Actividades”: assessable questions and tasks, tagged with their type; the objectives they practise and the Bloom level are kept as data for the alignment table, not shown.",
     "props": [
       [
         "items",
         "(string | { type?; level?: BloomId; objectives?: string[]; text })[]",
         true,
-        "Numbered activities; objectives link to O1, O2…"
+        "Numbered activities; objectives (O1, O2…) are kept as data for AlignmentTable, not shown."
       ],
       [
         "title",
@@ -755,7 +779,7 @@
   {
     "name": "ConceptWeb",
     "group": "Diagrams",
-    "summary": "Concept web: a central concept linked to up to 8 related concepts, with relation labels and short details. Below 600px of width it shows the same structure as a list.",
+    "summary": "Concept web: a central concept linked to up to 8 related concepts, with relation labels and short details. Below 600px of width it keeps its size and scrolls sideways; “Ver como texto” shows the same structure as a list.",
     "props": [
       [
         "center",
@@ -780,7 +804,7 @@
   {
     "name": "CycleDiagram",
     "group": "Diagrams",
-    "summary": "Cycle: 3–8 steps around a circle joined by arrows, with an optional centre label. Below 600px of width it shows the same structure as a list.",
+    "summary": "Cycle: 3–8 steps around a circle joined by arrows, with an optional centre label. Below 600px of width it keeps its size and scrolls sideways; “Ver como texto” shows the same structure as a list.",
     "props": [
       [
         "steps",
@@ -805,7 +829,7 @@
   {
     "name": "Pyramid",
     "group": "Diagrams",
-    "summary": "Pyramid of levels, top (most advanced) first, e.g. Miller's pyramid; descriptions to the right. Below 600px of width it shows the same structure as a list.",
+    "summary": "Pyramid of levels, top (most advanced) first, e.g. Miller's pyramid; descriptions to the right. Below 600px of width it keeps its size and scrolls sideways; “Ver como texto” shows the same structure as a list.",
     "props": [
       [
         "levels",
@@ -843,7 +867,7 @@
   {
     "name": "TreeDiagram",
     "group": "Diagrams",
-    "summary": "Hierarchy or classification: a root and up to three levels below. Top-down with up to 4 leaves, left to right with more. Below 600px of width it shows the same structure as a list.",
+    "summary": "Hierarchy or classification: a root and up to three levels below. Top-down with up to 4 leaves, left to right with more. Below 600px of width it keeps its size and scrolls sideways; “Ver como texto” shows the same structure as a list.",
     "props": [
       [
         "root",
@@ -868,7 +892,7 @@
   {
     "name": "ConceptMap",
     "group": "Diagrams",
-    "summary": "Concept map (Novak): concepts in levels joined by labelled arrows, so each link reads as a proposition. Below 600px of width it shows the same structure as a list.",
+    "summary": "Concept map (Novak): concepts in levels joined by labelled arrows, so each link reads as a proposition. Below 600px of width it keeps its size and scrolls sideways; “Ver como texto” shows the same structure as a list.",
     "props": [
       [
         "nodes",
@@ -893,7 +917,7 @@
   {
     "name": "MindMap",
     "group": "Diagrams",
-    "summary": "Mind map: a central topic with branches to both sides and short ideas hanging from each. Below 600px of width it shows the same structure as a list.",
+    "summary": "Mind map: a central topic with branches to both sides and short ideas hanging from each. Below 600px of width it keeps its size and scrolls sideways; “Ver como texto” shows the same structure as a list.",
     "props": [
       [
         "center",
@@ -918,7 +942,7 @@
   {
     "name": "VennDiagram",
     "group": "Diagrams",
-    "summary": "Venn diagram: what two or three concepts share and what is exclusive to each. Below 600px of width it shows the same structure as a list.",
+    "summary": "Venn diagram: what two or three concepts share and what is exclusive to each. Below 600px of width it keeps its size and scrolls sideways; “Ver como texto” shows the same structure as a list.",
     "props": [
       [
         "sets",
@@ -943,7 +967,7 @@
   {
     "name": "QuadrantMatrix",
     "group": "Diagrams",
-    "summary": "2 × 2 matrix: two axes (low → high) and four quadrants; the high–high quadrant is emphasised. Below 600px of width it shows the same structure as a list.",
+    "summary": "2 × 2 matrix: two axes (low → high) and four quadrants; the high–high quadrant is emphasised. Below 600px of width it keeps its size and scrolls sideways; “Ver como texto” shows the same structure as a list.",
     "props": [
       [
         "xAxis",
@@ -974,7 +998,7 @@
   {
     "name": "Timeline",
     "group": "Diagrams",
-    "summary": "Timeline: dated events along an axis, labels alternating above and below (up to 8). Below 600px of width it shows the same structure as a list.",
+    "summary": "Timeline: dated events along an axis, labels alternating above and below (up to 8). Below 600px of width it keeps its size and scrolls sideways; “Ver como texto” shows the same structure as a list.",
     "props": [
       [
         "events",
@@ -993,7 +1017,7 @@
   {
     "name": "Fishbone",
     "group": "Diagrams",
-    "summary": "Cause-and-effect (Ishikawa) diagram: categories of causes along a spine that leads to an effect. Below 600px of width it shows the same structure as a list.",
+    "summary": "Cause-and-effect (Ishikawa) diagram: categories of causes along a spine that leads to an effect. Below 600px of width it keeps its size and scrolls sideways; “Ver como texto” shows the same structure as a list.",
     "props": [
       [
         "effect",
@@ -1018,7 +1042,7 @@
   {
     "name": "Spectrum",
     "group": "Diagrams",
-    "summary": "Continuum between two poles, with items placed by position (0 = left pole, 1 = right pole). Below 600px of width it shows the same structure as a list.",
+    "summary": "Continuum between two poles, with items placed by position (0 = left pole, 1 = right pole). Below 600px of width it keeps its size and scrolls sideways; “Ver como texto” shows the same structure as a list.",
     "props": [
       [
         "left",
@@ -1049,7 +1073,7 @@
   {
     "name": "Funnel",
     "group": "Diagrams",
-    "summary": "Funnel: stages that narrow from the general to the specific (curriculum levels, selection processes). Below 600px of width it shows the same structure as a list.",
+    "summary": "Funnel: stages that narrow from the general to the specific (curriculum levels, selection processes). Below 600px of width it keeps its size and scrolls sideways; “Ver como texto” shows the same structure as a list.",
     "props": [
       [
         "stages",
@@ -1068,7 +1092,7 @@
   {
     "name": "Staircase",
     "group": "Diagrams",
-    "summary": "Staircase: progressive levels that build on one another, lowest at the left (Bloom, rubric levels). Below 600px of width it shows the same structure as a list.",
+    "summary": "Staircase: progressive levels that build on one another, lowest at the left (Bloom, rubric levels). Below 600px of width it keeps its size and scrolls sideways; “Ver como texto” shows the same structure as a list.",
     "props": [
       [
         "steps",
@@ -1087,7 +1111,7 @@
   {
     "name": "NestedCircles",
     "group": "Diagrams",
-    "summary": "Nested circles: contexts or categories that contain one another, with a legend. Below 600px of width it shows the same structure as a list.",
+    "summary": "Nested circles: contexts or categories that contain one another, with a legend. Below 600px of width it keeps its size and scrolls sideways; “Ver como texto” shows the same structure as a list.",
     "props": [
       [
         "layers",
@@ -1106,7 +1130,7 @@
   {
     "name": "Iceberg",
     "group": "Diagrams",
-    "summary": "Iceberg: what is visible above the waterline and what lies beneath it (explicit and hidden curriculum). Below 600px of width it shows the same structure as a list.",
+    "summary": "Iceberg: what is visible above the waterline and what lies beneath it (explicit and hidden curriculum). Below 600px of width it keeps its size and scrolls sideways; “Ver como texto” shows the same structure as a list.",
     "props": [
       [
         "visible",

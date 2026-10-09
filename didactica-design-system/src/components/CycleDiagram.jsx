@@ -1,5 +1,6 @@
 import React, { useId } from 'react';
 import { wrap, textWidth } from '../diagram-utils.js';
+import { DiagramScroll, DiagramText } from './diagrams/parts.jsx';
 
 const W = 680, H = 420, LH = 18;
 
@@ -16,9 +17,11 @@ export function CycleDiagram({ steps, center, label }) {
     const [x1, y1] = p(a1), [x2, y2] = p(a2);
     return `M ${x1} ${y1} A ${R} ${R} 0 0 1 ${x2} ${y2}`;
   };
+  const aria = label || `Ciclo: ${steps.map((s) => s.title).join(', ')}`;
   return (
     <div className="du-diagram-wrap">
-    <svg className="du-diagram" viewBox={`0 0 ${W} ${H}`} role="img" aria-label={label || `Ciclo: ${steps.map((s) => s.title).join(', ')}`}>
+    <DiagramScroll label={aria}>
+    <svg className="du-diagram" viewBox={`0 0 ${W} ${H}`} role="img" aria-label={aria}>
       <defs>
         <marker id={`a${id}`} viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
           <path className="du-dg-arrowhead" d="M 0 0 L 10 5 L 0 10 z" />
@@ -42,6 +45,8 @@ export function CycleDiagram({ steps, center, label }) {
         );
       })}
     </svg>
+    </DiagramScroll>
+    <DiagramText>
     <div className="du-diagram-list">
       {center ? <p className="du-diagram-list__center diagram-title">{center}</p> : null}
       <ol className="du-diagram-list__cycle">
@@ -51,6 +56,7 @@ export function CycleDiagram({ steps, center, label }) {
       </ol>
       <p className="du-diagram-list__note diagram-label">↻ Después del paso {steps.length}, el ciclo vuelve al paso 1.</p>
     </div>
+    </DiagramText>
     </div>
   );
 }
