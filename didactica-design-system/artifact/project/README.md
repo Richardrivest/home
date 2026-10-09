@@ -59,7 +59,7 @@ Objectives, activities and assessment must aim at the same performances. The sys
 
 - Objectives are numbered O1, O2… in order, or you can pass an `id`.
 - Each activity names the objectives it practises (`objectives: ['O2']`) and the Bloom level it demands (`level`).
-- `AlignmentTable` lists, for each objective, its activities and its status; levels are not shown, except in the status message when an activity is pitched too low. It flags an objective without an activity, and an activity pitched below its objective's level.
+- `AlignmentTable` lists, for each objective, its level, its activities and its status. It flags an objective without an activity, and an activity pitched below its objective's level.
 - `checkAlignment(objectives, activities)` returns the same problems as data, for authoring checks.
 
 Pass the same two arrays to `Objectives`, `Activities` and `AlignmentTable`.

@@ -57,12 +57,6 @@ test('activities: type and objective tags only; the level stays in data-level', 
   assert.equal((html.match(/data-level=/g) || []).length, 1);
 });
 
-test('alignment table: Objetivo, Actividades and Estado columns, no Nivel; a mismatch still names the levels', async () => {
-  const html = await render(`h(D.AlignmentTable, { objectives: [{ level: 'analizar', text: 'Comparar.' }], activities: [{ level: 'recordar', objectives: ['O1'], text: 'Liste.' }] })`);
-  assert.deepEqual([...html.matchAll(/<th scope="col"[^>]*>([^<]+)<\/th>/g)].map((m) => m[1]), ['Objetivo', 'Actividades', 'Estado']);
-  assert.match(html, /du-alignment__bad[^>]*>Actividad 1 \(Recordar\) está por debajo del nivel de O1 \(Analizar\)/);
-});
-
 test('cover: mosaic by default with the nine box colours; variants; “[…]” lines as placeholders', async () => {
   const html = await render(`h(D.TitlePage, { title: 'T', credits: ['[Autoría]', 'Ana Pérez'], meta: ['Año 2026'] })`);
   assert.match(html, /du-title-page--mosaic/);
