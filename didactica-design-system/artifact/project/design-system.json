@@ -100,8 +100,8 @@
   },
   "lastChange": {
     "by": "Ricardo",
-    "at": "2026-10-09T01:53:46Z",
+    "at": "2026-10-09T01:56:08Z",
     "via": "Claude Code",
-    "note": "v3.4: Objectives and Activities no longer show Bloom level labels (the level stays as data for the alignment check); the alignment table drops its Nivel column."
+    "note": "v3.4: the alignment table keeps its Nivel column (restored). Objectives and Activities no longer show Bloom level labels."
   }
 }
