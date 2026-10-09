@@ -23,7 +23,7 @@ const SERIF = 'Cambria';
 const SANS = 'Calibri';
 const pt = (n) => Math.round(n * 2); // half-points
 // Text block: A4 width (11906) minus two 1in margins, 6.27in. It also fits Letter (6.5in),
-// so boxes and tables stay inside the margins whichever paper the document is set to.
+// so boxes and tables stay inside the margins if a document is switched to Letter.
 const W = 9026;
 const icon = (kind, white = false) => fs.readFileSync(path.join(root, `icons/png/${kind}${white ? '-white' : ''}.png`));
 
@@ -281,7 +281,8 @@ const doc = new Document({
   styles: { default: { document: { run: { font: SERIF, size: pt(12) } } }, paragraphStyles },
   numbering: { config: numbering },
   sections: [{
-    properties: { titlePage: true, page: { size: { width: 12240, height: 15840 }, margin: { top: 1440, right: 1440, bottom: 1440, left: 1440, header: 708, footer: 708 } } },
+    properties: { titlePage: true, page: { size: { width: 11906, height: 16838 }, // A4 portrait
+      margin: { top: 1440, right: 1440, bottom: 1440, left: 1440, header: 708, footer: 708 } } },
     headers: { default: new Header({ children: [p('[Título breve del manual]', 'Encabezado')] }), first: new Header({ children: [] }) },
     footers: { default: new Footer({ children: [new Paragraph({ style: 'Pie', children: [new TextRun({ children: ['Página ', PageNumber.CURRENT] })] })] }), first: new Footer({ children: [] }) },
     children: [...cover, ...toc, ...howTo, ...catalogue, ...unit],
