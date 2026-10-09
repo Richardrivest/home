@@ -27,8 +27,26 @@
   {
     "name": "TitlePage",
     "group": "Layout",
-    "summary": "The manual's cover: kicker, title, italic subtitle, lede, ribbon and metadata lines, all centred.",
+    "summary": "The manual's cover, one A4 page: title block at the top, ribbon, credits and details at the foot. Four variants (mosaic by default, band, motif, editorial); “[…]” lines show as placeholders.",
     "props": [
+      [
+        "variant",
+        "'mosaic' | 'band' | 'motif' | 'editorial'",
+        false,
+        "Cover design. Default 'mosaic': the nine box colours and icons as a strip."
+      ],
+      [
+        "bleed",
+        "boolean",
+        false,
+        "In print, colour runs to the paper edge."
+      ],
+      [
+        "volume",
+        "number | string",
+        false,
+        "Volume or unit number, shown large by 'editorial'."
+      ],
       [
         "kicker",
         "string",
@@ -58,6 +76,12 @@
         "string",
         false,
         "Text between the two navy rules."
+      ],
+      [
+        "credits",
+        "string[]",
+        false,
+        "Authors and institution; the first line is bold. “[…]” marks a placeholder."
       ],
       [
         "meta",

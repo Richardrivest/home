@@ -110,211 +110,10 @@ window.Didactica = (() => {
   }
 
   // src/components/TitlePage.jsx
-  var import_react2 = __toESM(require_react(), 1);
-  function TitlePage({ kicker, title, subtitle, lede, ribbon, meta = [] }) {
-    return /* @__PURE__ */ import_react2.default.createElement("header", { className: "du-title-page" }, kicker ? /* @__PURE__ */ import_react2.default.createElement("p", { className: "du-title-page__kicker cover-kicker" }, kicker) : null, /* @__PURE__ */ import_react2.default.createElement("h1", { className: "du-title-page__title cover-title" }, title), subtitle ? /* @__PURE__ */ import_react2.default.createElement("p", { className: "du-title-page__subtitle cover-subtitle" }, subtitle) : null, lede ? /* @__PURE__ */ import_react2.default.createElement("p", { className: "du-title-page__lede cover-lede" }, lede) : null, ribbon ? /* @__PURE__ */ import_react2.default.createElement("p", { className: "du-ribbon ribbon" }, ribbon) : null, meta.length ? /* @__PURE__ */ import_react2.default.createElement("div", { className: "du-title-page__meta" }, meta.map((line, i) => /* @__PURE__ */ import_react2.default.createElement("p", { key: i, className: "cover-meta" }, line))) : null);
-  }
-
-  // src/components/TableOfContents.jsx
   var import_react3 = __toESM(require_react(), 1);
-  function TableOfContents({ title = "\xCDndice", entries }) {
-    return /* @__PURE__ */ import_react3.default.createElement("nav", { "aria-label": title }, /* @__PURE__ */ import_react3.default.createElement("h2", { className: "du-toc-title toc-title" }, title), /* @__PURE__ */ import_react3.default.createElement("ol", { className: "du-toc" }, entries.map((e, i) => /* @__PURE__ */ import_react3.default.createElement("li", { key: i, className: `du-toc__entry du-toc__entry--${e.level || 1} body` }, /* @__PURE__ */ import_react3.default.createElement("span", { className: "du-toc__title" }, e.title), /* @__PURE__ */ import_react3.default.createElement("span", { className: "du-toc__leader", "aria-hidden": "true" }), /* @__PURE__ */ import_react3.default.createElement("span", { className: "du-toc__page" }, e.page)))));
-  }
-
-  // src/components/ChapterOpener.jsx
-  var import_react4 = __toESM(require_react(), 1);
-  function ChapterOpener({ number, title, lead, id }) {
-    return /* @__PURE__ */ import_react4.default.createElement("header", { className: "du-chapter" }, number != null ? /* @__PURE__ */ import_react4.default.createElement("p", { className: "du-chapter__kicker chapter-kicker" }, "Unidad ", number) : null, /* @__PURE__ */ import_react4.default.createElement("h1", { id, className: "du-chapter__title h1" }, title), lead ? /* @__PURE__ */ import_react4.default.createElement("p", { className: "du-chapter__lead lead" }, lead) : null);
-  }
-
-  // src/components/Heading.jsx
-  var import_react5 = __toESM(require_react(), 1);
-  var TAGS = { 1: "h1", 2: "h2", 3: "h3" };
-  function Heading({ level = 2, children, id }) {
-    const l = TAGS[level] ? level : 2;
-    const Tag = TAGS[l];
-    return /* @__PURE__ */ import_react5.default.createElement(Tag, { id, className: `du-h${l} h${l}` }, children);
-  }
-
-  // src/components/Paragraph.jsx
-  var import_react6 = __toESM(require_react(), 1);
-  function Paragraph({ children }) {
-    return /* @__PURE__ */ import_react6.default.createElement("p", { className: "du-body body" }, children);
-  }
-
-  // src/components/BulletList.jsx
-  var import_react7 = __toESM(require_react(), 1);
-  function BulletList({ items }) {
-    return /* @__PURE__ */ import_react7.default.createElement("ul", { className: "du-list" }, items.map((item, i) => {
-      const text = typeof item === "string" ? item : item.text;
-      const sub = typeof item === "string" ? null : item.items;
-      return /* @__PURE__ */ import_react7.default.createElement("li", { key: i, className: "du-list__item list-item" }, text, sub && sub.length ? /* @__PURE__ */ import_react7.default.createElement(BulletList, { items: sub }) : null);
-    }));
-  }
-
-  // src/components/Quote.jsx
-  var import_react10 = __toESM(require_react(), 1);
-
-  // src/components/Cite.jsx
-  var import_react9 = __toESM(require_react(), 1);
-
-  // src/cite.js
-  var authorList = (authors, joiner) => {
-    const a = [].concat(authors);
-    if (a.length >= 3) return `${a[0]} et al.`;
-    if (a.length === 2) return `${a[0]} ${joiner} ${a[1]}`;
-    return a[0] ?? "";
-  };
-  var formatLocator = ({ page, locator }) => {
-    if (locator) return locator;
-    if (page == null || page === "") return "";
-    const p = String(page).trim().replace(/\s*[-–]\s*/, "\u2013");
-    return `${p.includes("\u2013") ? "pp." : "p."} ${p}`;
-  };
-  var tail = (w) => [w.year, formatLocator(w)].filter(Boolean).join(", ");
-  function formatCitation(work, { narrative = false } = {}) {
-    if (narrative) return `${authorList(work.authors, "y")} (${tail(work)})`;
-    return `(${authorList(work.authors, "&")}, ${tail(work)})`;
-  }
-  function formatCitations(works) {
-    const sorted = [...works].sort((x, y) => String([].concat(x.authors)[0]).localeCompare(String([].concat(y.authors)[0]), "es"));
-    return `(${sorted.map((w) => `${authorList(w.authors, "&")}, ${tail(w)}`).join("; ")})`;
-  }
-
-  // src/components/Bibliography.jsx
-  var import_react8 = __toESM(require_react(), 1);
-
-  // src/references.js
-  var initials = (given = "") => given.trim().split(/\s+/).filter(Boolean).map(
-    (part) => part.split("-").map((p) => /^[A-ZÁÉÍÓÚÑÜ]\.?$/u.test(p) ? p.replace(/\.?$/, ".") : `${p[0].toUpperCase()}.`).join("-")
-  ).join(" ");
-  var nameInverted = (a) => a.literal ? a.literal : `${a.family}, ${initials(a.given)}`.replace(/, $/, "") + (a.suffix ? `, ${a.suffix}` : "");
-  var nameDirect = (a) => a.literal ? a.literal : `${initials(a.given)} ${a.family}`.trim();
-  var surname = (a) => a.literal || a.family;
-  function authorList2(authors) {
-    const names = authors.map(nameInverted);
-    if (names.length === 1) return names[0];
-    if (names.length <= 20) return `${names.slice(0, -1).join(", ")}, & ${names[names.length - 1]}`;
-    return `${names.slice(0, 19).join(", ")}, . . . ${names[names.length - 1]}`;
-  }
-  var end = (s) => /[.?!]$/.test(s) ? s : `${s}.`;
-  var dash = (p) => String(p).replace(/\s*[-–]\s*/, "\u2013");
-  var doiUrl = (w) => w.doi ? `https://doi.org/${w.doi.replace(/^https?:\/\/(dx\.)?doi\.org\//, "")}` : w.url || "";
-  function referenceSegments(w, yearLabel = w.year ?? "s. f.") {
-    const seg = [];
-    const t = (text, italic = false) => text && seg.push({ text, italic });
-    const authors = w.authors && w.authors.length ? authorList2(w.authors) : null;
-    const date = w.type === "web" && w.date ? `${yearLabel}, ${w.date}` : yearLabel;
-    if (authors) t(`${end(authors)} (${date}). `);
-    const ed = w.edition ? ` (${w.edition}.\xAA ed.)` : "";
-    switch (w.type) {
-      case "article": {
-        if (!authors) t(`${end(w.title)} (${date}). `);
-        else t(`${end(w.title)} `);
-        t(`${w.journal}${w.volume ? `, ${w.volume}` : ""}`, true);
-        t(`${w.issue ? `(${w.issue})` : ""}${w.pages ? `, ${dash(w.pages)}` : ""}${w.articleNumber ? `, Art\xEDculo ${w.articleNumber}` : ""}.`);
-        break;
-      }
-      case "chapter": {
-        if (!authors) t(`${end(w.title)} (${date}). `);
-        else t(`${end(w.title)} `);
-        const eds = (w.editors || []).map(nameDirect);
-        const edList = eds.length > 1 ? `${eds.slice(0, -1).join(", ")} & ${eds[eds.length - 1]}` : eds[0];
-        t(edList ? `En ${edList} (${eds.length > 1 ? "Eds." : "Ed."}), ` : "En ");
-        t(w.container, true);
-        t(` (${[w.edition ? `${w.edition}.\xAA ed.` : "", w.pages ? `pp. ${dash(w.pages)}` : ""].filter(Boolean).join(", ")}). ${end(w.publisher || "")}`.replace(" (). ", ". "));
-        break;
-      }
-      case "web": {
-        if (!authors) {
-          t(w.title, true);
-          t(`. (${date}). `);
-        } else {
-          t(w.title, true);
-          t(". ");
-        }
-        if (w.site) t(`${end(w.site)} `);
-        break;
-      }
-      default: {
-        if (!authors) {
-          t(w.title, true);
-          t(`${ed}. (${date}). `);
-        } else {
-          t(w.title, true);
-          t(`${ed}. `);
-        }
-        if (w.publisher) t(`${end(w.publisher)} `);
-      }
-    }
-    const link = doiUrl(w);
-    if (link) t(seg.length && !seg[seg.length - 1].text.endsWith(" ") ? ` ${link}` : link);
-    const last = seg[seg.length - 1];
-    if (last) last.text = last.text.replace(/\s+$/, "");
-    return seg;
-  }
-  var referenceText = (w, yearLabel) => referenceSegments(w, yearLabel).map((s) => s.text).join("");
-  var normal = (s) => String(s).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
-  var sortKey = (w) => normal((w.authors && w.authors.length ? w.authors.map(nameInverted).join(" ") : w.title) || "");
-  function orderWorks(works) {
-    return [...works].sort((a, b) => sortKey(a).localeCompare(sortKey(b), "es") || String(a.year ?? "").localeCompare(String(b.year ?? "")) || normal(a.title).localeCompare(normal(b.title), "es"));
-  }
-  function yearLabels(works) {
-    const groups = /* @__PURE__ */ new Map();
-    for (const w of orderWorks(works)) {
-      const k = `${sortKey(w)}|${w.year ?? "s. f."}`;
-      if (!groups.has(k)) groups.set(k, []);
-      groups.get(k).push(w);
-    }
-    const labels = {};
-    for (const list of groups.values()) {
-      list.forEach((w, i) => {
-        labels[w.id] = `${w.year ?? "s. f."}${list.length > 1 ? (w.year ? "" : "-") + String.fromCharCode(97 + i) : ""}`;
-      });
-    }
-    return labels;
-  }
-
-  // src/components/Bibliography.jsx
-  var BibliographyContext = (0, import_react8.createContext)(null);
-  function Bibliography({ works, children }) {
-    const cited = (0, import_react8.useRef)(/* @__PURE__ */ new Set());
-    cited.current = /* @__PURE__ */ new Set();
-    const byId = Object.fromEntries(works.map((w) => [w.id, w]));
-    const labels = yearLabels(works);
-    return /* @__PURE__ */ import_react8.default.createElement(BibliographyContext.Provider, { value: { byId, labels, cited: cited.current, works } }, children);
-  }
-  var useBibliography = () => (0, import_react8.useContext)(BibliographyContext);
-  function resolveWork(bib, ref) {
-    if (!ref || !ref.id) return ref;
-    const w = bib && bib.byId[ref.id];
-    if (!w) return { authors: [`[obra sin registrar: ${ref.id}]`], year: "", page: ref.page, locator: ref.locator };
-    bib.cited.add(ref.id);
-    return { authors: (w.authors || []).map(surname), year: bib.labels[w.id], page: ref.page, locator: ref.locator };
-  }
-
-  // src/components/Cite.jsx
-  function useCitationText({ narrative = false, works, ...work }) {
-    const bib = useBibliography();
-    if (works) return formatCitations(works.map((w) => resolveWork(bib, w)));
-    return formatCitation(resolveWork(bib, work), { narrative });
-  }
-  function Cite(props) {
-    return /* @__PURE__ */ import_react9.default.createElement("cite", { className: "du-cite" }, useCitationText(props));
-  }
-
-  // src/components/Quote.jsx
-  function Quote({ children, cite }) {
-    const citeText = useCitationText(cite || {});
-    return /* @__PURE__ */ import_react10.default.createElement(import_react10.default.Fragment, null, /* @__PURE__ */ import_react10.default.createElement("q", { className: "du-quote" }, children), cite ? /* @__PURE__ */ import_react10.default.createElement(import_react10.default.Fragment, null, " ", /* @__PURE__ */ import_react10.default.createElement("cite", { className: "du-cite" }, citeText)) : null);
-  }
-  function BlockQuote({ children, cite }) {
-    const citeText = useCitationText(cite || {});
-    return /* @__PURE__ */ import_react10.default.createElement("blockquote", { className: "du-blockquote blockquote" }, children, cite ? /* @__PURE__ */ import_react10.default.createElement(import_react10.default.Fragment, null, " ", /* @__PURE__ */ import_react10.default.createElement("cite", { className: "du-cite" }, citeText)) : null);
-  }
 
   // src/components/Icon.jsx
-  var import_react11 = __toESM(require_react(), 1);
+  var import_react2 = __toESM(require_react(), 1);
 
   // src/icons.generated.js
   var ICONS = {
@@ -545,7 +344,7 @@ window.Didactica = (() => {
   function Icon({ name, size = 20, label, className = "" }) {
     const parts = ICONS[name];
     if (!parts) return null;
-    return /* @__PURE__ */ import_react11.default.createElement(
+    return /* @__PURE__ */ import_react2.default.createElement(
       "svg",
       {
         className: `du-icon ${className}`.trim(),
@@ -562,8 +361,237 @@ window.Didactica = (() => {
         "aria-hidden": label ? void 0 : "true",
         focusable: "false"
       },
-      parts.map(([tag, attrs], i) => import_react11.default.createElement(tag, { key: i, ...attrs }))
+      parts.map(([tag, attrs], i) => import_react2.default.createElement(tag, { key: i, ...attrs }))
     );
+  }
+
+  // src/boxes.config.json
+  var boxes_config_default = [
+    { kind: "keypoints", family: "open", title: "Puntos Clave", icon: "key-round", component: "KeyPoints", placement: "Opens each unit, right after the unit title and lead." },
+    { kind: "objectives", family: "open", title: "Objetivos", icon: "target", component: "Objectives", placement: "Right after \u201CPuntos Clave\u201D." },
+    { kind: "important", family: "text", title: "Importante", icon: "star", component: "Important", placement: "In the text, for a key concept or definition." },
+    { kind: "mistake", family: "text", title: "Error Frecuente", icon: "triangle-alert", component: "CommonMistake", placement: "In the text, next to the idea it corrects." },
+    { kind: "example", family: "text", title: "En el Aula", icon: "school", component: "Classroom", placement: "In the text, after the concept it applies." },
+    { kind: "thinking", family: "close", title: "Para Seguir Pensando", icon: "message-circle-question", component: "ThinkFurther", placement: "Closing sequence, first." },
+    { kind: "selfcheck", family: "close", title: "Autoevaluaci\xF3n", icon: "list-checks", component: "SelfCheck", placement: "Closing sequence, after \u201CPara Seguir Pensando\u201D." },
+    { kind: "activities", family: "close", title: "Actividades", icon: "pencil-line", component: "Activities", placement: "Closing sequence, after \u201CAutoevaluaci\xF3n\u201D, followed by the alignment table." },
+    { kind: "references", family: "close", title: "Referencias", icon: "book-open-text", component: "ReferencesBox", placement: "Closes each unit." }
+  ];
+
+  // src/components/TitlePage.jsx
+  var VARIANTS = ["mosaic", "band", "motif", "editorial"];
+  function Slot({ text, className }) {
+    const placeholder = /^\[.*\]$/.test(String(text).trim());
+    return /* @__PURE__ */ import_react3.default.createElement("p", { className: `${className}${placeholder ? " du-placeholder" : ""}` }, text);
+  }
+  function Mosaic() {
+    return /* @__PURE__ */ import_react3.default.createElement("div", { className: "du-cover-mosaic", "aria-hidden": "true" }, boxes_config_default.map((b) => /* @__PURE__ */ import_react3.default.createElement("span", { key: b.kind, className: "du-cover-mosaic__cell", style: { background: `var(--${b.kind}-accent)` } }, /* @__PURE__ */ import_react3.default.createElement(Icon, { name: b.icon, size: 28 }))));
+  }
+  function Motif() {
+    return /* @__PURE__ */ import_react3.default.createElement("svg", { className: "du-cover-motif", viewBox: "0 0 400 400", "aria-hidden": "true", focusable: "false" }, [200, 155, 110, 65].map((r, i) => /* @__PURE__ */ import_react3.default.createElement("circle", { key: r, cx: "400", cy: "400", r: r * 2, className: `du-dg-ramp--${4 - i}` })));
+  }
+  function TitlePage({ variant = "mosaic", bleed = false, volume, kicker, title, subtitle, lede, ribbon, credits = [], meta = [] }) {
+    const v = VARIANTS.includes(variant) ? variant : "mosaic";
+    const head = /* @__PURE__ */ import_react3.default.createElement(import_react3.default.Fragment, null, v === "editorial" && volume != null ? /* @__PURE__ */ import_react3.default.createElement("p", { className: "du-cover-volume", "aria-hidden": "true" }, String(volume).padStart(2, "0")) : null, kicker ? /* @__PURE__ */ import_react3.default.createElement("p", { className: "du-title-page__kicker cover-kicker" }, kicker) : null, /* @__PURE__ */ import_react3.default.createElement("h1", { className: "du-title-page__title cover-title" }, title), v !== "band" ? /* @__PURE__ */ import_react3.default.createElement("span", { className: "du-cover-rule", "aria-hidden": "true" }) : null);
+    return /* @__PURE__ */ import_react3.default.createElement("header", { className: `du-title-page du-title-page--${v}${bleed ? " du-title-page--bleed" : ""}` }, v === "mosaic" ? /* @__PURE__ */ import_react3.default.createElement(Mosaic, null) : null, v === "motif" ? /* @__PURE__ */ import_react3.default.createElement(Motif, null) : null, /* @__PURE__ */ import_react3.default.createElement("div", { className: "du-title-page__top" }, v === "band" ? /* @__PURE__ */ import_react3.default.createElement("div", { className: "du-cover-band" }, head) : head, subtitle ? /* @__PURE__ */ import_react3.default.createElement("p", { className: "du-title-page__subtitle cover-subtitle" }, subtitle) : null, lede ? /* @__PURE__ */ import_react3.default.createElement("p", { className: "du-title-page__lede cover-lede" }, lede) : null), /* @__PURE__ */ import_react3.default.createElement("div", { className: "du-title-page__bottom" }, ribbon ? /* @__PURE__ */ import_react3.default.createElement("p", { className: "du-ribbon ribbon" }, ribbon) : null, credits.length ? /* @__PURE__ */ import_react3.default.createElement("div", { className: "du-title-page__credits" }, credits.map((line, i) => /* @__PURE__ */ import_react3.default.createElement(Slot, { key: i, text: line, className: "cover-credit" }))) : null, meta.length ? /* @__PURE__ */ import_react3.default.createElement("div", { className: "du-title-page__meta" }, meta.map((line, i) => /* @__PURE__ */ import_react3.default.createElement(Slot, { key: i, text: line, className: "cover-meta" }))) : null));
+  }
+
+  // src/components/TableOfContents.jsx
+  var import_react4 = __toESM(require_react(), 1);
+  function TableOfContents({ title = "\xCDndice", entries }) {
+    return /* @__PURE__ */ import_react4.default.createElement("nav", { "aria-label": title }, /* @__PURE__ */ import_react4.default.createElement("h2", { className: "du-toc-title toc-title" }, title), /* @__PURE__ */ import_react4.default.createElement("ol", { className: "du-toc" }, entries.map((e, i) => /* @__PURE__ */ import_react4.default.createElement("li", { key: i, className: `du-toc__entry du-toc__entry--${e.level || 1} body` }, /* @__PURE__ */ import_react4.default.createElement("span", { className: "du-toc__title" }, e.title), /* @__PURE__ */ import_react4.default.createElement("span", { className: "du-toc__leader", "aria-hidden": "true" }), /* @__PURE__ */ import_react4.default.createElement("span", { className: "du-toc__page" }, e.page)))));
+  }
+
+  // src/components/ChapterOpener.jsx
+  var import_react5 = __toESM(require_react(), 1);
+  function ChapterOpener({ number, title, lead, id }) {
+    return /* @__PURE__ */ import_react5.default.createElement("header", { className: "du-chapter" }, number != null ? /* @__PURE__ */ import_react5.default.createElement("p", { className: "du-chapter__kicker chapter-kicker" }, "Unidad ", number) : null, /* @__PURE__ */ import_react5.default.createElement("h1", { id, className: "du-chapter__title h1" }, title), lead ? /* @__PURE__ */ import_react5.default.createElement("p", { className: "du-chapter__lead lead" }, lead) : null);
+  }
+
+  // src/components/Heading.jsx
+  var import_react6 = __toESM(require_react(), 1);
+  var TAGS = { 1: "h1", 2: "h2", 3: "h3" };
+  function Heading({ level = 2, children, id }) {
+    const l = TAGS[level] ? level : 2;
+    const Tag = TAGS[l];
+    return /* @__PURE__ */ import_react6.default.createElement(Tag, { id, className: `du-h${l} h${l}` }, children);
+  }
+
+  // src/components/Paragraph.jsx
+  var import_react7 = __toESM(require_react(), 1);
+  function Paragraph({ children }) {
+    return /* @__PURE__ */ import_react7.default.createElement("p", { className: "du-body body" }, children);
+  }
+
+  // src/components/BulletList.jsx
+  var import_react8 = __toESM(require_react(), 1);
+  function BulletList({ items }) {
+    return /* @__PURE__ */ import_react8.default.createElement("ul", { className: "du-list" }, items.map((item, i) => {
+      const text = typeof item === "string" ? item : item.text;
+      const sub = typeof item === "string" ? null : item.items;
+      return /* @__PURE__ */ import_react8.default.createElement("li", { key: i, className: "du-list__item list-item" }, text, sub && sub.length ? /* @__PURE__ */ import_react8.default.createElement(BulletList, { items: sub }) : null);
+    }));
+  }
+
+  // src/components/Quote.jsx
+  var import_react11 = __toESM(require_react(), 1);
+
+  // src/components/Cite.jsx
+  var import_react10 = __toESM(require_react(), 1);
+
+  // src/cite.js
+  var authorList = (authors, joiner) => {
+    const a = [].concat(authors);
+    if (a.length >= 3) return `${a[0]} et al.`;
+    if (a.length === 2) return `${a[0]} ${joiner} ${a[1]}`;
+    return a[0] ?? "";
+  };
+  var formatLocator = ({ page, locator }) => {
+    if (locator) return locator;
+    if (page == null || page === "") return "";
+    const p = String(page).trim().replace(/\s*[-–]\s*/, "\u2013");
+    return `${p.includes("\u2013") ? "pp." : "p."} ${p}`;
+  };
+  var tail = (w) => [w.year, formatLocator(w)].filter(Boolean).join(", ");
+  function formatCitation(work, { narrative = false } = {}) {
+    if (narrative) return `${authorList(work.authors, "y")} (${tail(work)})`;
+    return `(${authorList(work.authors, "&")}, ${tail(work)})`;
+  }
+  function formatCitations(works) {
+    const sorted = [...works].sort((x, y) => String([].concat(x.authors)[0]).localeCompare(String([].concat(y.authors)[0]), "es"));
+    return `(${sorted.map((w) => `${authorList(w.authors, "&")}, ${tail(w)}`).join("; ")})`;
+  }
+
+  // src/components/Bibliography.jsx
+  var import_react9 = __toESM(require_react(), 1);
+
+  // src/references.js
+  var initials = (given = "") => given.trim().split(/\s+/).filter(Boolean).map(
+    (part) => part.split("-").map((p) => /^[A-ZÁÉÍÓÚÑÜ]\.?$/u.test(p) ? p.replace(/\.?$/, ".") : `${p[0].toUpperCase()}.`).join("-")
+  ).join(" ");
+  var nameInverted = (a) => a.literal ? a.literal : `${a.family}, ${initials(a.given)}`.replace(/, $/, "") + (a.suffix ? `, ${a.suffix}` : "");
+  var nameDirect = (a) => a.literal ? a.literal : `${initials(a.given)} ${a.family}`.trim();
+  var surname = (a) => a.literal || a.family;
+  function authorList2(authors) {
+    const names = authors.map(nameInverted);
+    if (names.length === 1) return names[0];
+    if (names.length <= 20) return `${names.slice(0, -1).join(", ")}, & ${names[names.length - 1]}`;
+    return `${names.slice(0, 19).join(", ")}, . . . ${names[names.length - 1]}`;
+  }
+  var end = (s) => /[.?!]$/.test(s) ? s : `${s}.`;
+  var dash = (p) => String(p).replace(/\s*[-–]\s*/, "\u2013");
+  var doiUrl = (w) => w.doi ? `https://doi.org/${w.doi.replace(/^https?:\/\/(dx\.)?doi\.org\//, "")}` : w.url || "";
+  function referenceSegments(w, yearLabel = w.year ?? "s. f.") {
+    const seg = [];
+    const t = (text, italic = false) => text && seg.push({ text, italic });
+    const authors = w.authors && w.authors.length ? authorList2(w.authors) : null;
+    const date = w.type === "web" && w.date ? `${yearLabel}, ${w.date}` : yearLabel;
+    if (authors) t(`${end(authors)} (${date}). `);
+    const ed = w.edition ? ` (${w.edition}.\xAA ed.)` : "";
+    switch (w.type) {
+      case "article": {
+        if (!authors) t(`${end(w.title)} (${date}). `);
+        else t(`${end(w.title)} `);
+        t(`${w.journal}${w.volume ? `, ${w.volume}` : ""}`, true);
+        t(`${w.issue ? `(${w.issue})` : ""}${w.pages ? `, ${dash(w.pages)}` : ""}${w.articleNumber ? `, Art\xEDculo ${w.articleNumber}` : ""}.`);
+        break;
+      }
+      case "chapter": {
+        if (!authors) t(`${end(w.title)} (${date}). `);
+        else t(`${end(w.title)} `);
+        const eds = (w.editors || []).map(nameDirect);
+        const edList = eds.length > 1 ? `${eds.slice(0, -1).join(", ")} & ${eds[eds.length - 1]}` : eds[0];
+        t(edList ? `En ${edList} (${eds.length > 1 ? "Eds." : "Ed."}), ` : "En ");
+        t(w.container, true);
+        t(` (${[w.edition ? `${w.edition}.\xAA ed.` : "", w.pages ? `pp. ${dash(w.pages)}` : ""].filter(Boolean).join(", ")}). ${end(w.publisher || "")}`.replace(" (). ", ". "));
+        break;
+      }
+      case "web": {
+        if (!authors) {
+          t(w.title, true);
+          t(`. (${date}). `);
+        } else {
+          t(w.title, true);
+          t(". ");
+        }
+        if (w.site) t(`${end(w.site)} `);
+        break;
+      }
+      default: {
+        if (!authors) {
+          t(w.title, true);
+          t(`${ed}. (${date}). `);
+        } else {
+          t(w.title, true);
+          t(`${ed}. `);
+        }
+        if (w.publisher) t(`${end(w.publisher)} `);
+      }
+    }
+    const link = doiUrl(w);
+    if (link) t(seg.length && !seg[seg.length - 1].text.endsWith(" ") ? ` ${link}` : link);
+    const last = seg[seg.length - 1];
+    if (last) last.text = last.text.replace(/\s+$/, "");
+    return seg;
+  }
+  var referenceText = (w, yearLabel) => referenceSegments(w, yearLabel).map((s) => s.text).join("");
+  var normal = (s) => String(s).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+  var sortKey = (w) => normal((w.authors && w.authors.length ? w.authors.map(nameInverted).join(" ") : w.title) || "");
+  function orderWorks(works) {
+    return [...works].sort((a, b) => sortKey(a).localeCompare(sortKey(b), "es") || String(a.year ?? "").localeCompare(String(b.year ?? "")) || normal(a.title).localeCompare(normal(b.title), "es"));
+  }
+  function yearLabels(works) {
+    const groups = /* @__PURE__ */ new Map();
+    for (const w of orderWorks(works)) {
+      const k = `${sortKey(w)}|${w.year ?? "s. f."}`;
+      if (!groups.has(k)) groups.set(k, []);
+      groups.get(k).push(w);
+    }
+    const labels = {};
+    for (const list of groups.values()) {
+      list.forEach((w, i) => {
+        labels[w.id] = `${w.year ?? "s. f."}${list.length > 1 ? (w.year ? "" : "-") + String.fromCharCode(97 + i) : ""}`;
+      });
+    }
+    return labels;
+  }
+
+  // src/components/Bibliography.jsx
+  var BibliographyContext = (0, import_react9.createContext)(null);
+  function Bibliography({ works, children }) {
+    const cited = (0, import_react9.useRef)(/* @__PURE__ */ new Set());
+    cited.current = /* @__PURE__ */ new Set();
+    const byId = Object.fromEntries(works.map((w) => [w.id, w]));
+    const labels = yearLabels(works);
+    return /* @__PURE__ */ import_react9.default.createElement(BibliographyContext.Provider, { value: { byId, labels, cited: cited.current, works } }, children);
+  }
+  var useBibliography = () => (0, import_react9.useContext)(BibliographyContext);
+  function resolveWork(bib, ref) {
+    if (!ref || !ref.id) return ref;
+    const w = bib && bib.byId[ref.id];
+    if (!w) return { authors: [`[obra sin registrar: ${ref.id}]`], year: "", page: ref.page, locator: ref.locator };
+    bib.cited.add(ref.id);
+    return { authors: (w.authors || []).map(surname), year: bib.labels[w.id], page: ref.page, locator: ref.locator };
+  }
+
+  // src/components/Cite.jsx
+  function useCitationText({ narrative = false, works, ...work }) {
+    const bib = useBibliography();
+    if (works) return formatCitations(works.map((w) => resolveWork(bib, w)));
+    return formatCitation(resolveWork(bib, work), { narrative });
+  }
+  function Cite(props) {
+    return /* @__PURE__ */ import_react10.default.createElement("cite", { className: "du-cite" }, useCitationText(props));
+  }
+
+  // src/components/Quote.jsx
+  function Quote({ children, cite }) {
+    const citeText = useCitationText(cite || {});
+    return /* @__PURE__ */ import_react11.default.createElement(import_react11.default.Fragment, null, /* @__PURE__ */ import_react11.default.createElement("q", { className: "du-quote" }, children), cite ? /* @__PURE__ */ import_react11.default.createElement(import_react11.default.Fragment, null, " ", /* @__PURE__ */ import_react11.default.createElement("cite", { className: "du-cite" }, citeText)) : null);
+  }
+  function BlockQuote({ children, cite }) {
+    const citeText = useCitationText(cite || {});
+    return /* @__PURE__ */ import_react11.default.createElement("blockquote", { className: "du-blockquote blockquote" }, children, cite ? /* @__PURE__ */ import_react11.default.createElement(import_react11.default.Fragment, null, " ", /* @__PURE__ */ import_react11.default.createElement("cite", { className: "du-cite" }, citeText)) : null);
   }
 
   // src/components/Boxes.jsx
@@ -610,19 +638,6 @@ window.Didactica = (() => {
     }
     return { rows, issues };
   }
-
-  // src/boxes.config.json
-  var boxes_config_default = [
-    { kind: "keypoints", family: "open", title: "Puntos Clave", icon: "key-round", component: "KeyPoints", placement: "Opens each unit, right after the unit title and lead." },
-    { kind: "objectives", family: "open", title: "Objetivos", icon: "target", component: "Objectives", placement: "Right after \u201CPuntos Clave\u201D." },
-    { kind: "important", family: "text", title: "Importante", icon: "star", component: "Important", placement: "In the text, for a key concept or definition." },
-    { kind: "mistake", family: "text", title: "Error Frecuente", icon: "triangle-alert", component: "CommonMistake", placement: "In the text, next to the idea it corrects." },
-    { kind: "example", family: "text", title: "En el Aula", icon: "school", component: "Classroom", placement: "In the text, after the concept it applies." },
-    { kind: "thinking", family: "close", title: "Para Seguir Pensando", icon: "message-circle-question", component: "ThinkFurther", placement: "Closing sequence, first." },
-    { kind: "selfcheck", family: "close", title: "Autoevaluaci\xF3n", icon: "list-checks", component: "SelfCheck", placement: "Closing sequence, after \u201CPara Seguir Pensando\u201D." },
-    { kind: "activities", family: "close", title: "Actividades", icon: "pencil-line", component: "Activities", placement: "Closing sequence, after \u201CAutoevaluaci\xF3n\u201D, followed by the alignment table." },
-    { kind: "references", family: "close", title: "Referencias", icon: "book-open-text", component: "ReferencesBox", placement: "Closes each unit." }
-  ];
 
   // src/components/Reference.jsx
   var import_react12 = __toESM(require_react(), 1);

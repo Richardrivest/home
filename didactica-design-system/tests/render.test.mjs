@@ -39,6 +39,21 @@ test('Cite with an unknown id says so', async () => {
   assert.match(html, /obra sin registrar: zz/);
 });
 
+test('cover: mosaic by default with the nine box colours; variants; “[…]” lines as placeholders', async () => {
+  const html = await render(`h(D.TitlePage, { title: 'T', credits: ['[Autoría]', 'Ana Pérez'], meta: ['Año 2026'] })`);
+  assert.match(html, /du-title-page--mosaic/);
+  assert.equal((html.match(/du-cover-mosaic__cell/g) || []).length, 9);
+  assert.match(html, /var\(--keypoints-accent\)[\s\S]*var\(--references-accent\)/);
+  assert.equal((html.match(/du-placeholder/g) || []).length, 1);
+  for (const v of ['band', 'motif', 'editorial']) {
+    const out = await render(`h(D.TitlePage, { title: 'T', variant: '${v}', volume: 2, bleed: true })`);
+    assert.match(out, new RegExp(`du-title-page--${v} du-title-page--bleed`));
+    assert.doesNotMatch(out, /du-cover-mosaic/);
+  }
+  assert.match(await render(`h(D.TitlePage, { title: 'T', variant: 'editorial', volume: 2 })`), />02</);
+  assert.match(await render(`h(D.TitlePage, { title: 'T', variant: 'nope' })`), /du-title-page--mosaic/);
+});
+
 test('diagrams keep the drawing in a scroll frame and the list under “Ver como texto”', async () => {
   const html = await render(`h('div', null,
     h(D.ConceptWeb, { center: 'Aprendizaje', nodes: [{ label: 'Mediación social', relation: 'se produce en' }, { label: 'Carga cognitiva' }, { label: 'Motivación' }] }),

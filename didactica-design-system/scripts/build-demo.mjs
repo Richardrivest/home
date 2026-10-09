@@ -18,7 +18,8 @@ await build({
         subtitle: 'Fundamentos, estrategias y evaluación para la docencia universitaria',
         lede: 'Con desarrollos de didáctica general y de las didácticas específicas de las ciencias sociales y de las ciencias de la salud',
         ribbon: 'Material de estudio para la formación del profesorado universitario',
-        meta: ['Nivel: graduados universitarios en formación pedagógica', 'Citación: APA 7.ª edición', 'Año 2026'] })));
+        credits: ['[Autoría: nombre y apellido de cada autor]', '[Institución o unidad académica]'],
+        meta: ['Nivel: graduados universitarios en formación pedagógica', 'Citación: APA 7.ª edición', '[Edición] · [Ciudad] · 2026'] })));
       export const legend = renderToStaticMarkup(h(Page, { header: 'Didáctica de la Educación Superior', page: 3 }, h(LegendExample)));
       export const chapter = renderToStaticMarkup(h(Page, { header: 'Didáctica de la Educación Superior', page: 12 }, h(ChapterExample)));
       export const glossary = renderToStaticMarkup(h(Page, { header: 'Didáctica de la Educación Superior', page: 13 }, h(GlossaryExample)));

@@ -10,8 +10,10 @@ The design-system page has the brand book, the tokens, live previews and the ico
 - **Text version on demand.** The same structure as a list now sits under every drawing, collapsed behind “Ver como texto”, at every width. Lists use the sans face throughout. Print shows the drawing without the text version or the hint.
 - **A4 and Letter portrait.** Print takes whichever paper the printer uses, with 2.54cm margins like the Word template. Diagrams print at the full text width (14px labels at 12.4px on A4, 12.8px on Letter). Each screen sheet starts a new sheet of paper; a chapter that opens a sheet stays with its running header; printed pages are numbered in the bottom margin, except the cover; the screen-only “Página N” footers are left out. The demo's theme button and grey background no longer print.
 - **Word template on A4.** The template page is now A4 portrait (it was Letter), with the same 2.54cm margins. Boxes and tables are 6.27in wide, so they also stay inside the margins if a document is switched to Letter.
-- **Playwright** 1.61.0 is a dev dependency, pinned to Chromium build 1228.
-- **Tests:** the two diagram tests now check the scroll frame and the “Ver como texto” text version.
+- **New cover.** `TitlePage` now fills one A4 page: the title block at the top, the ribbon, credits and details at the foot. The default `mosaic` variant opens with the nine box colours and their icons, in their order in a unit, so the cover shows the book's own system. `variant` also offers `band` (navy band), `motif` (nested circles from the diagram ramp) and `editorial` (left rule and a large `volume` number). On screen the cover keeps the A4 proportion; in print it fills the page, and `bleed` runs the colour to the paper edge. A new `credits` prop holds authors and institution. Any line written as “[…]” shows in a dashed frame as a placeholder until it is replaced.
+- **Word cover to match.** The template's first page is the `mosaic` cover: the nine coloured cells with white icons, a left-aligned title with the azure rule, and dashed placeholders for authors and institution. It leaves room for a two-line title; with a longer one, shorten the empty paragraph above the ribbon.
+- **Playwright** 1.61.0 is a dev dependency, pinned to Chromium build 1228. `scripts/build-icon-png.cjs` now writes white icons for all nine boxes.
+- **Tests:** 27. The two diagram tests now check the scroll frame and the “Ver como texto” text version; a new test checks the cover variants and placeholders.
 
 ## v3.3: tables and twelve more diagrams
 

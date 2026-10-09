@@ -213,12 +213,16 @@ INSERT INTO component (name, comp_group, summary, position) VALUES ('Page', 'Lay
 INSERT INTO component_prop (component, name, type, required, description) VALUES ('Page', 'header', 'string', 0, 'Running-header text.');
 INSERT INTO component_prop (component, name, type, required, description) VALUES ('Page', 'page', 'number', 0, 'Footer page number.');
 INSERT INTO component_prop (component, name, type, required, description) VALUES ('Page', 'children', 'ReactNode', 1, 'Page content.');
-INSERT INTO component (name, comp_group, summary, position) VALUES ('TitlePage', 'Layout', 'The manual''s cover: kicker, title, italic subtitle, lede, ribbon and metadata lines, all centred.', 1);
+INSERT INTO component (name, comp_group, summary, position) VALUES ('TitlePage', 'Layout', 'The manual''s cover, one A4 page: title block at the top, ribbon, credits and details at the foot. Four variants (mosaic by default, band, motif, editorial); “[…]” lines show as placeholders.', 1);
+INSERT INTO component_prop (component, name, type, required, description) VALUES ('TitlePage', 'variant', '''mosaic'' | ''band'' | ''motif'' | ''editorial''', 0, 'Cover design. Default ''mosaic'': the nine box colours and icons as a strip.');
+INSERT INTO component_prop (component, name, type, required, description) VALUES ('TitlePage', 'bleed', 'boolean', 0, 'In print, colour runs to the paper edge.');
+INSERT INTO component_prop (component, name, type, required, description) VALUES ('TitlePage', 'volume', 'number | string', 0, 'Volume or unit number, shown large by ''editorial''.');
 INSERT INTO component_prop (component, name, type, required, description) VALUES ('TitlePage', 'kicker', 'string', 0, 'Series line, upper case.');
 INSERT INTO component_prop (component, name, type, required, description) VALUES ('TitlePage', 'title', 'string', 1, 'Book title.');
 INSERT INTO component_prop (component, name, type, required, description) VALUES ('TitlePage', 'subtitle', 'string', 0, 'Italic subtitle.');
 INSERT INTO component_prop (component, name, type, required, description) VALUES ('TitlePage', 'lede', 'string', 0, 'Scope line.');
 INSERT INTO component_prop (component, name, type, required, description) VALUES ('TitlePage', 'ribbon', 'string', 0, 'Text between the two navy rules.');
+INSERT INTO component_prop (component, name, type, required, description) VALUES ('TitlePage', 'credits', 'string[]', 0, 'Authors and institution; the first line is bold. “[…]” marks a placeholder.');
 INSERT INTO component_prop (component, name, type, required, description) VALUES ('TitlePage', 'meta', 'string[]', 0, 'Metadata lines.');
 INSERT INTO component (name, comp_group, summary, position) VALUES ('TableOfContents', 'Layout', '“Índice”: levels 1–3 with dotted leaders to the page number.', 2);
 INSERT INTO component_prop (component, name, type, required, description) VALUES ('TableOfContents', 'title', 'string', 0, 'Defaults to “Índice”.');

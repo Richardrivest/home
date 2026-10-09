@@ -202,6 +202,7 @@ Box icons come from Lucide (v0.460.0, ISC licence), copied from the official pac
 | Diagrams below 600px | Replaced by a bulleted list, so phones, narrow columns and the cards on this page showed text instead of a picture | The drawing stays at 600px in a frame that scrolls sideways, with a “Deslizá para ver el diagrama completo →” hint; labels stay at 12px or larger |
 | Text version | Shown only below 600px | Under every drawing at every width, collapsed behind “Ver como texto”; sans face throughout; left out of print |
 | Print on A4 / Letter | Screen sheets ran into one another across paper pages; “Página N” footers landed mid-page | Any portrait paper with 2.54cm margins; each sheet starts a new page; pages numbered in the margin, cover excepted; diagrams at full text width |
+| Cover | Centred text in the top half of the page | One A4 page; `mosaic` variant by default (the nine box colours and icons), plus `band`, `motif` and `editorial`; full page in print, optional `bleed`; `credits`; “[…]” placeholders in a dashed frame; the Word cover matches |
 | Word template page | Letter; boxes and tables 6.5in, wider than an A4 text block | A4 portrait; boxes and tables 6.27in, inside the margins on A4 and Letter |
 
 ### v3.3 (tables and diagrams)

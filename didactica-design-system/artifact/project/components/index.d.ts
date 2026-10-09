@@ -7,7 +7,18 @@ export interface PageProps { header?: string; page?: number; children: ReactNode
 export declare function Page(props: PageProps): ReactElement;
 
 /** The manual's cover: kicker, title, italic subtitle, lede, ribbon and metadata lines, all centred. */
-export interface TitlePageProps { kicker?: string; title: string; subtitle?: string; lede?: string; ribbon?: string; meta?: string[] }
+export interface TitlePageProps {
+  /** 'mosaic' (default): the nine box colours; 'band': navy band; 'motif': nested circles; 'editorial': left rule and volume number. */
+  variant?: 'mosaic' | 'band' | 'motif' | 'editorial';
+  /** In print, colour runs to the edge of the paper (no page margin on the cover). */
+  bleed?: boolean;
+  /** Volume or unit number, shown large by the 'editorial' variant. */
+  volume?: number | string;
+  kicker?: string; title: string; subtitle?: string; lede?: string; ribbon?: string;
+  /** Authors, institution: first line bold. Write unknown details as “[…]” to mark them as placeholders. */
+  credits?: string[];
+  meta?: string[];
+}
 export declare function TitlePage(props: TitlePageProps): ReactElement;
 
 export interface TocEntry { title: string; page: number | string; level?: 1 | 2 | 3 }

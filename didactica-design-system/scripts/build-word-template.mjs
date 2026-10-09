@@ -53,12 +53,14 @@ const paragraphStyles = [
   ps('Heading3', 'Heading 3', { font: SANS, size: pt(14), bold: true, color: C.ink }, { spacing: { before: 360, after: 120, line: 312 }, keepNext: true, keepLines: true, outlineLevel: 2, alignment: AlignmentType.LEFT }),
   ps('Unidad', 'Unidad (antetítulo)', { font: SANS, size: pt(10.5), bold: true, color: C.azure, allCaps: true, characterSpacing: 17 }, { spacing: { before: 0, after: 120 }, keepNext: true, alignment: AlignmentType.LEFT }),
   ps('Entradilla', 'Entradilla', { font: SERIF, size: pt(14), color: C.ink }, { spacing: { after: 360, line: 372 }, alignment: AlignmentType.LEFT }),
-  ps('PortadaAntetitulo', 'Portada – antetítulo', { font: SANS, size: pt(10.5), bold: true, color: C.azure, allCaps: true, characterSpacing: 17 }, { alignment: AlignmentType.CENTER, spacing: { before: 2400, after: 240 } }),
-  ps('PortadaTitulo', 'Portada – título', { font: SANS, size: pt(30), bold: true, color: C.navy }, { alignment: AlignmentType.CENTER, spacing: { after: 240, line: 264 } }),
-  ps('PortadaSubtitulo', 'Portada – subtítulo', { font: SERIF, size: pt(14), italics: true, color: C.ink }, { alignment: AlignmentType.CENTER, spacing: { after: 120 } }),
-  ps('PortadaLema', 'Portada – descripción', { font: SERIF, size: pt(12), color: C['ink-muted'] }, { alignment: AlignmentType.CENTER, spacing: { after: 600 } }),
-  ps('Cinta', 'Portada – cinta', { font: SANS, size: pt(10.5), color: C.navy }, { alignment: AlignmentType.CENTER, spacing: { before: 0, after: 600, line: 276 }, border: { top: { style: BorderStyle.SINGLE, size: 8, color: C.navy, space: 6 }, bottom: { style: BorderStyle.SINGLE, size: 8, color: C.navy, space: 6 } } }),
-  ps('PortadaDatos', 'Portada – datos', { font: SERIF, size: pt(10.5), color: C['ink-muted'] }, { alignment: AlignmentType.CENTER, spacing: { after: 60 } }),
+  ps('PortadaAntetitulo', 'Portada – antetítulo', { font: SANS, size: pt(10.5), bold: true, color: C.azure, allCaps: true, characterSpacing: 17 }, { alignment: AlignmentType.LEFT, spacing: { before: 720, after: 160 } }),
+  ps('PortadaTitulo', 'Portada – título', { font: SANS, size: pt(30), bold: true, color: C.navy }, { alignment: AlignmentType.LEFT, spacing: { after: 360, line: 264 }, indent: { right: 2880 } }),
+  ps('PortadaSubtitulo', 'Portada – subtítulo', { font: SERIF, size: pt(14), italics: true, color: C.ink }, { alignment: AlignmentType.LEFT, spacing: { after: 120 } }),
+  ps('PortadaRaya', 'Portada – raya bajo el título', { font: SANS, size: pt(4) }, { alignment: AlignmentType.LEFT, spacing: { before: 0, after: 300 }, indent: { right: W - 800 }, border: { top: { style: BorderStyle.SINGLE, size: 24, color: C.azure, space: 0 } } }),
+  ps('PortadaLema', 'Portada – descripción', { font: SERIF, size: pt(12), color: C['ink-muted'] }, { alignment: AlignmentType.LEFT, spacing: { after: 0 } }),
+  ps('Cinta', 'Portada – cinta', { font: SANS, size: pt(10.5), color: C.navy }, { alignment: AlignmentType.LEFT, spacing: { before: 0, after: 360, line: 276 }, border: { top: { style: BorderStyle.SINGLE, size: 8, color: C.navy, space: 6 }, bottom: { style: BorderStyle.SINGLE, size: 8, color: C.navy, space: 6 } } }),
+  ps('PortadaCreditos', 'Portada – créditos', { font: SANS, size: pt(11), color: C.ink }, { alignment: AlignmentType.LEFT, spacing: { after: 60 } }),
+  ps('PortadaDatos', 'Portada – datos', { font: SERIF, size: pt(10.5), color: C['ink-muted'] }, { alignment: AlignmentType.LEFT, spacing: { after: 60 } }),
   ps('TablaNumero', 'Tabla o figura – número', { font: SANS, size: pt(12), bold: true, color: C.ink }, { spacing: { before: 360, after: 0 }, keepNext: true, alignment: AlignmentType.LEFT }),
   ps('TablaTitulo', 'Tabla o figura – título', { font: SERIF, size: pt(12), italics: true, color: C.ink }, { spacing: { after: 120 }, keepNext: true, alignment: AlignmentType.LEFT }),
   ps('Nota', 'Nota de tabla o figura', { font: SERIF, size: pt(10.5), color: C['ink-muted'] }, { spacing: { before: 120, after: 360, line: 300 }, alignment: AlignmentType.LEFT }),
@@ -183,15 +185,41 @@ const bullet = (t, level = 0) => new Paragraph({ style: 'Lista', numbering: { re
 const pageBreak = () => new Paragraph({ children: [new PageBreak()] });
 
 // ---------- content ----------
+// Cover, "mosaic" variant (the HTML default): the nine box colours and icons as a strip,
+// title block at the top, ribbon, credits and details towards the foot of the page.
+const mosaic = () => {
+  const cw = Math.floor(W / BOXES.length);
+  const gap = { style: BorderStyle.SINGLE, size: 24, color: 'FFFFFF' }; // 3pt white gaps between cells
+  return new Table({
+    width: { size: cw * BOXES.length, type: WidthType.DXA }, columnWidths: BOXES.map(() => cw), layout: TableLayoutType.FIXED,
+    borders: { top: NONE, bottom: NONE, left: NONE, right: NONE, insideHorizontal: NONE, insideVertical: NONE },
+    rows: [new TableRow({ height: { value: cw, rule: 'exact' }, cantSplit: true, children: BOXES.map((b, i) => new TableCell({
+      width: { size: cw, type: WidthType.DXA }, verticalAlign: VerticalAlign.CENTER,
+      shading: { fill: C[`${b.kind}-accent`], type: ShadingType.CLEAR, color: 'auto' },
+      margins: { top: 0, bottom: 0, left: 0, right: 0 },
+      borders: { top: NONE, bottom: NONE, left: i ? gap : NONE, right: i < BOXES.length - 1 ? gap : NONE },
+      children: [new Paragraph({ alignment: AlignmentType.CENTER, spacing: { before: 0, after: 0 }, children: [new ImageRun({ type: 'png', data: icon(b.kind, true), transformation: { width: 26, height: 26 } })] })],
+    })) })],
+  });
+};
+// "[…]" lines are placeholders to replace, drawn in italics in a dashed frame.
+const slot = (text, style) => new Paragraph({ style, children: [new TextRun({ text, italics: true })],
+  border: { top: { style: BorderStyle.DASHED, size: 4, color: C['rule-strong'], space: 1 }, bottom: { style: BorderStyle.DASHED, size: 4, color: C['rule-strong'], space: 1 }, left: { style: BorderStyle.DASHED, size: 4, color: C['rule-strong'], space: 4 }, right: { style: BorderStyle.DASHED, size: 4, color: C['rule-strong'], space: 4 } } });
 const cover = [
+  mosaic(),
   p('Manual de formación docente', 'PortadaAntetitulo'),
   p('[Título del manual]', 'PortadaTitulo'),
+  p('', 'PortadaRaya'),
   p('[Subtítulo: alcance del manual]', 'PortadaSubtitulo'),
   p('[Descripción en una línea: disciplinas y destinatarios]', 'PortadaLema'),
+  // Pushes the ribbon, credits and details to the foot of an A4 page.
+  new Paragraph({ spacing: { before: 4300, after: 0 }, children: [] }),
   p('[Cinta: tipo de material]', 'Cinta'),
+  slot('[Autoría: nombre y apellido de cada autor]', 'PortadaCreditos'),
+  slot('[Institución o unidad académica]', 'PortadaCreditos'),
   p('Nivel: [destinatarios]', 'PortadaDatos'),
   p('Citación: APA 7.ª edición', 'PortadaDatos'),
-  p('Año [aaaa]', 'PortadaDatos'),
+  p('[Edición] · [Ciudad] · [aaaa]', 'PortadaDatos'),
   pageBreak(),
 ];
 
