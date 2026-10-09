@@ -701,14 +701,6 @@
   gap: var(--space-1);
 }
 
-.du-tag--link {
-  text-decoration: none;
-}
-
-.du-tag--link:hover {
-  text-decoration: underline;
-}
-
 .du-box__discipline {
   margin-left: auto;
 }
@@ -1572,10 +1564,6 @@ ul.du-diagram-list__nested li {
   .du-box__key ol {
     margin: 0px;
     padding-left: var(--space-5);
-  }
-
-  .du-tag--link {
-    color: var(--box-accent);
   }
 
   .du-term {

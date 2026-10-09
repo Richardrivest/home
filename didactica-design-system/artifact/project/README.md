@@ -10,7 +10,7 @@ Every unit follows the same sequence. Never reorder it.
 4. The body: numbered sections (`Heading` 2 and 3) and `Paragraph` with `Cite`. Add `Important`, `CommonMistake`, `Classroom`, `DataTable` and `Figure` as needed, within the density rules below.
 5. `ThinkFurther` (“Para Seguir Pensando”): 2–4 open questions, not assessed, followed by the “Antes de leer” questions again (`revisit`).
 6. `SelfCheck` (“Autoevaluación”): 3–5 recall questions with answers, including one review item from an earlier unit.
-7. `Activities` (“Actividades”): assessable tasks, each tagged with its type and the objectives it practises; its Bloom level is kept as data for the alignment check, not shown.
+7. `Activities` (“Actividades”): assessable tasks, each tagged with its type; the objectives it practises and its Bloom level are kept as data for the alignment table, not shown.
 8. `AlignmentTable`: which activities practise each objective, with any gaps flagged.
 9. `ReferencesBox` (“Referencias”): the unit's APA 7 reference list, generated from the citations with `auto`.
 

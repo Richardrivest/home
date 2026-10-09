@@ -164,8 +164,8 @@ const ACTIVITY_TYPES = { pregunta: 'Pregunta', tarea: 'Tarea', caso: 'Caso', deb
 
 /**
  * “Actividades”: assessable questions and tasks. Item: string or
- * { type, text, level, objectives: ['O1'] }. The tags show the type and the objectives; the level
- * is not shown, but stays in data-level for the alignment check.
+ * { type, text, level, objectives: ['O1'] }. Only the type is shown as a tag; the level and the
+ * objectives stay in data-level and data-objectives, and feed AlignmentTable.
  */
 export function Activities({ items, title }) {
   return (
@@ -174,11 +174,10 @@ export function Activities({ items, title }) {
         {items.map((it, i) => {
           const obj = typeof it === 'string' ? { text: it } : it;
           return (
-            <li key={i} data-level={obj.level || undefined}>
+            <li key={i} data-level={obj.level || undefined} data-objectives={(obj.objectives || []).join(' ') || undefined}>
               <div className="du-box__q">
                 <span className="du-box__tags">
                   {obj.type ? <span className="du-tag tag">{ACTIVITY_TYPES[obj.type] || obj.type}</span> : null}
-                  {(obj.objectives || []).map((o) => <a key={o} className="du-tag du-tag--link tag" href={`#obj-${o}`}>{o}</a>)}
                 </span>
                 <span>{obj.text}</span>
               </div>

@@ -208,8 +208,6 @@
 .du-box__q { @apply flex flex-col gap-1; }
 .du-box__q > .du-tag { align-self: flex-start; }
 .du-box__tags { @apply flex flex-wrap gap-1; }
-.du-tag--link { text-decoration: none; }
-.du-tag--link:hover { text-decoration: underline; }
 .du-box__discipline { margin-left: auto; }
 .du-box__answer summary {
   @apply cursor-pointer font-bold;
@@ -428,7 +426,6 @@ ul.du-diagram-list__nested li { @apply pl-3; border-left: var(--stroke-strong) s
   .du-box__answer { display: none; }
   .du-box__key { display: block; @apply mt-3 pt-2 border-0 border-t-hair border-solid; border-color: var(--box-border); font-size: 14px; }
   .du-box__key ol { @apply m-0 pl-5; }
-  .du-tag--link { color: var(--box-accent); }
   .du-term { text-decoration: none; }
   .du-figref { border-bottom: 0; }
   .du-body, .du-list__item, .du-glossary, .du-box__text { text-align: justify; }

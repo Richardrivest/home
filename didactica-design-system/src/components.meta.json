@@ -500,13 +500,13 @@
   {
     "name": "Activities",
     "group": "Boxes",
-    "summary": "“Actividades”: assessable questions and tasks, tagged with their type and the objectives they practise; the Bloom level is kept as data, not shown.",
+    "summary": "“Actividades”: assessable questions and tasks, tagged with their type; the objectives they practise and the Bloom level are kept as data for the alignment table, not shown.",
     "props": [
       [
         "items",
         "(string | { type?; level?: BloomId; objectives?: string[]; text })[]",
         true,
-        "Numbered activities; objectives link to O1, O2…"
+        "Numbered activities; objectives (O1, O2…) are kept as data for AlignmentTable, not shown."
       ],
       [
         "title",

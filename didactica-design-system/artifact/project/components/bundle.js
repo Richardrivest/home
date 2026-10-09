@@ -679,7 +679,7 @@ window.Didactica = (() => {
   function Activities({ items, title }) {
     return /* @__PURE__ */ import_react13.default.createElement(Box, { kind: "activities", title }, /* @__PURE__ */ import_react13.default.createElement("ol", { className: "du-box__list du-box__list--numbered" }, items.map((it, i) => {
       const obj = typeof it === "string" ? { text: it } : it;
-      return /* @__PURE__ */ import_react13.default.createElement("li", { key: i, "data-level": obj.level || void 0 }, /* @__PURE__ */ import_react13.default.createElement("div", { className: "du-box__q" }, /* @__PURE__ */ import_react13.default.createElement("span", { className: "du-box__tags" }, obj.type ? /* @__PURE__ */ import_react13.default.createElement("span", { className: "du-tag tag" }, ACTIVITY_TYPES[obj.type] || obj.type) : null, (obj.objectives || []).map((o) => /* @__PURE__ */ import_react13.default.createElement("a", { key: o, className: "du-tag du-tag--link tag", href: `#obj-${o}` }, o))), /* @__PURE__ */ import_react13.default.createElement("span", null, obj.text)));
+      return /* @__PURE__ */ import_react13.default.createElement("li", { key: i, "data-level": obj.level || void 0, "data-objectives": (obj.objectives || []).join(" ") || void 0 }, /* @__PURE__ */ import_react13.default.createElement("div", { className: "du-box__q" }, /* @__PURE__ */ import_react13.default.createElement("span", { className: "du-box__tags" }, obj.type ? /* @__PURE__ */ import_react13.default.createElement("span", { className: "du-tag tag" }, ACTIVITY_TYPES[obj.type] || obj.type) : null), /* @__PURE__ */ import_react13.default.createElement("span", null, obj.text)));
     })));
   }
   function ReferencesBox({ children, title, auto = false, all = false }) {

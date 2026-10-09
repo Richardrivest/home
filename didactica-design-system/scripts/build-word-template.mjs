@@ -274,7 +274,7 @@ const catalogue = [
   ...box('example', ['{accent:Situación:} [Un momento concreto de una clase.]', '{accent:Decisión didáctica:} [Lo que hace el docente.]', '{accent:Fundamento:} [Por qué, con su cita] (Autor, año, p. x).'], { extraTitle: '[Ciencias Sociales | Ciencias de la Salud]' }),
   ...box('thinking', [{ num: '[Pregunta abierta, sin respuesta única.]' }, { num: '[Pregunta abierta que conecte la unidad con la práctica.]' }, { label: 'Vuelva a las preguntas del comienzo:' }, '[Repita aquí las preguntas “Antes de leer”.]', '_¿Respondería hoy lo mismo que antes de leer la unidad? ¿Qué cambió y por qué?_']),
   ...box('selfcheck', [{ num: '[Pregunta de recuperación sobre una idea central.]' }, { num: '[Pregunta de recuperación.]' }, { num: '[REPASO · Unidad N] [Pregunta sobre una unidad anterior.]' }, { label: 'Clave de respuestas' }, '1. [Respuesta.]  2. [Respuesta.]  3. [Respuesta.]']),
-  ...box('activities', [{ num: '{accent:TAREA · O2}  [Consigna en modo imperativo de usted.]' }, { num: '{accent:PREGUNTA · O1}  [Pregunta.]' }]),
+  ...box('activities', [{ num: '{accent:TAREA}  [Consigna en modo imperativo de usted.]' }, { num: '{accent:PREGUNTA}  [Pregunta.]' }]),
   ...box('references', [{ ref: '[Apellido, A. A.] ([año]). _[Título del libro en cursiva]_. [Editorial].' }, { ref: '[Apellido, A. A., & Apellido, B. B.] ([año]). [Título del artículo]. _[Revista, volumen]_([número]), [pp.–pp.]. https://doi.org/[…]' }]),
   pageBreak(),
 ];
@@ -295,7 +295,7 @@ const unit = [
   p('[Cita textual de 40 palabras o más, sin comillas, con la cita después del punto final.] (Autor, año, p. x)', 'CitaBloque'),
   ...box('thinking', [{ num: '[Pregunta abierta.]' }, { label: 'Vuelva a las preguntas del comienzo:' }, '[Preguntas “Antes de leer”.]']),
   ...box('selfcheck', [{ num: '[Pregunta.]' }, { label: 'Clave de respuestas' }, '1. [Respuesta.]']),
-  ...box('activities', [{ num: '{accent:TAREA · O2}  [Consigna.]' }]),
+  ...box('activities', [{ num: '{accent:TAREA}  [Consigna.]' }]),
   p('La Tabla 3 muestra qué actividades trabajan cada objetivo.'),
   ...apaTable(3, 'Alineamiento de la unidad', ['Objetivo', 'Nivel', 'Actividades', 'Estado'], [['O1', 'Comprender', '[n.º]', '[Alineado]'], ['O2', 'Analizar', '[n.º]', '[Alineado]']], [0.14, 0.22, 0.24, 0.4], 'Cada objetivo necesita al menos una actividad de su mismo nivel o superior.', { rowHeader: true }),
   ...box('references', [{ ref: '[Referencias de la unidad en APA 7, en orden alfabético.]' }]),
