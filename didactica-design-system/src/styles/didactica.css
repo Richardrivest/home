@@ -51,10 +51,9 @@
 .du-placeholder { @apply text-ink-muted italic px-2 rounded-node; width: fit-content; border: var(--stroke-hair) dashed var(--rule-strong); }
 .du-cover-rule { @apply block mt-1; width: 3.5rem; height: 4px; background: var(--azure); }
 
-/* mosaic (default): the nine box colours and icons as the cover's signature strip */
+/* mosaic (default): the nine box colours as plain squares, the cover's signature strip */
 .du-cover-mosaic { @apply grid mb-10; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 4px; }
-.du-cover-mosaic__cell { @apply flex items-center justify-center; aspect-ratio: 1; color: var(--paper); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-.du-cover-mosaic__cell .du-icon { width: 46%; height: 46%; }
+.du-cover-mosaic__cell { @apply block; aspect-ratio: 1; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 .du-title-page--mosaic .du-title-page__top { @apply mt-2; }
 
 /* band: navy band with the title reversed out */

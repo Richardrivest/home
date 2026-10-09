@@ -185,7 +185,7 @@ const bullet = (t, level = 0) => new Paragraph({ style: 'Lista', numbering: { re
 const pageBreak = () => new Paragraph({ children: [new PageBreak()] });
 
 // ---------- content ----------
-// Cover, "mosaic" variant (the HTML default): the nine box colours and icons as a strip,
+// Cover, "mosaic" variant (the HTML default): the nine box colours as plain squares,
 // title block at the top, ribbon, credits and details towards the foot of the page.
 const mosaic = () => {
   const cw = Math.floor(W / BOXES.length);
@@ -198,7 +198,7 @@ const mosaic = () => {
       shading: { fill: C[`${b.kind}-accent`], type: ShadingType.CLEAR, color: 'auto' },
       margins: { top: 0, bottom: 0, left: 0, right: 0 },
       borders: { top: NONE, bottom: NONE, left: i ? gap : NONE, right: i < BOXES.length - 1 ? gap : NONE },
-      children: [new Paragraph({ alignment: AlignmentType.CENTER, spacing: { before: 0, after: 0 }, children: [new ImageRun({ type: 'png', data: icon(b.kind, true), transformation: { width: 26, height: 26 } })] })],
+      children: [new Paragraph({ spacing: { before: 0, after: 0 }, children: [] })],
     })) })],
   });
 };

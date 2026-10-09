@@ -4,11 +4,11 @@ The manual's cover, one A4 page: title block at the top, ribbon, credits and det
 
 **Consumer provides:** `title`, plus the optional `variant`, `bleed`, `volume`, `kicker`, `subtitle`, `lede`, `ribbon`, `credits` and `meta` lines.
 
-One A4 page: the title block sits at the top; the ribbon, credits and details sit at the foot. On screen it keeps the A4 proportion; in print it fills the page and ends it. `variant` picks the design: `mosaic` (default; the nine box colours and icons in their order in a unit), `band` (navy band, title reversed out), `motif` (nested circles from the diagram ramp) or `editorial` (left rule and a large `volume` number). `bleed` runs the colour to the paper edge in print. Write unknown details as “[…]”: they show in a dashed frame until replaced. Keep one ribbon and write metadata lines as “Clave: valor”. The Word template's cover is the `mosaic` variant.
+One A4 page: the title block sits at the top; the ribbon, credits and details sit at the foot. On screen it keeps the A4 proportion; in print it fills the page and ends it. `variant` picks the design: `mosaic` (default; the nine box colours as plain squares, in their order in a unit), `band` (navy band, title reversed out), `motif` (nested circles from the diagram ramp) or `editorial` (left rule and a large `volume` number). `bleed` runs the colour to the paper edge in print. Write unknown details as “[…]”: they show in a dashed frame until replaced. Keep one ribbon and write metadata lines as “Clave: valor”. The Word template's cover is the `mosaic` variant.
 
 | Prop | Type | Required | Notes |
 |---|---|---|---|
-| `variant` | `'mosaic' | 'band' | 'motif' | 'editorial'` | no | Cover design. Default 'mosaic': the nine box colours and icons as a strip. |
+| `variant` | `'mosaic' | 'band' | 'motif' | 'editorial'` | no | Cover design. Default 'mosaic': the nine box colours as a strip of plain squares. |
 | `bleed` | `boolean` | no | In print, colour runs to the paper edge. |
 | `volume` | `number | string` | no | Volume or unit number, shown large by 'editorial'. |
 | `kicker` | `string` | no | Series line, upper case. |

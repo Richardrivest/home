@@ -173,7 +173,7 @@
   background: var(--azure);
 }
 
-/* mosaic (default): the nine box colours and icons as the cover's signature strip */
+/* mosaic (default): the nine box colours as plain squares, the cover's signature strip */
 
 .du-cover-mosaic {
   margin-bottom: 2.5rem;
@@ -183,18 +183,10 @@
 }
 
 .du-cover-mosaic__cell {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: block;
   aspect-ratio: 1;
-  color: var(--paper);
   -webkit-print-color-adjust: exact;
   print-color-adjust: exact;
-}
-
-.du-cover-mosaic__cell .du-icon {
-  width: 46%;
-  height: 46%;
 }
 
 .du-title-page--mosaic .du-title-page__top {

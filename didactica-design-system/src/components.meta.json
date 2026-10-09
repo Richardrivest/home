@@ -33,7 +33,7 @@
         "variant",
         "'mosaic' | 'band' | 'motif' | 'editorial'",
         false,
-        "Cover design. Default 'mosaic': the nine box colours and icons as a strip."
+        "Cover design. Default 'mosaic': the nine box colours as a strip of plain squares."
       ],
       [
         "bleed",

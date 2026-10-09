@@ -8,7 +8,7 @@ export declare function Page(props: PageProps): ReactElement;
 
 /** The manual's cover: kicker, title, italic subtitle, lede, ribbon and metadata lines, all centred. */
 export interface TitlePageProps {
-  /** 'mosaic' (default): the nine box colours; 'band': navy band; 'motif': nested circles; 'editorial': left rule and volume number. */
+  /** 'mosaic' (default): the nine box colours as plain squares; 'band': navy band; 'motif': nested circles; 'editorial': left rule and volume number. */
   variant?: 'mosaic' | 'band' | 'motif' | 'editorial';
   /** In print, colour runs to the edge of the paper (no page margin on the cover). */
   bleed?: boolean;

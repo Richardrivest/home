@@ -1,5 +1,4 @@
 import React from 'react';
-import { Icon } from './Icon.jsx';
 import BOXES from '../boxes.config.json';
 
 const VARIANTS = ['mosaic', 'band', 'motif', 'editorial'];
@@ -10,14 +9,12 @@ function Slot({ text, className }) {
   return <p className={`${className}${placeholder ? ' du-placeholder' : ''}`}>{text}</p>;
 }
 
-/** Mosaic: the nine box colours and icons, in their order of appearance in a unit. */
+/** Mosaic: the nine box colours as plain squares, in their order of appearance in a unit. */
 function Mosaic() {
   return (
     <div className="du-cover-mosaic" aria-hidden="true">
       {BOXES.map((b) => (
-        <span key={b.kind} className="du-cover-mosaic__cell" style={{ background: `var(--${b.kind}-accent)` }}>
-          <Icon name={b.icon} size={28} />
-        </span>
+        <span key={b.kind} className="du-cover-mosaic__cell" style={{ background: `var(--${b.kind}-accent)` }} />
       ))}
     </div>
   );
