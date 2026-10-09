@@ -156,7 +156,7 @@ export declare function ThinkFurther(props: ThinkFurtherProps): ReactElement;
 
 export interface Activity {
   type?: 'pregunta' | 'tarea' | 'caso' | 'debate';
-  /** Bloom level the activity demands. */
+  /** Bloom level the activity demands: kept as data (data-level) for the alignment check, not shown. */
   level?: BloomId;
   /** Objectives it practises, e.g. ['O2']. */
   objectives?: string[];

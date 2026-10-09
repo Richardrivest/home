@@ -10,7 +10,7 @@ Every unit follows the same sequence. Never reorder it.
 4. The body: numbered sections (`Heading` 2 and 3) and `Paragraph` with `Cite`. Add `Important`, `CommonMistake`, `Classroom`, `DataTable` and `Figure` as needed, within the density rules below.
 5. `ThinkFurther` (“Para Seguir Pensando”): 2–4 open questions, not assessed, followed by the “Antes de leer” questions again (`revisit`).
 6. `SelfCheck` (“Autoevaluación”): 3–5 recall questions with answers, including one review item from an earlier unit.
-7. `Activities` (“Actividades”): assessable tasks, each tagged with its type, Bloom level and the objectives it practises.
+7. `Activities` (“Actividades”): assessable tasks, each tagged with its type and the objectives it practises; its Bloom level is kept as data for the alignment check, not shown.
 8. `AlignmentTable`: which activities practise each objective, with any gaps flagged.
 9. `ReferencesBox` (“Referencias”): the unit's APA 7 reference list, generated from the citations with `auto`.
 
@@ -111,7 +111,7 @@ Every citation names the author(s), the year and the page. Where an example show
 
 ## Learning objectives: Bloom's revised taxonomy
 
-Every `Objectives` box uses Anderson and Krathwohl's revised taxonomy (2001). Tag each objective with its level, and start it with a verb from that level. Tag each activity with the level it demands.
+Every `Objectives` box uses Anderson and Krathwohl's revised taxonomy (2001). Give each objective its level (`level`) and start it with a verb from that level; give each activity the level it demands. Neither box shows the level: it stays in the markup (`data-level`) for `AlignmentTable` and the content checker.
 
 | Level | Name | Verbs |
 |---|---|---|

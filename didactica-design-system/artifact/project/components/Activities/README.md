@@ -4,7 +4,7 @@
 
 **Consumer provides:** `items`, as strings or `{ type, level, objectives, text }`: type is pregunta, tarea, caso or debate; `level` is the Bloom level the activity demands; `objectives` lists the objectives it practises (`['O2']`), shown as links.
 
-It comes after `SelfCheck`, followed by `AlignmentTable`. Activities are assessable, unlike `ThinkFurther`. Every objective needs at least one activity at its level or above. Write each item as a *usted* imperative or a direct question.
+It comes after `SelfCheck`, followed by `AlignmentTable`. The tags show the type and the objectives; the level is not shown, but stays in the markup (`data-level`) for `AlignmentTable`. Activities are assessable, unlike `ThinkFurther`. Every objective needs at least one activity at its level or above. Write each item as a *usted* imperative or a direct question.
 
 | Prop | Type | Required | Notes |
 |---|---|---|---|

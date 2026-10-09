@@ -49,6 +49,14 @@ test('objectives: no visible Bloom label; the level stays in data-level and the 
   assert.match(issues[0].message, /explicar/);
 });
 
+test('activities: type and objective tags only; the level stays in data-level', async () => {
+  const html = await render(`h(D.Activities, { items: [{ type: 'tarea', level: 'analizar', objectives: ['O2'], text: 'Compare.' }, 'Sin etiquetas.'] })`);
+  assert.doesNotMatch(html, /ANALIZAR|Analizar|4 ·/);
+  assert.match(html, /data-level="analizar"/);
+  assert.match(html, />O2</);
+  assert.equal((html.match(/data-level=/g) || []).length, 1);
+});
+
 test('cover: mosaic by default with the nine box colours; variants; “[…]” lines as placeholders', async () => {
   const html = await render(`h(D.TitlePage, { title: 'T', credits: ['[Autoría]', 'Ana Pérez'], meta: ['Año 2026'] })`);
   assert.match(html, /du-title-page--mosaic/);

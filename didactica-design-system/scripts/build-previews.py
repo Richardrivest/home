@@ -89,7 +89,7 @@ It opens the closing sequence (closing family: plain frame), before `SelfCheck` 
 
 c('Activities',280,"""**Consumer provides:** `items`, as strings or `{ type, level, objectives, text }`: type is pregunta, tarea, caso or debate; `level` is the Bloom level the activity demands; `objectives` lists the objectives it practises (`['O2']`), shown as links.
 
-It comes after `SelfCheck`, followed by `AlignmentTable`. Activities are assessable, unlike `ThinkFurther`. Every objective needs at least one activity at its level or above. Write each item as a *usted* imperative or a direct question.""",
+It comes after `SelfCheck`, followed by `AlignmentTable`. The tags show the type and the objectives; the level is not shown, but stays in the markup (`data-level`) for `AlignmentTable`. Activities are assessable, unlike `ThinkFurther`. Every objective needs at least one activity at its level or above. Write each item as a *usted* imperative or a direct question.""",
 """h(Activities,{items:[{type:'pregunta',level:'comprender',objectives:['O1'],text:'Explique qué significa que el aprendizaje “tira del desarrollo”.'},{type:'tarea',level:'analizar',objectives:['O2'],text:'Compare qué estrategia propondría cada perspectiva para trabajar una idea previa errónea de su disciplina.'},{type:'tarea',level:'crear',objectives:['O2','O4'],text:'Diseñe una consigna que reduzca la carga cognitiva extrínseca.'}]})""")
 
 c('ReferencesBox',250,"""**Consumer provides:** `Reference` children, sorted alphabetically, or `auto` inside `Bibliography` to generate the list from the works cited above.

@@ -655,10 +655,6 @@ window.Didactica = (() => {
   function KeyPoints({ items, before, title }) {
     return /* @__PURE__ */ import_react13.default.createElement(Box, { kind: "keypoints", title }, /* @__PURE__ */ import_react13.default.createElement("ul", { className: "du-box__list" }, items.map((it, i) => /* @__PURE__ */ import_react13.default.createElement("li", { key: i }, it))), before && before.length ? /* @__PURE__ */ import_react13.default.createElement("div", { className: "du-box__before" }, /* @__PURE__ */ import_react13.default.createElement("p", { className: "du-box__label" }, "Antes de leer:"), /* @__PURE__ */ import_react13.default.createElement("ul", { className: "du-box__list du-box__list--questions" }, before.map((q, i) => /* @__PURE__ */ import_react13.default.createElement("li", { key: i }, q)))) : null);
   }
-  var LevelTag = ({ level }) => {
-    const lvl = bloomLevel(level);
-    return /* @__PURE__ */ import_react13.default.createElement("span", { className: "du-tag tag", title: lvl ? `Nivel ${lvl.level} de Bloom` : void 0 }, lvl ? `${lvl.level} \xB7 ${lvl.name}` : level);
-  };
   function Objectives({ items, intro = "Al finalizar la unidad, usted ser\xE1 capaz de:", title }) {
     return /* @__PURE__ */ import_react13.default.createElement(Box, { kind: "objectives", title }, intro ? /* @__PURE__ */ import_react13.default.createElement("p", { className: "du-box__intro" }, intro) : null, /* @__PURE__ */ import_react13.default.createElement("ol", { className: "du-box__list du-box__list--objectives" }, items.map((it, i) => /* @__PURE__ */ import_react13.default.createElement("li", { key: i, id: `obj-${objectiveId(it, i)}`, "data-level": it.level }, /* @__PURE__ */ import_react13.default.createElement("span", { className: "du-box__oid" }, objectiveId(it, i)), /* @__PURE__ */ import_react13.default.createElement("span", { className: "du-box__otext" }, it.text)))));
   }
@@ -683,7 +679,7 @@ window.Didactica = (() => {
   function Activities({ items, title }) {
     return /* @__PURE__ */ import_react13.default.createElement(Box, { kind: "activities", title }, /* @__PURE__ */ import_react13.default.createElement("ol", { className: "du-box__list du-box__list--numbered" }, items.map((it, i) => {
       const obj = typeof it === "string" ? { text: it } : it;
-      return /* @__PURE__ */ import_react13.default.createElement("li", { key: i }, /* @__PURE__ */ import_react13.default.createElement("div", { className: "du-box__q" }, /* @__PURE__ */ import_react13.default.createElement("span", { className: "du-box__tags" }, obj.type ? /* @__PURE__ */ import_react13.default.createElement("span", { className: "du-tag tag" }, ACTIVITY_TYPES[obj.type] || obj.type) : null, obj.level ? /* @__PURE__ */ import_react13.default.createElement(LevelTag, { level: obj.level }) : null, (obj.objectives || []).map((o) => /* @__PURE__ */ import_react13.default.createElement("a", { key: o, className: "du-tag du-tag--link tag", href: `#obj-${o}` }, o))), /* @__PURE__ */ import_react13.default.createElement("span", null, obj.text)));
+      return /* @__PURE__ */ import_react13.default.createElement("li", { key: i, "data-level": obj.level || void 0 }, /* @__PURE__ */ import_react13.default.createElement("div", { className: "du-box__q" }, /* @__PURE__ */ import_react13.default.createElement("span", { className: "du-box__tags" }, obj.type ? /* @__PURE__ */ import_react13.default.createElement("span", { className: "du-tag tag" }, ACTIVITY_TYPES[obj.type] || obj.type) : null, (obj.objectives || []).map((o) => /* @__PURE__ */ import_react13.default.createElement("a", { key: o, className: "du-tag du-tag--link tag", href: `#obj-${o}` }, o))), /* @__PURE__ */ import_react13.default.createElement("span", null, obj.text)));
     })));
   }
   function ReferencesBox({ children, title, auto = false, all = false }) {

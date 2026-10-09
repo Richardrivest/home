@@ -1,6 +1,5 @@
 import React, { useId } from 'react';
 import { Icon } from './Icon.jsx';
-import { bloomLevel } from '../bloom.js';
 import { objectiveId, checkAlignment } from '../alignment.js';
 import BOXES from '../boxes.config.json';
 import { Reference } from './Reference.jsx';
@@ -47,15 +46,6 @@ export function KeyPoints({ items, before, title }) {
     </Box>
   );
 }
-
-const LevelTag = ({ level }) => {
-  const lvl = bloomLevel(level);
-  return (
-    <span className="du-tag tag" title={lvl ? `Nivel ${lvl.level} de Bloom` : undefined}>
-      {lvl ? `${lvl.level} · ${lvl.name}` : level}
-    </span>
-  );
-};
 
 /**
  * “Objetivos”: numbered learning objectives (O1, O2…). Each is written for one Bloom (revised)
@@ -174,7 +164,8 @@ const ACTIVITY_TYPES = { pregunta: 'Pregunta', tarea: 'Tarea', caso: 'Caso', deb
 
 /**
  * “Actividades”: assessable questions and tasks. Item: string or
- * { type, text, level, objectives: ['O1'] } — level and objectives make the alignment visible.
+ * { type, text, level, objectives: ['O1'] }. The tags show the type and the objectives; the level
+ * is not shown, but stays in data-level for the alignment check.
  */
 export function Activities({ items, title }) {
   return (
@@ -183,11 +174,10 @@ export function Activities({ items, title }) {
         {items.map((it, i) => {
           const obj = typeof it === 'string' ? { text: it } : it;
           return (
-            <li key={i}>
+            <li key={i} data-level={obj.level || undefined}>
               <div className="du-box__q">
                 <span className="du-box__tags">
                   {obj.type ? <span className="du-tag tag">{ACTIVITY_TYPES[obj.type] || obj.type}</span> : null}
-                  {obj.level ? <LevelTag level={obj.level} /> : null}
                   {(obj.objectives || []).map((o) => <a key={o} className="du-tag du-tag--link tag" href={`#obj-${o}`}>{o}</a>)}
                 </span>
                 <span>{obj.text}</span>
